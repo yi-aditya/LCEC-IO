@@ -150,15 +150,11 @@ ROWS = [
      "C89809", "NCD0603C3", "Y", "CHANGED", "", "Yellow-green accepted (see RUN LED)."),
     ("5 Inputs", "RN501-RN505", "1 k x4 resistor array 0603 (LED resistors)", 5, "fixed", RA4,
      "C20197", "4D03WGJ0102T5E", "Y", "NEW", "", "Basic part."),
-    ("5 Inputs", "J501", "Terminal header 10-pole 5.08 mm (DI1-8)", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C441201", "KF2EDGR-5.08-10P", "Y", "PLAN-FLAG", "", "Stock under 100: order early or use a second source."),
-    ("5 Inputs", "P501", "Terminal plug 10-pole 5.08 mm", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C440877", "KF2EDGK-5.08-10P", "Y", "NEW", "", ""),
-    ("5 Inputs", "J502", "Terminal header 14-pole 5.08 mm (SEL1-12), Dorabo", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C430493", "DB2ER-5.08-14P", "Y", "DECISION", "C430493",
-     "Plan family (Cixi KF2EDG) has the 14-pole plug at stock 1 (C976408). Proposal: use the Dorabo DB2 14-pole pair for this one size so plug and header are the same family."),
-    ("5 Inputs", "P502", "Terminal plug 14-pole 5.08 mm, Dorabo", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C430477", "DB2EK-5.08-14P", "Y", "DECISION", "C430477", "See J502."),
+    ("5 Inputs", "J501-J520", "Terminal header 3-pole 5.08 mm, one per input (+24V via PTC, IN, 0V)", 20, "fixed", "TBD lcsc.pretty (M2)",
+     "C441205", "KF2EDGR-5.08-3P", "Y", "CHANGED", "",
+     "Owner decision 2026-11-05: one 3-pole connector per input, DI1-8 and SEL1-12 (replaces the 10-pole and 14-pole terminals, which also removes the 14-pole stock problem)."),
+    ("5 Inputs", "P501-P520", "Terminal plug 3-pole 5.08 mm", 20, "fixed", "TBD lcsc.pretty (M2)",
+     "C440881", "KF2EDGK-5.08-3P", "Y", "CHANGED", "", "See J501-J520."),
     ("5 Inputs", "RT501-RT502", "PTC 0.5 A hold, 30 V, 1812 (sensor +24 V)", 2, "fixed", "Fuse:Fuse_1812_4532Metric",
      "C151168", "1812L050/30PR", "Y", "NEW-FLAG", "",
      "0.5 A hold / 1 A trip, 30 V max vs 28.8 V input, thin margin. One per input terminal (DI, SEL)."),
@@ -197,10 +193,11 @@ ROWS = [
      "Datasheet: ABS base, polystyrene cover, 6-10 A 250 VAC, and 'temperature resistance 80 C'. That equals the top of the enclosure range and a 5 A fuse adds self-heating. Fallback in plan: Littelfuse 649 series (Mouser). Owner: accept or switch."),
     ("7 Relays", "F701-F708 (fuse)", "Fuse 5x20 mm T5A 250 VAC ceramic (buy locally in India)", 8, "fixed", "n/a (in holder)",
      "", "T5A 250V 5x20 ceramic", "DNP", "LOCAL", "", "Not on the assembly line."),
-    ("7 Relays", "J701-J702", "Terminal header 8-pole 5.08 mm (relay contacts)", 2, "fixed", "TBD lcsc.pretty (M2)",
-     "C441210", "KF2EDGR-5.08-8P", "Y", "NEW", "", "300 V rated; mains clearance handled at layout."),
-    ("7 Relays", "P701-P702", "Terminal plug 8-pole 5.08 mm", 2, "fixed", "TBD lcsc.pretty (M2)",
-     "C440886", "KF2EDGK-5.08-8P", "Y", "PLAN", "", ""),
+    ("7 Relays", "J701-J708", "Terminal header 3-pole 5.08 mm, one per relay (COM via fuse, NO, NC)", 8, "fixed", "TBD lcsc.pretty (M2)",
+     "C441205", "KF2EDGR-5.08-3P", "Y", "CHANGED", "",
+     "Owner decision 2026-11-05: one 3-pole connector per relay, NC brought out too (replaces two 8-pole terminals). 300 V rated; mains clearance handled at layout."),
+    ("7 Relays", "P701-P708", "Terminal plug 3-pole 5.08 mm", 8, "fixed", "TBD lcsc.pretty (M2)",
+     "C440881", "KF2EDGK-5.08-3P", "Y", "CHANGED", "", "See J701-J708."),
     ("7 Relays", "LED701-LED708", "Relay ON LED (yellow-green) 0603", 8, "fixed", L0603,
      "C89809", "NCD0603C3", "Y", "CHANGED", "", "Yellow-green accepted (see RUN LED)."),
     ("7 Relays", "RN701-RN702", "22 k x4 resistor array 0603 (LED series)", 2, "fixed", RA4,
@@ -236,10 +233,11 @@ ROWS = [
      "C15849", "CL10A105KB8NNNC", "Y", "NEW", "", "VDDA, 78L05 in/out, URB Cout0 and others; final count at schematic."),
     ("8 Analog", "C8xx", "10 nF 50 V X7R 0603 (AO output)", 2, "fixed", C0603,
      "C57112", "0603B103K500NT", "Y", "NEW", "", ""),
-    ("8 Analog", "J801", "Terminal header 3-pole 5.08 mm (AO1, AO2, AGND)", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C441205", "KF2EDGR-5.08-3P", "Y", "NEW", "", ""),
-    ("8 Analog", "P801", "Terminal plug 3-pole 5.08 mm", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C440881", "KF2EDGK-5.08-3P", "Y", "NEW", "", ""),
+    ("8 Analog", "J801-J802", "Terminal header 2-pole 5.08 mm, one per output (AO, AGND)", 2, "fixed", "TBD lcsc.pretty (M2)",
+     "C441204", "KF2EDGR-5.08-2P", "Y", "CHANGED", "",
+     "Owner decision 2026-11-05: one connector per I/O (replaces the single 3-pole AO1/AO2/AGND terminal)."),
+    ("8 Analog", "P801-P802", "Terminal plug 2-pole 5.08 mm", 2, "fixed", "TBD lcsc.pretty (M2)",
+     "C440880", "KF2EDGK-5.08-2P", "Y", "CHANGED", "", "See J801-J802."),
     # --------------------------------------------------------- Power terminal / PE
     ("2 Power", "J201", "Terminal header 4-pole 5.08 mm (24V entry)", 1, "fixed", "TBD lcsc.pretty (M2)",
      "C441206", "KF2EDGR-5.08-4P", "Y", "NEW", "", ""),
@@ -329,15 +327,14 @@ Decided by the owner on 2026-11-05 (status CHANGED in the list, recorded in `doc
 - Status LEDs: **yellow-green NCD0603C3** accepted in place of green.
 - 24 V input fuses: **replaceable 5x20 mm fuses** (same covered holder as the relay fuses, 1 A and 3 A glass fuses on LCSC) instead of SMD fuses.
 - Relay fuse holder: **C58066 kept** (80 C limit accepted).
-- Terminals: **7 sets** as the sheets need them (the plan's "9 sets" was a miscount).
+- Terminals: **one connector per I/O** (supersedes the 7-sets answer): 20 inputs and 8 relays on 3-pole 5.08 mm, 2 analog outputs on 2-pole, MPG 6-pole and power 4-pole unchanged. No 8-, 10- or 14-pole terminals remain.
 - SMBJ33A vs the URB 40 V input maximum: **parts kept, module-side limiting designed in M3** and brought for approval.
 
 Still open:
 
-1. **14-pole terminal.** Plan family has the plug at stock 1 (C976408). The list carries the Dorabo DB2 pair (C430477 + C430493, status DECISION) so plug and header match. Say yes or no.
-2. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
-3. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
-4. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
+1. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
+2. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
+3. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
 """
 
 

@@ -6,8 +6,6 @@ Stock and prices checked live on LCSC on 2026-11-05 (qty-1 USD). Source of truth
 
 | Part | Plan LCSC | Proposed LCSC | Why |
 |---|---|---|---|
-| Terminal header 14-pole 5.08 mm (SEL1-12), Dorabo | C430493 | C430493 | Plan family (Cixi KF2EDG) has the 14-pole plug at stock 1 (C976408). Proposal: use the Dorabo DB2 14-pole pair for this one size so plug and header are the same family. |
-| Terminal plug 14-pole 5.08 mm, Dorabo | C430477 | C430477 | See J502. |
 
 ## Other things the checks found
 
@@ -19,15 +17,14 @@ Decided by the owner on 2026-11-05 (status CHANGED in the list, recorded in `doc
 - Status LEDs: **yellow-green NCD0603C3** accepted in place of green.
 - 24 V input fuses: **replaceable 5x20 mm fuses** (same covered holder as the relay fuses, 1 A and 3 A glass fuses on LCSC) instead of SMD fuses.
 - Relay fuse holder: **C58066 kept** (80 C limit accepted).
-- Terminals: **7 sets** as the sheets need them (the plan's "9 sets" was a miscount).
+- Terminals: **one connector per I/O** (supersedes the 7-sets answer): 20 inputs and 8 relays on 3-pole 5.08 mm, 2 analog outputs on 2-pole, MPG 6-pole and power 4-pole unchanged. No 8-, 10- or 14-pole terminals remain.
 - SMBJ33A vs the URB 40 V input maximum: **parts kept, module-side limiting designed in M3** and brought for approval.
 
 Still open:
 
-1. **14-pole terminal.** Plan family has the plug at stock 1 (C976408). The list carries the Dorabo DB2 pair (C430477 + C430493, status DECISION) so plug and header match. Say yes or no.
-2. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
-3. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
-4. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
+1. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
+2. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
+3. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
 
 ## Part-level flags
 
@@ -39,7 +36,6 @@ Still open:
 | URB2405S-6WR3 isolated DC-DC 24V to 5V 1.2 A | C3031185 | 6478 | Same 40 V input maximum. |
 | URB2415S-6WR3 isolated DC-DC 24V to 15V 0.4 A | C5369844 | 111 | LCSC rates -40..+105 C (plan said 'check datasheet'). Same 40 V input maximum; stock about 100. |
 | SMBJ33A TVS 600 W, 33 V stand-off, SMB | C320242 | 2070 | Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. Decision 2026-11-05: keep the part, design module-side limiting on the power sheet in M3 and bring it for approval. |
-| Terminal header 10-pole 5.08 mm (DI1-8) | C441201 | 75 | Stock under 100: order early or use a second source. |
 | PTC 0.5 A hold, 30 V, 1812 (sensor +24 V) | C151168 | 11435 | 0.5 A hold / 1 A trip, 30 V max vs 28.8 V input, thin margin. One per input terminal (DI, SEL). |
 | Omron P2R-05P PCB relay socket | C1524860 | 44 | Stock 44 (need 8 per board). Plan allows Mouser/DigiKey if LCSC runs out. |
 | Fuse holder 5x20 mm PCB with cover | C58066 | 12735 | Datasheet: ABS base, polystyrene cover, 6-10 A 250 VAC, and 'temperature resistance 80 C'. That equals the top of the enclosure range and a 5 A fuse adds self-heating. Fallback in plan: Littelfuse 649 series (Mouser). Owner: accept or switch. |
@@ -60,7 +56,7 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 3 MCU | U301 | STM32F405RGT6 MCU LQFP-64 | 1 | C15742 | STM32F405RGT6 | ST | -40℃~+85℃ | 54 | 6.8787 | extended | Y | PLAN-FLAG |
 | 3 MCU | X301 | 25 MHz CMOS oscillator, 3.2x2.5 mm | 1 | C2595919 | ECS-3225MVQ-250-CN-TR | ECS | -40℃~+85℃ | 45 | 2.028 | extended | Y | PLAN-FLAG |
 | 3 MCU | J301 | SWD header 2x5 1.27 mm SMD | 1 | C3975188 | PZ127-2-05-S | HCTL | -40℃~+105℃ | 15365 | 0.1472 | extended | Y | NEW |
-| 3 MCU | J302 | USART2 header 1x3 2.54 mm | 1 | C2937625 | PZ254V-11-03P | XFCN | -40℃~+105℃ | 582250 | 0.02 | extended | Y | NEW |
+| 3 MCU | J302 | USART2 header 1x3 2.54 mm | 1 | C2937625 | PZ254V-11-03P | XFCN | -40℃~+105℃ | 582200 | 0.02 | extended | Y | NEW |
 | 3 MCU | FB301 | Ferrite bead 600R@100MHz 0603 (VDDA) | 1 | C19330 | BLM18AG601SN1D | muRata | -55℃~+125℃ | 458650 | 0.0122 | extended | Y | NEW |
 | 3 MCU | LED301 | Heartbeat LED yellow 0603 | 1 | C2287 | KT-0603Y | Hubei KENTO Elec | -40℃~+85℃ | 95750 | 0.0108 | extended | Y | NEW |
 | 4 EtherCAT | U401 | LAN9252I/PT EtherCAT slave controller TQFP-64 | 1 | C80933 | LAN9252I/PT | MICROCHIP | -40℃~+85℃ | 4189 | 8.6467 | extended | Y | PLAN |
@@ -88,21 +84,19 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 3 MCU | C3xx | 2.2 uF 16 V X5R 0603 (VCAP) | 2 | C23630 | CL10A225KO8NNNC | Samsung Electro-Mechan | see MPN datasheet | 224400 | 0.012 | basic | Y | NEW |
 | 3 MCU | C3xx | 4.7 uF 16 V X5R 0603 (bulk) | 3~ | C19666 | CL10A475KO8NNNC | Samsung Electro-Mechan | see MPN datasheet | 1309330 | 0.0151 | basic | Y | NEW |
 | 3 MCU | C3xx | 10 uF 10 V X5R 0603 | 4~ | C19702 | CL10A106KP8NNNC | Samsung Electro-Mechan | see MPN datasheet | 1483780 | 0.0206 | basic | Y | NEW |
-| 3 MCU | R3xx | 22 R 1% 0603 (clock series) | 2 | C23345 | 0603WAF220JT5E | UNI-ROYAL | -55℃~+155℃ | 2661700 | 0.0017 | basic | Y | NEW |
-| 3 MCU | R3xx | 10 k 1% 0603 | 10~ | C25804 | 0603WAF1002T5E | UNI-ROYAL | -55℃~+155℃ | 5024900 | 0.0024 | basic | Y | NEW |
-| 3 MCU | R3xx | 1 k 1% 0603 (status LED resistors) | 7~ | C21190 | 0603WAF1001T5E | UNI-ROYAL | -55℃~+155℃ | 2865000 | 0.0017 | basic | Y | NEW |
+| 3 MCU | R3xx | 22 R 1% 0603 (clock series) | 2 | C23345 | 0603WAF220JT5E | UNI-ROYAL | -55℃~+155℃ | 2661600 | 0.0017 | basic | Y | NEW |
+| 3 MCU | R3xx | 10 k 1% 0603 | 10~ | C25804 | 0603WAF1002T5E | UNI-ROYAL | -55℃~+155℃ | 5024800 | 0.0024 | basic | Y | NEW |
+| 3 MCU | R3xx | 1 k 1% 0603 (status LED resistors) | 7~ | C21190 | 0603WAF1001T5E | UNI-ROYAL | -55℃~+155℃ | 2864900 | 0.0017 | basic | Y | NEW |
 | all | C xx | 100 nF 50 V X7R 0603 | 45~ | C14663 | CC0603KRX7R9BB104 | YAGEO | see MPN datasheet | 6050 | 0.0102 | basic | Y | NEW |
 | 5 Inputs | U501-U505 | TLP290-4(GB) AC-input quad optocoupler SOP-16 | 5 | C39031 | TLP290-4(GB-TP,E | TOSHIBA | -55℃~+110℃ | 16378 | 0.545 | extended | Y | PLAN |
 | 5 Inputs | R501-R520 | 4.7 k 1% 1206 (24 V input resistor) | 20 | C17936 | 1206W4F4701T5E | UNI-ROYAL | -55℃~+155℃ | 1267000 | 0.0078 | basic | Y | NEW |
 | 5 Inputs | C501-C520 | 10 nF 50 V X7R 0603 (input filter) | 20 | C57112 | 0603B103K500NT | FH | see MPN datasheet | 192700 | 0.0098 | basic | Y | NEW |
 | 5 Inputs | LED501-LED520 | Input state LED (yellow-green) 0603 | 20 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | CHANGED |
 | 5 Inputs | RN501-RN505 | 1 k x4 resistor array 0603 (LED resistors) | 5 | C20197 | 4D03WGJ0102T5E | UNI-ROYAL | see MPN datasheet | 335900 | 0.0096 | basic | Y | NEW |
-| 5 Inputs | J501 | Terminal header 10-pole 5.08 mm (DI1-8) | 1 | C441201 | KF2EDGR-5.08-10P | Cixi Kefa Elec | -40℃~+105℃ | 75 | 0.2163 | extended | Y | PLAN-FLAG |
-| 5 Inputs | P501 | Terminal plug 10-pole 5.08 mm | 1 | C440877 | KF2EDGK-5.08-10P-AA | Cixi Kefa Elec | -40℃~+105℃ | 1450 | 0.7825 | extended | Y | NEW |
-| 5 Inputs | J502 | Terminal header 14-pole 5.08 mm (SEL1-12), Dorabo | 1 | C430493 | DB2ER-5.08-14P-GN | DORABO | -40℃~+105℃ | 226 | 0.5666 | extended | Y | DECISION |
-| 5 Inputs | P502 | Terminal plug 14-pole 5.08 mm, Dorabo | 1 | C430477 | DB2EK-5.08-14P-GN-S | DORABO | -40℃~+105℃ | 121 | 1.375 | extended | Y | DECISION |
+| 5 Inputs | J501-J520 | Terminal header 3-pole 5.08 mm, one per input (+24V via PTC, IN, 0V) | 20 | C441205 | KF2EDGR-5.08-3P | Cixi Kefa Elec | -40℃~+105℃ | 22590 | 0.0634 | extended | Y | CHANGED |
+| 5 Inputs | P501-P520 | Terminal plug 3-pole 5.08 mm | 20 | C440881 | KF2EDGK-5.08-3P-AA | Cixi Kefa Elec | -40℃~+105℃ | 25425 | 0.2848 | extended | Y | CHANGED |
 | 5 Inputs | RT501-RT502 | PTC 0.5 A hold, 30 V, 1812 (sensor +24 V) | 2 | C151168 | 1812L050/30PR | Littelfuse | -40℃~+85℃ | 11435 | 0.1214 | extended | Y | NEW-FLAG |
-| 5 Inputs | JP501-JP502 | COM jumper header 1x3 2.54 mm | 2 | C2937625 | PZ254V-11-03P | XFCN | -40℃~+105℃ | 582250 | 0.02 | extended | Y | NEW |
+| 5 Inputs | JP501-JP502 | COM jumper header 1x3 2.54 mm | 2 | C2937625 | PZ254V-11-03P | XFCN | -40℃~+105℃ | 582200 | 0.02 | extended | Y | NEW |
 | 5 Inputs | JP501-JP502 | Jumper shunt 2.54 mm | 2 | C5305 | 2.54 | BOOMELE(Boom Precision | see MPN datasheet | 895550 | 0.0099 | extended | Y | NEW |
 | 6 MPG | U601 | AM26LS32ACDRG4 quad line receiver SOIC-16 (0..70 C) | 1 | C6180 | AM26LS32ACDR | TI | 0℃~+70℃ | 50000 | 0.4765 | extended | Y | CHANGED |
 | 6 MPG | U602 | CA-IS3742LN digital isolator 2 fwd + 2 rev SOIC-16 | 1 | C5347249 | CA-IS3742LN | Chipanalog | -40℃~+125℃ | 3189 | 0.8184 | extended | Y | PLAN |
@@ -117,8 +111,8 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 7 Relays | K701-K708 | Omron G2R-1-S DC24 relay (buy locally in India) | 8 |  |  | Omron | -40..+70 C (plan, check) |  |  |  | DNP | LOCAL |
 | 7 Relays | F701-F708 | Fuse holder 5x20 mm PCB with cover | 8 | C58066 | C58066 | Xucheng Elec | see MPN datasheet | 12735 | 0.2769 | extended | Y | PLAN-FLAG |
 | 7 Relays | F701-F708 (fuse) | Fuse 5x20 mm T5A 250 VAC ceramic (buy locally in India) | 8 |  |  | (local India) |  |  |  |  | DNP | LOCAL |
-| 7 Relays | J701-J702 | Terminal header 8-pole 5.08 mm (relay contacts) | 2 | C441210 | KF2EDGR-5.08-8P | Cixi Kefa Elec | -40℃~+105℃ | 1590 | 0.1716 | extended | Y | NEW |
-| 7 Relays | P701-P702 | Terminal plug 8-pole 5.08 mm | 2 | C440886 | KF2EDGK-5.08-8P | Cixi Kefa Elec | -40℃~+105℃ | 1089 | 0.6243 | extended | Y | PLAN |
+| 7 Relays | J701-J708 | Terminal header 3-pole 5.08 mm, one per relay (COM via fuse, NO, NC) | 8 | C441205 | KF2EDGR-5.08-3P | Cixi Kefa Elec | -40℃~+105℃ | 22590 | 0.0634 | extended | Y | CHANGED |
+| 7 Relays | P701-P708 | Terminal plug 3-pole 5.08 mm | 8 | C440881 | KF2EDGK-5.08-3P-AA | Cixi Kefa Elec | -40℃~+105℃ | 25425 | 0.2848 | extended | Y | CHANGED |
 | 7 Relays | LED701-LED708 | Relay ON LED (yellow-green) 0603 | 8 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | CHANGED |
 | 7 Relays | RN701-RN702 | 22 k x4 resistor array 0603 (LED series) | 2 | C25729 | 4D03WGJ0223T5E | UNI-ROYAL | see MPN datasheet | 13800 | 0.0076 | extended | Y | NEW |
 | 7 Relays | RN703-RN704 | 100 k x4 resistor array 0603 (driver pull-downs) | 2 | C1996 | 4D03WGJ0104T5E | UNI-ROYAL | see MPN datasheet | 12850 | 0.0104 | extended | Y | NEW |
@@ -133,11 +127,11 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 8 Analog | R8xx | 10.0 k 0.1% thin film 0603 (gain) | 2 | C95204 | RT0603BRD0710KL | YAGEO | -55℃~+155℃ | 145060 | 0.0305 | extended | Y | NEW |
 | 8 Analog | R8xx | 100 k 1% 0603 (input pull-down) | 2 | C25803 | 0603WAF1003T5E | UNI-ROYAL | -55℃~+155℃ | 7774200 | 0.003 | basic | Y | NEW |
 | 8 Analog | R8xx | 100 R 1% 0603 (output series) | 2 | C22775 | 0603WAF1000T5E | UNI-ROYAL | -55℃~+155℃ | 1139900 | 0.0021 | basic | Y | NEW |
-| 8 Analog | R8xx | 1 k 1% 0603 (DAC to op-amp) | 2 | C21190 | 0603WAF1001T5E | UNI-ROYAL | -55℃~+155℃ | 2865000 | 0.0017 | basic | Y | NEW |
+| 8 Analog | R8xx | 1 k 1% 0603 (DAC to op-amp) | 2 | C21190 | 0603WAF1001T5E | UNI-ROYAL | -55℃~+155℃ | 2864900 | 0.0017 | basic | Y | NEW |
 | 8 Analog | C8xx | 1 uF 50 V X5R 0603 | 6~ | C15849 | CL10A105KB8NNNC | Samsung Electro-Mechan | see MPN datasheet | 436200 | 0.0141 | basic | Y | NEW |
 | 8 Analog | C8xx | 10 nF 50 V X7R 0603 (AO output) | 2 | C57112 | 0603B103K500NT | FH | see MPN datasheet | 192700 | 0.0098 | basic | Y | NEW |
-| 8 Analog | J801 | Terminal header 3-pole 5.08 mm (AO1, AO2, AGND) | 1 | C441205 | KF2EDGR-5.08-3P | Cixi Kefa Elec | -40℃~+105℃ | 22590 | 0.0634 | extended | Y | NEW |
-| 8 Analog | P801 | Terminal plug 3-pole 5.08 mm | 1 | C440881 | KF2EDGK-5.08-3P-AA | Cixi Kefa Elec | -40℃~+105℃ | 25425 | 0.2848 | extended | Y | NEW |
+| 8 Analog | J801-J802 | Terminal header 2-pole 5.08 mm, one per output (AO, AGND) | 2 | C441204 | KF2EDGR-5.08-2P | Cixi Kefa Elec | -40℃~+105℃ | 47970 | 0.0468 | extended | Y | CHANGED |
+| 8 Analog | P801-P802 | Terminal plug 2-pole 5.08 mm | 2 | C440880 | KF2EDGK-5.08-2P-AA | Cixi Kefa Elec | -40℃~+105℃ | 53010 | 0.1568 | extended | Y | CHANGED |
 | 2 Power | J201 | Terminal header 4-pole 5.08 mm (24V entry) | 1 | C441206 | KF2EDGR-5.08-4P | Cixi Kefa Elec | -40℃~+105℃ | 6805 | 0.0861 | extended | Y | NEW |
 | 2 Power | P201 | Terminal plug 4-pole 5.08 mm | 1 | C440882 | KF2EDGK-5.08-4P-AA | Cixi Kefa Elec | -40℃~+105℃ | 8455 | 0.3608 | extended | Y | NEW |
 | 1 Root | J101 | PE screw terminal M3 PCB (Keystone 7770) | 1 | C5272782 | 7770 | Keystone | see MPN datasheet | 281 | 0.803 | extended | Y | NEW |
