@@ -238,3 +238,10 @@ Each milestone ends at a review gate; the next one starts only after approval.
 - ±0.9 % FS analog accuracy is accepted; the MCP4822 keeps its internal reference.
 - PE comes from a screw terminal on the board (works with a plastic enclosure).
 - MPG line receiver uses the LCSC 0–70 °C AM26LS32ACDRG4.
+- M1 review, 2026-11-05: AM26LS32ACDRG4 (C2671811) has no stock, so the MPG receiver is the same TI part as C6180 AM26LS32ACDR (0–70 °C, SOIC-16).
+- M1 review, 2026-11-05: ULN2803A C181731 has no stock, so the relay driver is C845537 (UMW ULN2803A, SOP-18-300mil). Pin-check in M2.
+- M1 review, 2026-11-05: each URB module gets the 100 µF/100 V input capacitor its datasheet recommends (3 × C2960285), in addition to the 47 µF/50 V entry capacitors.
+- M1 review, 2026-11-05: status LEDs use yellow-green NCD0603C3 (C89809). No ~2 V green LED exists on LCSC and emerald green may not light from 3.3 V through 1 kΩ.
+- M1 review, 2026-11-05: the two 24 V input fuses are replaceable 5×20 mm glass fuses (1 A C3116, 3 A C3118) in the same covered holder as the relay fuses (C58066, 80 °C rating accepted).
+- M1 review, 2026-11-05: one pluggable 5.08 mm connector per I/O, no large multi-pole terminals. Each of the 8 digital inputs and 12 selector inputs gets a 3-pole connector (+24 V via PTC, IN, 0 V); each of the 8 relays gets a 3-pole connector (COM via fuse, NO, NC); each of the 2 analog outputs gets a 2-pole connector (AO, AGND). MPG stays 6-pole and the power entry 4-pole. This supersedes the 10-pole, 14-pole, 8-pole and 3-pole AO terminals in the sheet descriptions and the connector row of the key-part BOM; the "9 sets" count no longer applies.
+- M1 review, 2026-11-05: the URB modules allow 40 V maximum input but the SMBJ33A clamps at 53.3 V. Parts are kept as planned; module-side limiting is designed on the power sheet in M3 and brought for approval.
