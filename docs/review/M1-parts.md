@@ -2,25 +2,32 @@
 
 Stock and prices checked live on LCSC on 2026-11-05 (qty-1 USD). Source of truth: `bom/parts.csv`, rebuilt and re-validated by `scripts/build_bom.py`. ERC and PDF do not apply to M1 (no schematic yet).
 
-## Needs your decision
+## Still needs your decision
 
 | Part | Plan LCSC | Proposed LCSC | Why |
 |---|---|---|---|
-| 100 uF 100 V electrolytic radial (URB input capacitor) | C2960285 | C2960285 | URB datasheet (Fig. 2/3) recommends Cin 100 uF/100 V per module for 24 V input; plan has only 47 uF/50 V at the entry. Large radial part. Owner: add per module, or accept the 47 uF entry capacitors? |
 | Terminal header 14-pole 5.08 mm (SEL1-12), Dorabo | C430493 | C430493 | Plan family (Cixi KF2EDG) has the 14-pole plug at stock 1 (C976408). Proposal: use the Dorabo DB2 14-pole pair for this one size so plug and header are the same family. |
 | Terminal plug 14-pole 5.08 mm, Dorabo | C430477 | C430477 | See J502. |
-| AM26LS32ACDRG4 quad line receiver SOIC-16 (0..70 C) | C2671811 | C6180 | C2671811 has ZERO stock. Proposed: C6180 AM26LS32ACDR (same TI part and pinout, 0..70 C, SOIC-16, about 50 000 in stock). The plan's other fallback (AM26LS32AIDR, -40..+85 C) is Mouser only. |
-| ULN2803A 8-ch Darlington driver SOP-18 | C181731 | C845537 | C181731 (Mixic) has ZERO stock. Proposed: C845537 UMW ULN2803A SOP-18-300mil, -40..+85 C, over 200 000 in stock, same pinout. Pin-check against the datasheet in M2. |
 
 ## Other things the checks found
 
-1. **STM32F405RGT6 price.** The plan says about $3.2; LCSC lists about $6.9 at qty 1 with only a few dozen in stock. The part is right; the cost assumption is not.
-2. **SMBJ33A clamp vs URB input maximum.** The URB datasheet gives 40 V absolute maximum input. The SMBJ33A clamps at 53.3 V (11.3 A). A full surge would reach the modules above their limit. This is a circuit question for M3, flagged here because it touches the parts list (TVS voltage class, input fuse, module Cin).
-3. **URB recommended input capacitor.** Datasheet: 100 uF/100 V per module on a 24 V input. The plan has 47 uF/50 V at each entry only.
-4. **Terminal count.** The plan BOM says "9 sets" but lists 4, 6, 10, 14, 3 and 2 x 8 poles, and the sheet descriptions need exactly 7 (power 4, MPG 6, DI 10, SEL 14, AO 3, relays 2 x 8). The list has 7 header + plug pairs. Say if you want spares or a different count.
-5. **Green LEDs.** No ~2 V green exists on LCSC; the emerald-green ones have Vf 2.6-3.6 V and may not light from 3.3 V through 1 kOhm. Yellow-green (NCD0603C3) is used on all status LEDs. Accept yellow-green, or choose a different series resistor and an emerald-green LED.
-6. **Input fuses.** The plan says "fuse 1 A / 3 A" without a type. Littelfuse NANO2 SMD slow-blow fuses are proposed (non-resettable). The 3 A part is rated 32 V against a 28.8 V maximum input.
-7. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates. Exact counts come from the schematic sheets.
+Decided by the owner on 2026-11-05 (status CHANGED in the list, recorded in `docs/plan.md` Decisions log):
+
+- MPG receiver: C2671811 (zero stock) replaced by **C6180 AM26LS32ACDR**.
+- Relay driver: C181731 (zero stock) replaced by **C845537 UMW ULN2803A**.
+- Module input capacitors: **3 x 100 uF/100 V** added, per the URB datasheet.
+- Status LEDs: **yellow-green NCD0603C3** accepted in place of green.
+- 24 V input fuses: **replaceable 5x20 mm fuses** (same covered holder as the relay fuses, 1 A and 3 A glass fuses on LCSC) instead of SMD fuses.
+- Relay fuse holder: **C58066 kept** (80 C limit accepted).
+- Terminals: **7 sets** as the sheets need them (the plan's "9 sets" was a miscount).
+- SMBJ33A vs the URB 40 V input maximum: **parts kept, module-side limiting designed in M3** and brought for approval.
+
+Still open:
+
+1. **14-pole terminal.** Plan family has the plug at stock 1 (C976408). The list carries the Dorabo DB2 pair (C430477 + C430493, status DECISION) so plug and header match. Say yes or no.
+2. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
+3. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
+4. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
 
 ## Part-level flags
 
@@ -28,19 +35,14 @@ Stock and prices checked live on LCSC on 2026-11-05 (qty-1 USD). Source of truth
 |---|---|---|---|
 | STM32F405RGT6 MCU LQFP-64 | C15742 | 54 | Plan says about $3.2; LCSC lists about $6.9 at qty 1 and only a few dozen in stock. Check price breaks and stock before the PCB order. |
 | 25 MHz CMOS oscillator, 3.2x2.5 mm | C2595919 | 45 | Ordering code -CN decodes to +/-25 ppm, -40..+85 C (datasheet ordering table), meets the <= +/-50 ppm target. Datasheet note says +/-25 ppm is 'contact ECS for availability' and LCSC stock is under 100: confirm before ordering. |
-| EtherCAT RUN LED (yellow-green) 0603 | C89809 | 20660 | No ~2 V green LED exists on LCSC; emerald-green parts have Vf 2.6-3.6 V and may not light on 3.3 V through 1 kOhm. Yellow-green (Vf 1.6-2.6 V) is used instead. Owner: accept yellow-green for 'green'? |
 | URB2403S-6WR3 isolated DC-DC 24V to 3.3V 1.35 A | C5369843 | 182 | Datasheet: absolute max input 40 V ('exceeding may cause permanent damage'). SMBJ33A clamps at 53.3 V, above that. See PR notes. |
 | URB2405S-6WR3 isolated DC-DC 24V to 5V 1.2 A | C3031185 | 6478 | Same 40 V input maximum. |
 | URB2415S-6WR3 isolated DC-DC 24V to 15V 0.4 A | C5369844 | 111 | LCSC rates -40..+105 C (plan said 'check datasheet'). Same 40 V input maximum; stock about 100. |
-| SMBJ33A TVS 600 W, 33 V stand-off, SMB | C320242 | 2070 | Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. A TVS with stand-off >= 28.8 V will clamp above 40 V at rated surge current, so this is a circuit decision for M3 (module-side limiting), not a one-line part swap. Part kept as in the plan. |
-| Fuse 1 A 63 V 1206 slow-blow (24V_LOGIC) | C151135 | 33110 | Plan says 'fuse 1 A' without a type; Littelfuse NANO2 SMD fuse proposed (non-resettable). Owner: confirm fuse vs resettable PTC. |
-| Fuse 3 A 32 V 1206 slow-blow (24V_IO) | C14165 | 9020 | 32 V rating vs 28.8 V max input, thin margin. Same question as F201. |
-| Input state LED (yellow-green) 0603 | C89809 | 20660 | Same colour question as the RUN LED. |
+| SMBJ33A TVS 600 W, 33 V stand-off, SMB | C320242 | 2070 | Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. Decision 2026-11-05: keep the part, design module-side limiting on the power sheet in M3 and bring it for approval. |
 | Terminal header 10-pole 5.08 mm (DI1-8) | C441201 | 75 | Stock under 100: order early or use a second source. |
 | PTC 0.5 A hold, 30 V, 1812 (sensor +24 V) | C151168 | 11435 | 0.5 A hold / 1 A trip, 30 V max vs 28.8 V input, thin margin. One per input terminal (DI, SEL). |
 | Omron P2R-05P PCB relay socket | C1524860 | 44 | Stock 44 (need 8 per board). Plan allows Mouser/DigiKey if LCSC runs out. |
 | Fuse holder 5x20 mm PCB with cover | C58066 | 12735 | Datasheet: ABS base, polystyrene cover, 6-10 A 250 VAC, and 'temperature resistance 80 C'. That equals the top of the enclosure range and a 5 A fuse adds self-heating. Fallback in plan: Littelfuse 649 series (Mouser). Owner: accept or switch. |
-| Relay ON LED (yellow-green) 0603 | C89809 | 20660 | Same colour question. |
 
 ## Not on LCSC (bought locally in India or unfitted)
 
@@ -51,7 +53,7 @@ Stock and prices checked live on LCSC on 2026-11-05 (qty-1 USD). Source of truth
 
 ## Full list
 
-Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in M1; *-FLAG = see flags above; DECISION = needs approval; LOCAL / FOOTPRINT = not purchased through LCSC.
+Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in M1; *-FLAG = see flags above; CHANGED = approved deviation from the plan; DECISION = still needs approval; LOCAL / FOOTPRINT = not purchased through LCSC.
 
 | Sheet | Refs | Description | Qty | LCSC | MPN | Mfr | Temp | Stock | $ | Lib | Fit | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
@@ -64,7 +66,7 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 4 EtherCAT | U401 | LAN9252I/PT EtherCAT slave controller TQFP-64 | 1 | C80933 | LAN9252I/PT | MICROCHIP | -40℃~+85℃ | 4189 | 8.6467 | extended | Y | PLAN |
 | 4 EtherCAT | U402 | 24LC32AT-I/SN EEPROM 32 Kbit SOIC-8 | 1 | C615715 | 24LC32AT-I/SN | MICROCHIP | -40℃~+85℃ | 2235 | 0.4696 | extended | Y | PLAN |
 | 4 EtherCAT | J401-J402 | RJ45 jack with integrated magnetics and LEDs | 2 | C69427 | HY911105AE | HANRUN(Zhongshan HanRu | -40℃~+85℃ | 2982 | 2.8377 | extended | Y | PLAN |
-| 4 EtherCAT | LED401-LED402 | EtherCAT RUN LED (yellow-green) 0603 | 1 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | NEW-FLAG |
+| 4 EtherCAT | LED401-LED402 | EtherCAT RUN LED (yellow-green) 0603 | 1 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | CHANGED |
 | 4 EtherCAT | LED403 | EtherCAT ERR LED red 0603 | 1 | C2286 | KT-0603R | Hubei KENTO Elec | -40℃~+85℃ | 4205900 | 0.0077 | basic | Y | NEW |
 | 4 EtherCAT | R4xx | 49.9 R 1% 0603 (LAN9252 TX/RX termination) | 8~ | C23185 | 0603WAF499JT5E | UNI-ROYAL | -55℃~+155℃ | 561100 | 0.002 | basic | Y | NEW |
 | 4 EtherCAT | R4xx | 12.1 k 1% 0603 (RBIAS) | 1 | C22864 | 0603WAF1212T5E | UNI-ROYAL | -55℃~+155℃ | 159600 | 0.0016 | extended | Y | NEW |
@@ -75,13 +77,14 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 2 Power | U202 | URB2405S-6WR3 isolated DC-DC 24V to 5V 1.2 A | 1 | C3031185 | URB2405S-6WR3 | YLPTEC | -40℃~+105℃ | 6478 | 4.8336 | extended | Y | PLAN-FLAG |
 | 2 Power | U203 | URB2415S-6WR3 isolated DC-DC 24V to 15V 0.4 A | 1 | C5369844 | URB2415S-6WR3 | YLPTEC | -40℃~+105℃ | 111 | 5.7982 | extended | Y | PLAN-FLAG |
 | 2 Power | D201-D202 | SMBJ33A TVS 600 W, 33 V stand-off, SMB | 2 | C320242 | SMBJ33A | LGE | -55℃~+150℃ | 2070 | 0.0654 | extended | Y | PLAN-FLAG |
-| 2 Power | D203-D204 | SS54 Schottky 40 V 5 A SMA (reverse polarity) | 2 | C22452 | SS54 | MDD(Microdiode Semicon | see MPN datasheet | 1476440 | 0.045 | basic | Y | NEW |
-| 2 Power | F201 | Fuse 1 A 63 V 1206 slow-blow (24V_LOGIC) | 1 | C151135 | 0466001.NRHF | Littelfuse | -55℃~+90℃ | 33110 | 0.0684 | extended | Y | NEW-FLAG |
-| 2 Power | F202 | Fuse 3 A 32 V 1206 slow-blow (24V_IO) | 1 | C14165 | 0466003.NRHF | Littelfuse | -55℃~+90℃ | 9020 | 0.0848 | extended | Y | NEW-FLAG |
+| 2 Power | D203-D204 | SS54 Schottky 40 V 5 A SMA (reverse polarity) | 2 | C22452 | SS54 | MDD(Microdiode Semicon | see MPN datasheet | 1476430 | 0.045 | basic | Y | NEW |
+| 2 Power | F201-F202 | Fuse holder 5x20 mm PCB with cover (24V_LOGIC, 24V_IO) | 2 | C58066 | C58066 | Xucheng Elec | see MPN datasheet | 12735 | 0.2769 | extended | Y | CHANGED |
+| 2 Power | F201 | Fuse 5x20 mm 1 A 250 V glass (24V_LOGIC) | 1 | C3116 | 5F.1000210000R1 | Xucheng Elec | -40℃~+125℃ | 10940 | 0.0648 | extended | Y | CHANGED |
+| 2 Power | F202 | Fuse 5x20 mm 3 A 250 V glass (24V_IO) | 1 | C3118 | 5G.3000210000S1 | Xucheng Elec | -40℃~+125℃ | 1830 | 0.0648 | extended | Y | CHANGED |
 | 2 Power | C2xx | 47 uF 50 V aluminium electrolytic SMD 6.3x7.7 | 2 | C970679 | RVT1H470M0607 47UF 50V | DMBJ | -55℃~+105℃ | 31900 | 0.0378 | extended | Y | NEW |
 | 2 Power | C2xx | 1 uF 50 V X7R 0805 | 2 | C28323 | CL21B105KBFNNNE | Samsung Electro-Mechan | see MPN datasheet | 951910 | 0.0283 | basic | Y | NEW |
-| 2 Power | C2xx | 22 uF 25 V X5R 0805 (URB output capacitor) | 3 | C45783 | CL21A226MAQNNNE | Samsung Electro-Mechan | see MPN datasheet | 2980 | 0.1851 | basic | Y | NEW |
-| 2 Power | C2xx | 100 uF 100 V electrolytic radial (URB input capacitor) | 3 | C2960285 | 100V100uF CD288 | HRK | -40℃~+105℃ | 2075 | 0.094 | extended | Y | DECISION |
+| 2 Power | C2xx | 22 uF 25 V X5R 0805 (URB output capacitor) | 3 | C45783 | CL21A226MAQNNNE | Samsung Electro-Mechan | see MPN datasheet | 2940 | 0.1851 | basic | Y | NEW |
+| 2 Power | C2xx | 100 uF 100 V electrolytic radial (URB input capacitor) | 3 | C2960285 | 100V100uF CD288 | HRK | -40℃~+105℃ | 2075 | 0.094 | extended | Y | CHANGED |
 | 3 MCU | C3xx | 2.2 uF 16 V X5R 0603 (VCAP) | 2 | C23630 | CL10A225KO8NNNC | Samsung Electro-Mechan | see MPN datasheet | 224400 | 0.012 | basic | Y | NEW |
 | 3 MCU | C3xx | 4.7 uF 16 V X5R 0603 (bulk) | 3~ | C19666 | CL10A475KO8NNNC | Samsung Electro-Mechan | see MPN datasheet | 1309330 | 0.0151 | basic | Y | NEW |
 | 3 MCU | C3xx | 10 uF 10 V X5R 0603 | 4~ | C19702 | CL10A106KP8NNNC | Samsung Electro-Mechan | see MPN datasheet | 1483780 | 0.0206 | basic | Y | NEW |
@@ -90,9 +93,9 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 3 MCU | R3xx | 1 k 1% 0603 (status LED resistors) | 7~ | C21190 | 0603WAF1001T5E | UNI-ROYAL | -55℃~+155℃ | 2865000 | 0.0017 | basic | Y | NEW |
 | all | C xx | 100 nF 50 V X7R 0603 | 45~ | C14663 | CC0603KRX7R9BB104 | YAGEO | see MPN datasheet | 6050 | 0.0102 | basic | Y | NEW |
 | 5 Inputs | U501-U505 | TLP290-4(GB) AC-input quad optocoupler SOP-16 | 5 | C39031 | TLP290-4(GB-TP,E | TOSHIBA | -55℃~+110℃ | 16378 | 0.545 | extended | Y | PLAN |
-| 5 Inputs | R501-R520 | 4.7 k 1% 1206 (24 V input resistor) | 20 | C17936 | 1206W4F4701T5E | UNI-ROYAL | -55℃~+155℃ | 1267100 | 0.0078 | basic | Y | NEW |
+| 5 Inputs | R501-R520 | 4.7 k 1% 1206 (24 V input resistor) | 20 | C17936 | 1206W4F4701T5E | UNI-ROYAL | -55℃~+155℃ | 1267000 | 0.0078 | basic | Y | NEW |
 | 5 Inputs | C501-C520 | 10 nF 50 V X7R 0603 (input filter) | 20 | C57112 | 0603B103K500NT | FH | see MPN datasheet | 192700 | 0.0098 | basic | Y | NEW |
-| 5 Inputs | LED501-LED520 | Input state LED (yellow-green) 0603 | 20 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | NEW-FLAG |
+| 5 Inputs | LED501-LED520 | Input state LED (yellow-green) 0603 | 20 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | CHANGED |
 | 5 Inputs | RN501-RN505 | 1 k x4 resistor array 0603 (LED resistors) | 5 | C20197 | 4D03WGJ0102T5E | UNI-ROYAL | see MPN datasheet | 335900 | 0.0096 | basic | Y | NEW |
 | 5 Inputs | J501 | Terminal header 10-pole 5.08 mm (DI1-8) | 1 | C441201 | KF2EDGR-5.08-10P | Cixi Kefa Elec | -40℃~+105℃ | 75 | 0.2163 | extended | Y | PLAN-FLAG |
 | 5 Inputs | P501 | Terminal plug 10-pole 5.08 mm | 1 | C440877 | KF2EDGK-5.08-10P-AA | Cixi Kefa Elec | -40℃~+105℃ | 1450 | 0.7825 | extended | Y | NEW |
@@ -101,7 +104,7 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 5 Inputs | RT501-RT502 | PTC 0.5 A hold, 30 V, 1812 (sensor +24 V) | 2 | C151168 | 1812L050/30PR | Littelfuse | -40℃~+85℃ | 11435 | 0.1214 | extended | Y | NEW-FLAG |
 | 5 Inputs | JP501-JP502 | COM jumper header 1x3 2.54 mm | 2 | C2937625 | PZ254V-11-03P | XFCN | -40℃~+105℃ | 582250 | 0.02 | extended | Y | NEW |
 | 5 Inputs | JP501-JP502 | Jumper shunt 2.54 mm | 2 | C5305 | 2.54 | BOOMELE(Boom Precision | see MPN datasheet | 895550 | 0.0099 | extended | Y | NEW |
-| 6 MPG | U601 | AM26LS32ACDRG4 quad line receiver SOIC-16 (0..70 C) | 1 | C2671811 | AM26LS32ACDRG4 | TI | 0..+70 C (plan; not shown on LCSC page) | 0 | 0.3159 | extended | Y | DECISION |
+| 6 MPG | U601 | AM26LS32ACDRG4 quad line receiver SOIC-16 (0..70 C) | 1 | C6180 | AM26LS32ACDR | TI | 0℃~+70℃ | 50000 | 0.4765 | extended | Y | CHANGED |
 | 6 MPG | U602 | CA-IS3742LN digital isolator 2 fwd + 2 rev SOIC-16 | 1 | C5347249 | CA-IS3742LN | Chipanalog | -40℃~+125℃ | 3189 | 0.8184 | extended | Y | PLAN |
 | 6 MPG | J601 | Terminal header 6-pole 5.08 mm | 1 | C441208 | KF2EDGR-5.08-6P | Cixi Kefa Elec | -40℃~+105℃ | 2565 | 0.1251 | extended | Y | NEW |
 | 6 MPG | P601 | Terminal plug 6-pole 5.08 mm | 1 | C440884 | KF2EDGK-5.08-6P | Cixi Kefa Elec | -40℃~+105℃ | 5698 | 0.5051 | extended | Y | NEW |
@@ -109,14 +112,14 @@ Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in 
 | 6 MPG | D601-D602 | PSM712 TVS pair SOT-23 (one per A and B pair) | 2 | C32677 | PSM712-LF-T7 | PROTEK | -55℃~+150℃ | 51880 | 0.347 | basic | Y | NEW |
 | 6 MPG | R6xx | 120 R 1% 0603 (line termination, not fitted) | 2 | C22787 | 0603WAF1200T5E | UNI-ROYAL | -55℃~+155℃ | 1029500 | 0.0017 | basic | DNP | NEW |
 | 7 Relays | U701-U702 | CA-IS3740LN digital isolator 4 fwd SOIC-16 | 2 | C428888 | CA-IS3740LN | Chipanalog | -40℃~+125℃ | 2110 | 0.8184 | extended | Y | PLAN |
-| 7 Relays | U703 | ULN2803A 8-ch Darlington driver SOP-18 | 1 | C181731 | ULN2803A | Mixic | -40℃~+85℃ | 0 | 0.6362 | extended | Y | DECISION |
+| 7 Relays | U703 | ULN2803A 8-ch Darlington driver SOP-18 | 1 | C845537 | ULN2803A | UMW | -40℃~+85℃ | 209620 | 0.2123 | extended | Y | CHANGED |
 | 7 Relays | XK701-XK708 | Omron P2R-05P PCB relay socket | 8 | C1524860 | P2R-05P | OMRON | see MPN datasheet | 44 | 6.4839 | extended | Y | PLAN-FLAG |
 | 7 Relays | K701-K708 | Omron G2R-1-S DC24 relay (buy locally in India) | 8 |  |  | Omron | -40..+70 C (plan, check) |  |  |  | DNP | LOCAL |
 | 7 Relays | F701-F708 | Fuse holder 5x20 mm PCB with cover | 8 | C58066 | C58066 | Xucheng Elec | see MPN datasheet | 12735 | 0.2769 | extended | Y | PLAN-FLAG |
 | 7 Relays | F701-F708 (fuse) | Fuse 5x20 mm T5A 250 VAC ceramic (buy locally in India) | 8 |  |  | (local India) |  |  |  |  | DNP | LOCAL |
 | 7 Relays | J701-J702 | Terminal header 8-pole 5.08 mm (relay contacts) | 2 | C441210 | KF2EDGR-5.08-8P | Cixi Kefa Elec | -40℃~+105℃ | 1590 | 0.1716 | extended | Y | NEW |
 | 7 Relays | P701-P702 | Terminal plug 8-pole 5.08 mm | 2 | C440886 | KF2EDGK-5.08-8P | Cixi Kefa Elec | -40℃~+105℃ | 1089 | 0.6243 | extended | Y | PLAN |
-| 7 Relays | LED701-LED708 | Relay ON LED (yellow-green) 0603 | 8 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | NEW-FLAG |
+| 7 Relays | LED701-LED708 | Relay ON LED (yellow-green) 0603 | 8 | C89809 | NCD0603C3 | NATIONSTAR | -30℃~+85℃ | 20660 | 0.0261 | extended | Y | CHANGED |
 | 7 Relays | RN701-RN702 | 22 k x4 resistor array 0603 (LED series) | 2 | C25729 | 4D03WGJ0223T5E | UNI-ROYAL | see MPN datasheet | 13800 | 0.0076 | extended | Y | NEW |
 | 7 Relays | RN703-RN704 | 100 k x4 resistor array 0603 (driver pull-downs) | 2 | C1996 | 4D03WGJ0104T5E | UNI-ROYAL | see MPN datasheet | 12850 | 0.0104 | extended | Y | NEW |
 | 7 Relays | R7xx/C7xx | RC snubber across each contact (not fitted) | 8 |  |  |  |  |  |  |  | DNP | FOOTPRINT |

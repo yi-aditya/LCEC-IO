@@ -14,6 +14,8 @@ Usage:  python3 -I scripts/build_bom.py            # rewrite bom/parts.csv
 Status column:
   PLAN       part and LCSC number exactly as in docs/plan.md, verified
   PLAN-FLAG  as in plan, but the check found something the owner should know
+  CHANGED    deviation from docs/plan.md approved by the owner on 2026-11-05
+             (recorded in the plan's Decisions log)
   DECISION   needs owner approval. Either a plan part with a problem (LCSC holds
              the PLAN number, Proposed_LCSC the replacement), or an addition that
              deviates from the plan (LCSC holds the proposed part). Nothing in
@@ -73,8 +75,8 @@ ROWS = [
      "C69427", "HY911105AE", "Y", "PLAN", "",
      "Datasheet checked: 1CT:1CT magnetics, green + yellow LEDs, 1500 Vrms, -40..+85 C. Image-only PDF, so magnetics wiring is re-read in M2/M4."),
     ("4 EtherCAT", "LED401-LED402", "EtherCAT RUN LED (yellow-green) 0603", 1, "fixed", L0603,
-     "C89809", "NCD0603C3", "Y", "NEW-FLAG", "",
-     "No ~2 V green LED exists on LCSC; emerald-green parts have Vf 2.6-3.6 V and may not light on 3.3 V through 1 kOhm. Yellow-green (Vf 1.6-2.6 V) is used instead. Owner: accept yellow-green for 'green'?"),
+     "C89809", "NCD0603C3", "Y", "CHANGED", "",
+     "Yellow-green accepted 2026-11-05 in place of 'green': no ~2 V green exists on LCSC and emerald-green (Vf 2.6-3.6 V) may not light from 3.3 V through 1 kOhm."),
     ("4 EtherCAT", "LED403", "EtherCAT ERR LED red 0603", 1, "fixed", L0603,
      "C2286", "KT-0603R", "Y", "NEW", "", ""),
     ("4 EtherCAT", "R4xx", "49.9 R 1% 0603 (LAN9252 TX/RX termination)", 8, "est", R0603,
@@ -98,15 +100,18 @@ ROWS = [
      "LCSC rates -40..+105 C (plan said 'check datasheet'). Same 40 V input maximum; stock about 100."),
     ("2 Power", "D201-D202", "SMBJ33A TVS 600 W, 33 V stand-off, SMB", 2, "fixed", "Diode_SMD:D_SMB",
      "C320242", "SMBJ33A", "Y", "PLAN-FLAG", "",
-     "Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. A TVS with stand-off >= 28.8 V will clamp above 40 V at rated surge current, so this is a circuit decision for M3 (module-side limiting), not a one-line part swap. Part kept as in the plan."),
+     "Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. Decision 2026-11-05: keep the part, design module-side limiting on the power sheet in M3 and bring it for approval."),
     ("2 Power", "D203-D204", "SS54 Schottky 40 V 5 A SMA (reverse polarity)", 2, "fixed", "Diode_SMD:D_SMA",
      "C22452", "SS54", "Y", "NEW", "", "Basic part. 40 V reverse rating vs 28.8 V max input."),
-    ("2 Power", "F201", "Fuse 1 A 63 V 1206 slow-blow (24V_LOGIC)", 1, "fixed", "Fuse:Fuse_1206_3216Metric",
-     "C151135", "0466001", "Y", "NEW-FLAG", "",
-     "Plan says 'fuse 1 A' without a type; Littelfuse NANO2 SMD fuse proposed (non-resettable). Owner: confirm fuse vs resettable PTC."),
-    ("2 Power", "F202", "Fuse 3 A 32 V 1206 slow-blow (24V_IO)", 1, "fixed", "Fuse:Fuse_1206_3216Metric",
-     "C14165", "0466003", "Y", "NEW-FLAG", "",
-     "32 V rating vs 28.8 V max input, thin margin. Same question as F201."),
+    ("2 Power", "F201-F202", "Fuse holder 5x20 mm PCB with cover (24V_LOGIC, 24V_IO)", 2, "fixed", "TBD lcsc.pretty (M2)",
+     "C58066", "C58066", "Y", "CHANGED", "",
+     "Owner chose replaceable 5x20 fuses for the two 24 V inputs (2026-11-05). Same holder as the relay fuses; 80 C limit accepted."),
+    ("2 Power", "F201", "Fuse 5x20 mm 1 A 250 V glass (24V_LOGIC)", 1, "fixed", "n/a (in holder)",
+     "C3116", "5F.1000210000R1", "Y", "CHANGED", "",
+     "Fitted at assembly (cheap, on LCSC). 5F series = fast-acting; confirm blow characteristic vs inrush into 47 uF at M3."),
+    ("2 Power", "F202", "Fuse 5x20 mm 3 A 250 V glass (24V_IO)", 1, "fixed", "n/a (in holder)",
+     "C3118", "5G.3000210000S1", "Y", "CHANGED", "",
+     "Fitted at assembly. Confirm blow characteristic at M3."),
     ("2 Power", "C2xx", "47 uF 50 V aluminium electrolytic SMD 6.3x7.7", 2, "fixed", "Capacitor_SMD:CP_Elec_6.3x7.7",
      "C970679", "RVT1H470M0607", "Y", "NEW", "", "One per 24 V input."),
     ("2 Power", "C2xx", "1 uF 50 V X7R 0805", 2, "fixed", C0805,
@@ -115,8 +120,8 @@ ROWS = [
      "C45783", "CL21A226MAQNNNE", "Y", "NEW", "",
      "Datasheet Cout: 22 uF/16 V for 3.3 V and 5 V, 22 uF/25 V for 15 V. One 25 V part covers all three."),
     ("2 Power", "C2xx", "100 uF 100 V electrolytic radial (URB input capacitor)", 3, "fixed", "Capacitor_THT:CP_Radial_D10.0mm_P5.00mm",
-     "C2960285", "100V100uF", "Y", "DECISION", "C2960285",
-     "URB datasheet (Fig. 2/3) recommends Cin 100 uF/100 V per module for 24 V input; plan has only 47 uF/50 V at the entry. Large radial part. Owner: add per module, or accept the 47 uF entry capacitors?"),
+     "C2960285", "100V100uF", "Y", "CHANGED", "",
+     "Approved 2026-11-05. URB datasheet (Fig. 2/3) recommends Cin 100 uF/100 V per module on a 24 V input. 10 mm diameter radial: reserve layout space."),
     # ---------------------------------------------------------------- MCU passives
     ("3 MCU", "C3xx", "2.2 uF 16 V X5R 0603 (VCAP)", 2, "fixed", C0603,
      "C23630", "CL10A225KO8NNNC", "Y", "NEW", "", ""),
@@ -142,7 +147,7 @@ ROWS = [
     ("5 Inputs", "C501-C520", "10 nF 50 V X7R 0603 (input filter)", 20, "fixed", C0603,
      "C57112", "0603B103K500NT", "Y", "NEW", "", "Basic part."),
     ("5 Inputs", "LED501-LED520", "Input state LED (yellow-green) 0603", 20, "fixed", L0603,
-     "C89809", "NCD0603C3", "Y", "NEW-FLAG", "", "Same colour question as the RUN LED."),
+     "C89809", "NCD0603C3", "Y", "CHANGED", "", "Yellow-green accepted (see RUN LED)."),
     ("5 Inputs", "RN501-RN505", "1 k x4 resistor array 0603 (LED resistors)", 5, "fixed", RA4,
      "C20197", "4D03WGJ0102T5E", "Y", "NEW", "", "Basic part."),
     ("5 Inputs", "J501", "Terminal header 10-pole 5.08 mm (DI1-8)", 1, "fixed", "TBD lcsc.pretty (M2)",
@@ -163,8 +168,8 @@ ROWS = [
      "C5305", "2.54", "Y", "NEW", "", "Fitted shunt on each COM header."),
     # ----------------------------------------------------------------- MPG
     ("6 MPG", "U601", "AM26LS32ACDRG4 quad line receiver SOIC-16 (0..70 C)", 1, "fixed", "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm",
-     "C2671811", "AM26LS32ACDRG4", "Y", "DECISION", "C6180",
-     "C2671811 has ZERO stock. Proposed: C6180 AM26LS32ACDR (same TI part and pinout, 0..70 C, SOIC-16, about 50 000 in stock). The plan's other fallback (AM26LS32AIDR, -40..+85 C) is Mouser only."),
+     "C6180", "AM26LS32ACDR", "Y", "CHANGED", "",
+     "Approved 2026-11-05. Plan number C2671811 (AM26LS32ACDRG4) has zero stock; C6180 is the same TI part and pinout, 0..70 C, SOIC-16."),
     ("6 MPG", "U602", "CA-IS3742LN digital isolator 2 fwd + 2 rev SOIC-16", 1, "fixed", "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm",
      "C5347249", "CA-IS3742LN", "Y", "PLAN", "", "Default output low, -40..+125 C."),
     ("6 MPG", "J601", "Terminal header 6-pole 5.08 mm", 1, "fixed", "TBD lcsc.pretty (M2)",
@@ -181,8 +186,8 @@ ROWS = [
     ("7 Relays", "U701-U702", "CA-IS3740LN digital isolator 4 fwd SOIC-16", 2, "fixed", "Package_SO:SOIC-16_3.9x9.9mm_P1.27mm",
      "C428888", "CA-IS3740LN", "Y", "PLAN", "", "Default output low."),
     ("7 Relays", "U703", "ULN2803A 8-ch Darlington driver SOP-18", 1, "fixed", "Package_SO:SOIC-18W_7.5x11.6mm_P1.27mm",
-     "C181731", "ULN2803A", "Y", "DECISION", "C845537",
-     "C181731 (Mixic) has ZERO stock. Proposed: C845537 UMW ULN2803A SOP-18-300mil, -40..+85 C, over 200 000 in stock, same pinout. Pin-check against the datasheet in M2."),
+     "C845537", "ULN2803A", "Y", "CHANGED", "",
+     "Approved 2026-11-05. Plan number C181731 (Mixic) has zero stock; C845537 is UMW ULN2803A, SOP-18-300mil, -40..+85 C. Pin-check against its datasheet in M2."),
     ("7 Relays", "XK701-XK708", "Omron P2R-05P PCB relay socket", 8, "fixed", "TBD lcsc.pretty (M2)",
      "C1524860", "P2R-05P", "Y", "PLAN-FLAG", "", "Stock 44 (need 8 per board). Plan allows Mouser/DigiKey if LCSC runs out."),
     ("7 Relays", "K701-K708", "Omron G2R-1-S DC24 relay (buy locally in India)", 8, "fixed", "n/a (plugs into socket)",
@@ -197,7 +202,7 @@ ROWS = [
     ("7 Relays", "P701-P702", "Terminal plug 8-pole 5.08 mm", 2, "fixed", "TBD lcsc.pretty (M2)",
      "C440886", "KF2EDGK-5.08-8P", "Y", "PLAN", "", ""),
     ("7 Relays", "LED701-LED708", "Relay ON LED (yellow-green) 0603", 8, "fixed", L0603,
-     "C89809", "NCD0603C3", "Y", "NEW-FLAG", "", "Same colour question."),
+     "C89809", "NCD0603C3", "Y", "CHANGED", "", "Yellow-green accepted (see RUN LED)."),
     ("7 Relays", "RN701-RN702", "22 k x4 resistor array 0603 (LED series)", 2, "fixed", RA4,
      "C25729", "4D03WGJ0223T5E", "Y", "NEW", "", ""),
     ("7 Relays", "RN703-RN704", "100 k x4 resistor array 0603 (driver pull-downs)", 2, "fixed", RA4,
@@ -316,13 +321,23 @@ def build():
 REVIEW = os.path.join(ROOT, "docs", "review", "M1-parts.md")
 
 CROSS_CUTTING = """\
-1. **STM32F405RGT6 price.** The plan says about $3.2; LCSC lists about $6.9 at qty 1 with only a few dozen in stock. The part is right; the cost assumption is not.
-2. **SMBJ33A clamp vs URB input maximum.** The URB datasheet gives 40 V absolute maximum input. The SMBJ33A clamps at 53.3 V (11.3 A). A full surge would reach the modules above their limit. This is a circuit question for M3, flagged here because it touches the parts list (TVS voltage class, input fuse, module Cin).
-3. **URB recommended input capacitor.** Datasheet: 100 uF/100 V per module on a 24 V input. The plan has 47 uF/50 V at each entry only.
-4. **Terminal count.** The plan BOM says "9 sets" but lists 4, 6, 10, 14, 3 and 2 x 8 poles, and the sheet descriptions need exactly 7 (power 4, MPG 6, DI 10, SEL 14, AO 3, relays 2 x 8). The list has 7 header + plug pairs. Say if you want spares or a different count.
-5. **Green LEDs.** No ~2 V green exists on LCSC; the emerald-green ones have Vf 2.6-3.6 V and may not light from 3.3 V through 1 kOhm. Yellow-green (NCD0603C3) is used on all status LEDs. Accept yellow-green, or choose a different series resistor and an emerald-green LED.
-6. **Input fuses.** The plan says "fuse 1 A / 3 A" without a type. Littelfuse NANO2 SMD slow-blow fuses are proposed (non-resettable). The 3 A part is rated 32 V against a 28.8 V maximum input.
-7. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates. Exact counts come from the schematic sheets.
+Decided by the owner on 2026-11-05 (status CHANGED in the list, recorded in `docs/plan.md` Decisions log):
+
+- MPG receiver: C2671811 (zero stock) replaced by **C6180 AM26LS32ACDR**.
+- Relay driver: C181731 (zero stock) replaced by **C845537 UMW ULN2803A**.
+- Module input capacitors: **3 x 100 uF/100 V** added, per the URB datasheet.
+- Status LEDs: **yellow-green NCD0603C3** accepted in place of green.
+- 24 V input fuses: **replaceable 5x20 mm fuses** (same covered holder as the relay fuses, 1 A and 3 A glass fuses on LCSC) instead of SMD fuses.
+- Relay fuse holder: **C58066 kept** (80 C limit accepted).
+- Terminals: **7 sets** as the sheets need them (the plan's "9 sets" was a miscount).
+- SMBJ33A vs the URB 40 V input maximum: **parts kept, module-side limiting designed in M3** and brought for approval.
+
+Still open:
+
+1. **14-pole terminal.** Plan family has the plug at stock 1 (C976408). The list carries the Dorabo DB2 pair (C430477 + C430493, status DECISION) so plug and header match. Say yes or no.
+2. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
+3. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
+4. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
 """
 
 
@@ -332,7 +347,7 @@ def render_md(rows, problems):
     L = []
     L.append("# M1 - Parts list for review\n")
     L.append(f"Stock and prices checked live on LCSC on {today} (qty-1 USD). Source of truth: `bom/parts.csv`, rebuilt and re-validated by `scripts/build_bom.py`. ERC and PDF do not apply to M1 (no schematic yet).\n")
-    L.append("## Needs your decision\n")
+    L.append("## Still needs your decision\n")
     L.append("| Part | Plan LCSC | Proposed LCSC | Why |\n|---|---|---|---|")
     for r in rows:
         if r[idx["Status"]] == "DECISION":
@@ -350,7 +365,7 @@ def render_md(rows, problems):
             L.append(f"- {r[idx['Description']]} x{r[idx['Qty']]}: {r[idx['Notes']]}")
     L.append(f"- {FOOTPRINT_ONLY_NOTE}")
     L.append("\n## Full list\n")
-    L.append("Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in M1; *-FLAG = see flags above; DECISION = needs approval; LOCAL / FOOTPRINT = not purchased through LCSC.\n")
+    L.append("Status: PLAN = exactly as in the plan, verified; NEW = commodity part chosen in M1; *-FLAG = see flags above; CHANGED = approved deviation from the plan; DECISION = still needs approval; LOCAL / FOOTPRINT = not purchased through LCSC.\n")
     L.append("| Sheet | Refs | Description | Qty | LCSC | MPN | Mfr | Temp | Stock | $ | Lib | Fit | Status |\n|---|---|---|---|---|---|---|---|---|---|---|---|---|")
     for r in rows:
         q = f"{r[idx['Qty']]}{'~' if r[idx['Qty_basis']] == 'est' else ''}"

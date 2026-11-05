@@ -238,3 +238,10 @@ Each milestone ends at a review gate; the next one starts only after approval.
 - ±0.9 % FS analog accuracy is accepted; the MCP4822 keeps its internal reference.
 - PE comes from a screw terminal on the board (works with a plastic enclosure).
 - MPG line receiver uses the LCSC 0–70 °C AM26LS32ACDRG4.
+- M1 review, 2026-11-05: AM26LS32ACDRG4 (C2671811) has no stock, so the MPG receiver is the same TI part as C6180 AM26LS32ACDR (0–70 °C, SOIC-16).
+- M1 review, 2026-11-05: ULN2803A C181731 has no stock, so the relay driver is C845537 (UMW ULN2803A, SOP-18-300mil). Pin-check in M2.
+- M1 review, 2026-11-05: each URB module gets the 100 µF/100 V input capacitor its datasheet recommends (3 × C2960285), in addition to the 47 µF/50 V entry capacitors.
+- M1 review, 2026-11-05: status LEDs use yellow-green NCD0603C3 (C89809). No ~2 V green LED exists on LCSC and emerald green may not light from 3.3 V through 1 kΩ.
+- M1 review, 2026-11-05: the two 24 V input fuses are replaceable 5×20 mm glass fuses (1 A C3116, 3 A C3118) in the same covered holder as the relay fuses (C58066, 80 °C rating accepted).
+- M1 review, 2026-11-05: 7 terminal header + plug sets, as the sheets need (the "9 sets" in the BOM table was a miscount).
+- M1 review, 2026-11-05: the URB modules allow 40 V maximum input but the SMBJ33A clamps at 53.3 V. Parts are kept as planned; module-side limiting is designed on the power sheet in M3 and brought for approval.
