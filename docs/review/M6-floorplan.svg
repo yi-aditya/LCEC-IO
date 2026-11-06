@@ -1,155 +1,151 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1152" height="864" viewBox="-56 -56 1152 864">
-<rect x="-56" y="-56" width="1152" height="864" fill="#fafafa"/>
-<text x="0.0" y="-24.0" font-size="16.0" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">LCEC-IO concept floor plan, top view, 260 x 160 mm, one terminal per I/O (footprints to scale)</text>
-<rect x="56.0" y="0.0" width="344.0" height="176.0" fill="#d9f2d9" stroke="#333" stroke-width="1.2"/>
-<text x="64.0" y="80.0" font-size="12.0" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">ANALOG  AGND  (sheet 8)</text>
-<rect x="56.0" y="184.0" width="344.0" height="406.0" fill="#ffe9c9" stroke="#333" stroke-width="1.2"/>
-<text x="64.0" y="202.0" font-size="12.0" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">FIELD I/O  0V_IO  (sheets 5, 6, 2)</text>
-<rect x="400.0" y="0.0" width="200.0" height="640.0" fill="#dbe8ff" stroke="#333" stroke-width="1.2"/>
-<text x="408.0" y="96.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">LOGIC  GND_L (sheets 2, 3, 4)</text>
-<rect x="600.0" y="0.0" width="440.0" height="640.0" fill="#ffe9c9" stroke="#333" stroke-width="1.2"/>
-<text x="608.0" y="18.0" font-size="12.0" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">FIELD  (relay driver)</text>
-<rect x="744.0" y="32.0" width="296.0" height="512.0" fill="#ffd6d6" stroke="#333" stroke-width="1.2"/>
-<text x="752.0" y="26.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">MAINS side (contacts, fuses, terminals)</text>
-<line x1="400.0" y1="0.0" x2="400.0" y2="640.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
-<line x1="600.0" y1="0.0" x2="600.0" y2="640.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
-<line x1="56.0" y1="180.0" x2="400.0" y2="180.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
-<text x="56.0" y="656.0" font-size="9.6" font-family="sans-serif" fill="#c00" text-anchor="start">barrier at x = 100 mm: U501-U505, U602, U801</text>
-<text x="56.0" y="672.0" font-size="9.6" font-family="sans-serif" fill="#c00" text-anchor="start">barrier at x = 150 mm: U701, U702</text>
-<rect x="0.0" y="24.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="58.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J501</text>
-<rect x="0.0" y="86.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="120.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J502</text>
-<rect x="0.0" y="148.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="182.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J503</text>
-<rect x="0.0" y="210.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="244.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J504</text>
-<rect x="0.0" y="272.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="306.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J505</text>
-<rect x="0.0" y="334.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="368.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J506</text>
-<rect x="0.0" y="396.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="430.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J507</text>
-<rect x="0.0" y="458.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="492.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J508</text>
-<rect x="0.0" y="520.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="25.0" y="554.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J509</text>
-<rect x="68.0" y="590.0" width="82.4" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="109.2" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J201 entry</text>
-<rect x="160.0" y="590.0" width="122.8" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="221.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J601 MPG</text>
-<rect x="292.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="323.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J510</text>
-<rect x="354.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="385.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J511</text>
-<rect x="416.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="447.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J512</text>
-<rect x="478.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="509.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J513</text>
-<rect x="540.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="571.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J514</text>
-<rect x="602.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="633.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J515</text>
-<rect x="664.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="695.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J516</text>
-<rect x="726.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="757.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J517</text>
-<rect x="788.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="819.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J518</text>
-<rect x="850.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="881.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J519</text>
-<rect x="912.4" y="590.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="943.4" y="618.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J520</text>
-<rect x="974.4" y="556.0" width="32.8" height="40.8" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="990.8" y="579.3" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">PE</text>
-<rect x="990.0" y="40.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="74.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J701</text>
-<rect x="886.8" y="53.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="73.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F701</text>
-<rect x="744.8" y="42.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="74.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK701</text>
-<rect x="990.0" y="102.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="136.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J702</text>
-<rect x="886.8" y="115.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="135.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F702</text>
-<rect x="744.8" y="104.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="136.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK702</text>
-<rect x="990.0" y="164.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="198.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J703</text>
-<rect x="886.8" y="177.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="197.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F703</text>
-<rect x="744.8" y="166.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="198.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK703</text>
-<rect x="990.0" y="226.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="260.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J704</text>
-<rect x="886.8" y="239.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="259.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F704</text>
-<rect x="744.8" y="228.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="260.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK704</text>
-<rect x="990.0" y="288.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="322.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J705</text>
-<rect x="886.8" y="301.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="321.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F705</text>
-<rect x="744.8" y="290.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="322.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK705</text>
-<rect x="990.0" y="350.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="384.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J706</text>
-<rect x="886.8" y="363.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="383.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F706</text>
-<rect x="744.8" y="352.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="384.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK706</text>
-<rect x="990.0" y="412.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="446.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J707</text>
-<rect x="886.8" y="425.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="445.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F707</text>
-<rect x="744.8" y="414.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="446.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK707</text>
-<rect x="990.0" y="474.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="1015.0" y="508.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">J708</text>
-<rect x="886.8" y="487.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="938.4" y="507.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">F708</text>
-<rect x="744.8" y="476.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="748.8" y="508.2" font-size="9.6" text-anchor="start" font-family="sans-serif" fill="#111">XK708</text>
-<line x1="816.0" y1="32.0" x2="816.0" y2="544.0" stroke="#900" stroke-width="3.2" stroke-dasharray="3 2"/>
-<text x="820.0" y="562.0" font-size="9.6" font-family="sans-serif" fill="#900" text-anchor="start">routed slot (coil | contacts)</text>
-<rect x="64.0" y="0.0" width="41.6" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="84.8" y="27.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J801</text>
-<rect x="112.0" y="0.0" width="41.6" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="132.8" y="27.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J802</text>
-<rect x="416.0" y="0.0" width="64.0" height="85.2" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="448.0" y="45.5" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J401 RJ45</text>
-<rect x="488.0" y="0.0" width="64.0" height="85.2" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="520.0" y="45.5" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J402 RJ45</text>
-<rect x="416.0" y="104.0" width="168.0" height="144.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="500.0" y="179.5" font-size="10.4" text-anchor="middle" font-family="sans-serif" fill="#111">LAN9252, EEPROM</text>
-<rect x="416.0" y="264.0" width="168.0" height="184.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="500.0" y="359.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">STM32F405, clock, SWD, UART, LEDs</text>
-<rect x="416.0" y="464.0" width="168.0" height="120.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="500.0" y="527.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">2403S + 3V3 rail (U201)</text>
-<rect x="616.0" y="48.0" width="120.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="676.0" y="91.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">U701 U702</text>
-<rect x="616.0" y="144.0" width="120.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="676.0" y="187.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">ULN2803A + arrays</text>
-<rect x="616.0" y="240.0" width="120.0" height="304.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="676.0" y="395.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">ON LED arrays, spare</text>
-<rect x="216.0" y="56.0" width="176.0" height="112.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="304.0" y="115.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">DAC, op-amps, U801, 2415S</text>
-<rect x="72.0" y="224.0" width="156.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="150.0" y="267.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">inputs group 1 (U501)</text>
-<rect x="236.0" y="224.0" width="156.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="314.0" y="267.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">inputs group 2 (U502)</text>
-<rect x="72.0" y="312.0" width="156.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="150.0" y="355.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">inputs group 3 (U503)</text>
-<rect x="236.0" y="312.0" width="156.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="314.0" y="355.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">inputs group 4 (U504)</text>
-<rect x="72.0" y="400.0" width="156.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="150.0" y="443.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">inputs group 5 (U505)</text>
-<rect x="72.0" y="400.0" width="156.0" height="88.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="150.0" y="447.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">MPG: AM26LS32 + U602</text>
-<rect x="236.0" y="400.0" width="156.0" height="88.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="314.0" y="447.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">2405S + input protection</text>
-<rect x="72.0" y="500.0" width="320.0" height="80.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
-<text x="232.0" y="543.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">24 V entry protection (fuses, SS54, SMBJ30A, 47 uF)</text>
-<line x1="600.0" y1="680.0" x2="800.0" y2="680.0" stroke="#000" stroke-width="2.4"/>
-<text x="808.0" y="684.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start">50 mm</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="992" height="752" viewBox="-56 -56 992 752">
+<rect x="-56" y="-56" width="992" height="752" fill="#fafafa"/>
+<text x="0.0" y="-24.0" font-size="14.4" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">LCEC-IO concept floor plan v2, top view, 220 x 140 mm, one terminal per I/O in two stacked rows (footprints to scale)</text>
+<rect x="100.0" y="0.0" width="260.0" height="160.0" fill="#d9f2d9" stroke="#333" stroke-width="1.0"/>
+<text x="108.0" y="156.0" font-size="11.2" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">ANALOG  AGND  (sheet 8)</text>
+<rect x="100.0" y="168.0" width="260.0" height="292.0" fill="#ffe9c9" stroke="#333" stroke-width="1.0"/>
+<text x="108.0" y="188.0" font-size="11.2" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">FIELD I/O  0V_IO  (5, 6, 2)</text>
+<rect x="360.0" y="0.0" width="144.0" height="460.0" fill="#dbe8ff" stroke="#333" stroke-width="1.0"/>
+<text x="368.0" y="100.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">LOGIC  GND_L  (2, 3, 4)</text>
+<rect x="504.0" y="0.0" width="80.0" height="460.0" fill="#ffe9c9" stroke="#333" stroke-width="1.0"/>
+<text x="508.0" y="20.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start" font-weight="bold">relay driver</text>
+<rect x="584.0" y="12.0" width="296.0" height="500.0" fill="#ffd6d6" stroke="#333" stroke-width="1.0"/>
+<line x1="360.0" y1="0.0" x2="360.0" y2="460.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
+<line x1="504.0" y1="0.0" x2="504.0" y2="460.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
+<line x1="100.0" y1="164.0" x2="360.0" y2="164.0" stroke="#c00" stroke-width="2.0" stroke-dasharray="3 2"/>
+<text x="100.0" y="576.0" font-size="9.6" font-family="sans-serif" fill="#c00" text-anchor="start">barriers: x = 90 mm: U501-U505, U602, U801;  x = 126 mm: U701, U702;  routed slot in the relays</text>
+<rect x="0.0" y="12.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="45.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J501</text>
+<rect x="0.0" y="74.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="107.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J502</text>
+<rect x="0.0" y="136.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="169.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J503</text>
+<rect x="0.0" y="198.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="231.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J504</text>
+<rect x="0.0" y="260.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="293.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J505</text>
+<rect x="0.0" y="322.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="355.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J506</text>
+<rect x="0.0" y="384.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="25.0" y="417.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J507</text>
+<rect x="50.0" y="12.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="45.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J508</text>
+<rect x="50.0" y="74.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="107.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J509</text>
+<rect x="50.0" y="136.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="169.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J510</text>
+<rect x="50.0" y="198.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="231.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J511</text>
+<rect x="50.0" y="260.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="293.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J512</text>
+<rect x="50.0" y="322.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="355.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J513</text>
+<rect x="50.0" y="384.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="75.0" y="417.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J514</text>
+<rect x="108.0" y="510.0" width="82.4" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="149.2" y="537.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J201</text>
+<rect x="198.4" y="510.0" width="122.8" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="259.8" y="537.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J601 MPG</text>
+<rect x="329.2" y="510.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="360.2" y="537.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J515</text>
+<rect x="391.2" y="510.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="422.2" y="537.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J516</text>
+<rect x="453.2" y="510.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="484.2" y="537.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J517</text>
+<rect x="108.0" y="460.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="139.0" y="487.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J518</text>
+<rect x="170.0" y="460.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="201.0" y="487.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J519</text>
+<rect x="232.0" y="460.0" width="62.0" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="263.0" y="487.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J520</text>
+<rect x="536.0" y="472.0" width="32.8" height="40.8" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="552.4" y="495.1" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">PE</text>
+<rect x="830.0" y="12.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="45.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J701</text>
+<rect x="726.8" y="25.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="45.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F701</text>
+<rect x="584.0" y="14.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="45.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK701</text>
+<rect x="830.0" y="74.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="107.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J702</text>
+<rect x="726.8" y="87.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="107.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F702</text>
+<rect x="584.0" y="76.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="107.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK702</text>
+<rect x="830.0" y="136.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="169.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J703</text>
+<rect x="726.8" y="149.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="169.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F703</text>
+<rect x="584.0" y="138.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="169.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK703</text>
+<rect x="830.0" y="198.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="231.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J704</text>
+<rect x="726.8" y="211.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="231.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F704</text>
+<rect x="584.0" y="200.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="231.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK704</text>
+<rect x="830.0" y="260.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="293.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J705</text>
+<rect x="726.8" y="273.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="293.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F705</text>
+<rect x="584.0" y="262.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="293.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK705</text>
+<rect x="830.0" y="322.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="355.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J706</text>
+<rect x="726.8" y="335.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="355.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F706</text>
+<rect x="584.0" y="324.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="355.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK706</text>
+<rect x="830.0" y="384.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="417.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J707</text>
+<rect x="726.8" y="397.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="417.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F707</text>
+<rect x="584.0" y="386.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="417.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK707</text>
+<rect x="830.0" y="446.0" width="50.0" height="62.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="855.0" y="479.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">J708</text>
+<rect x="726.8" y="459.0" width="103.2" height="36.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="778.4" y="479.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">F708</text>
+<rect x="584.0" y="448.0" width="142.0" height="58.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="588.0" y="479.9" font-size="8.8" text-anchor="start" font-family="sans-serif" fill="#111">XK708</text>
+<line x1="655.0" y1="12.0" x2="655.0" y2="508.0" stroke="#900" stroke-width="3.2" stroke-dasharray="3 2"/>
+<text x="660.0" y="504.0" font-size="8.8" font-family="sans-serif" fill="#900" text-anchor="start">routed slot (coil | contacts)</text>
+<rect x="108.0" y="0.0" width="41.6" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="128.8" y="27.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">J801</text>
+<rect x="156.0" y="0.0" width="41.6" height="50.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="176.8" y="27.7" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">J802</text>
+<rect x="368.0" y="0.0" width="64.0" height="85.2" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="400.0" y="45.3" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">J401</text>
+<rect x="436.0" y="0.0" width="64.0" height="85.2" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="468.0" y="45.3" font-size="8.0" text-anchor="middle" font-family="sans-serif" fill="#111">J402</text>
+<rect x="368.0" y="108.0" width="128.0" height="104.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="432.0" y="163.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">LAN9252, EEPROM</text>
+<rect x="368.0" y="224.0" width="128.0" height="120.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="432.0" y="287.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">STM32, clock, SWD</text>
+<rect x="368.0" y="356.0" width="128.0" height="96.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="432.0" y="407.2" font-size="9.6" text-anchor="middle" font-family="sans-serif" fill="#111">2403S (U201)</text>
+<rect x="512.0" y="32.0" width="64.0" height="104.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="544.0" y="86.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">U701 U702</text>
+<rect x="512.0" y="152.0" width="64.0" height="88.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="544.0" y="198.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">ULN2803A</text>
+<rect x="512.0" y="256.0" width="64.0" height="160.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="544.0" y="338.9" font-size="8.8" text-anchor="middle" font-family="sans-serif" fill="#111">LED arrays</text>
+<rect x="212.0" y="24.0" width="144.0" height="124.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="284.0" y="89.1" font-size="9.2" text-anchor="middle" font-family="sans-serif" fill="#111">DAC, op-amps, U801, 2415S</text>
+<rect x="108.0" y="200.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="168.0" y="234.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">inputs 1 (U501)</text>
+<rect x="234.0" y="200.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="294.0" y="234.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">inputs 2 (U502)</text>
+<rect x="108.0" y="272.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="168.0" y="306.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">inputs 3 (U503)</text>
+<rect x="234.0" y="272.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="294.0" y="306.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">inputs 4 (U504)</text>
+<rect x="108.0" y="344.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="168.0" y="378.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">inputs 5 (U505)</text>
+<rect x="234.0" y="344.0" width="120.0" height="64.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="294.0" y="378.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">MPG, U602</text>
+<rect x="108.0" y="412.0" width="248.0" height="40.0" fill="#ffffff" stroke="#333" stroke-width="1.0"/>
+<text x="232.0" y="434.8" font-size="8.4" text-anchor="middle" font-family="sans-serif" fill="#111">2405S, 24 V protection</text>
+<line x1="600.0" y1="608.0" x2="800.0" y2="608.0" stroke="#000" stroke-width="2.4"/>
+<text x="808.0" y="612.0" font-size="10.4" font-family="sans-serif" fill="#111" text-anchor="start">50 mm</text>
 </svg>
