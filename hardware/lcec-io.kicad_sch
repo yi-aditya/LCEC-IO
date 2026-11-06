@@ -11,7 +11,673 @@
 		(company "Yantra Innovation - LCEC-IO")
 		(comment 1 "Root sheet: all eight sheets; the block diagram, mounting holes and PE follow in M6")
 	)
-	(lib_symbols)
+	(lib_symbols
+		(symbol "Mechanical:MountingHole"
+			(pin_names
+				(offset 1.016)
+			)
+			(exclude_from_sim no)
+			(in_bom no)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "H"
+				(at 0 5.08 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "MountingHole"
+				(at 0 3.175 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Mounting Hole without connection"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "mounting hole"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_fp_filters" "MountingHole*"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "MountingHole_0_1"
+				(circle
+					(center 0 0)
+					(radius 1.27)
+					(stroke
+						(width 1.27)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "lcec:Accessory"
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board no)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "A"
+				(at 0 3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Accessory"
+				(at 0 -3.81 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Part that is in the BOM but not on the PCB (cable plug, glass fuse, cover, screw)"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Accessory_0_1"
+				(rectangle
+					(start -3.81 1.27)
+					(end 3.81 -1.27)
+					(stroke
+						(width 0.254)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "lcsc:Keystone-7770"
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "J"
+				(at 0 6.35 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Keystone-7770"
+				(at 0 -6.35 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" "lcsc:Keystone_7770_M3_PCB_Terminal"
+				(at 0 -8.89 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/22db36b1040356830bc5828ee87bda7a.pdf?productCode=C5272782"
+				(at 0 -11.43 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" ""
+				(at 0 0 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Manufacturer" "Keystone"
+				(at 0 -13.97 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "MPN" "7770"
+				(at 0 -16.51 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "LCSC" "C5272782"
+				(at 0 -19.05 0)
+				(show_name yes)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "Pluggable System Terminal Block"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Keystone-7770_0_1"
+				(rectangle
+					(start -1.27 3.81)
+					(end 3.81 -3.81)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type background)
+					)
+				)
+				(circle
+					(center 0 2.54)
+					(radius 0.38)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(pin passive line
+					(at -3.81 1.27 0)
+					(length 2.54)
+					(name "PE"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+		(symbol "power:Earth_Protective"
+			(power global)
+			(pin_numbers
+				(hide yes)
+			)
+			(pin_names
+				(offset 0)
+				(hide yes)
+			)
+			(exclude_from_sim no)
+			(in_bom yes)
+			(on_board yes)
+			(in_pos_files yes)
+			(duplicate_pin_numbers_are_jumpers no)
+			(property "Reference" "#PWR"
+				(at 0 -10.16 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Value" "Earth_Protective"
+				(at 0 -7.62 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Footprint" ""
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Datasheet" ""
+				(at 0 -2.54 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "Description" "Power symbol creates a global label with name \"Earth_Protective\""
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(property "ki_keywords" "global ground gnd clean"
+				(at 0 0 0)
+				(show_name no)
+				(do_not_autoplace no)
+				(hide yes)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+				)
+			)
+			(symbol "Earth_Protective_0_1"
+				(polyline
+					(pts
+						(xy -0.635 -4.445) (xy 0.635 -4.445)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.127 -5.08) (xy 0.127 -5.08)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0 -3.81) (xy 0 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 0 -3.81)
+					(radius 2.54)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 1.27 -3.81) (xy -1.27 -3.81)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+			)
+			(symbol "Earth_Protective_1_1"
+				(pin power_in line
+					(at 0 0 270)
+					(length 0)
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "1"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+			)
+			(embedded_fonts no)
+		)
+	)
+	(rectangle
+		(start 332.74 40.64)
+		(end 365.76 78.74)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "31204dfb-b54f-59ed-bf34-d2129097fcc2")
+	)
+	(rectangle
+		(start 294.64 40.64)
+		(end 327.66 78.74)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "54058976-1bec-5a21-a36e-91d9cfcd1383")
+	)
+	(rectangle
+		(start 332.74 99.06)
+		(end 365.76 127)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "88278df8-c33f-5f98-b1e6-f7e09d3d38d9")
+	)
+	(rectangle
+		(start 370.84 40.64)
+		(end 403.86 78.74)
+		(stroke
+			(width 0.15)
+			(type default)
+		)
+		(fill
+			(type none)
+		)
+		(uuid "b00cf038-4292-55b7-9b6b-0853252f4a3f")
+	)
+	(text "5 Inputs: 20 x TLP290"
+		(exclude_from_sim no)
+		(at 334.01 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "0521ad00-ef0e-5486-b592-577db7f7cdd0")
+	)
+	(text "2 Power: URB2405S"
+		(exclude_from_sim no)
+		(at 334.01 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "16fc7bd8-3bb0-5f40-b068-cf446d5161b5")
+	)
+	(text "7 Relays: 8 contacts"
+		(exclude_from_sim no)
+		(at 372.11 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "3a2bba85-59d0-5a17-958b-9a21b9b05a45")
+	)
+	(text "Block diagram: isolation domains"
+		(exclude_from_sim no)
+		(at 294.64 33.02 0)
+		(effects
+			(font
+				(size 1.8 1.8)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "3c82d390-8340-53df-94c5-f24bebe899c4")
+	)
+	(text "2 Power: URB2403S"
+		(exclude_from_sim no)
+		(at 295.91 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "4134b3e2-0caa-5219-8432-ce6d5516eabf")
+	)
+	(text "8 Analog: DAC, op-amps"
+		(exclude_from_sim no)
+		(at 334.01 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "41832516-5568-51c6-b075-6c47bf014207")
+	)
+	(text "6 MPG: receiver"
+		(exclude_from_sim no)
+		(at 334.01 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "441b0af4-f618-59e5-91a5-35facc309b59")
+	)
+	(text "2 Power: URB2415S"
+		(exclude_from_sim no)
+		(at 334.01 114.3 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "510ddb35-fcd6-5343-b4fe-1fd0ed020e09")
+	)
+	(text "PE terminal (M3 ring lug). The Keystone 7770 ships without its screw, so the screw is a separate part."
+		(exclude_from_sim no)
+		(at 27.94 187.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "68e05224-209c-53ab-9370-9377cf6838d2")
+	)
+	(text "8 x T5A fuse"
+		(exclude_from_sim no)
+		(at 372.11 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "6f4deea8-ab34-53a5-be0c-1448c4d07577")
+	)
+	(text "7 Relays: driver, coils"
+		(exclude_from_sim no)
+		(at 334.01 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "7059fe7c-3d00-51cf-8b19-4a7653f93de7")
+	)
+	(text "MAINS  load return"
+		(exclude_from_sim no)
+		(at 372.11 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "7aa9451d-ab96-5cfb-ad1c-6a1dbeda389b")
+	)
 	(text "LCEC-IO  -  EtherCAT slave I/O board"
 		(exclude_from_sim no)
 		(at 15.24 15.24 0)
@@ -23,7 +689,7 @@
 		)
 		(uuid "81b2eb9e-b6e9-5d6b-a6bb-3a6368748f28")
 	)
-	(text "Root sheet, milestone M5: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8). The block diagram, mounting holes and PE terminal follow in M6."
+	(text "Root sheet: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8), the PE terminal, the four M3 mounting holes and a block diagram of the isolation domains."
 		(exclude_from_sim no)
 		(at 15.24 22.86 0)
 		(effects
@@ -33,6 +699,175 @@
 			(justify left bottom)
 		)
 		(uuid "827bcbb1-f13f-56d4-a515-f4c25f827b23")
+	)
+	(text "8 x 3-pole terminal"
+		(exclude_from_sim no)
+		(at 372.11 60.96 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "88ffb691-223b-577e-a984-c4ef1f1c6af9")
+	)
+	(text "4 EtherCAT: LAN9252, 2 x RJ45"
+		(exclude_from_sim no)
+		(at 295.91 55.88 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "89398421-eb8b-5140-b693-f62acbfdcc89")
+	)
+	(text "ANALOG  AGND"
+		(exclude_from_sim no)
+		(at 334.01 102.87 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "8e09d4cd-df7f-585e-8e1b-35860af033e6")
+	)
+	(text "logic side of the isolators"
+		(exclude_from_sim no)
+		(at 295.91 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "910e613d-34a2-5593-85e1-81129e50cc2f")
+	)
+	(text "LOGIC  GND_L"
+		(exclude_from_sim no)
+		(at 295.91 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "9c95df54-e49b-54aa-bf87-6eed86479f8c")
+	)
+	(text "FIELD I/O  0V_IO"
+		(exclude_from_sim no)
+		(at 334.01 44.45 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "acd55d00-7d2b-5b6a-9944-8fc4324ff86f")
+	)
+	(text "AO terminals"
+		(exclude_from_sim no)
+		(at 334.01 119.38 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b418b64c-1330-59de-b3b0-7a444893309f")
+	)
+	(text "logic | 24V_LOGIC: U201 (DC-DC);  field | 24V_IO: U202, U203 (DC-DC)"
+		(exclude_from_sim no)
+		(at 294.64 153.67 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b569bdf8-bffa-5642-836b-d4b9e191656f")
+	)
+	(text "logic | analog: U801 (isolator)"
+		(exclude_from_sim no)
+		(at 294.64 148.59 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "c5a0d2f1-1de1-5762-9676-4206c15c3037")
+	)
+	(text "field | mains: K701 to K708 (coil side to contact side)"
+		(exclude_from_sim no)
+		(at 294.64 163.83 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "cb6879ce-d541-5618-b423-1234dabcfca9")
+	)
+	(text "(behind a routed slot)"
+		(exclude_from_sim no)
+		(at 372.11 66.04 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "d1b706e6-c81b-5c2a-95c3-715219772128")
+	)
+	(text "Every signal that crosses a barrier goes through one of these parts:"
+		(exclude_from_sim no)
+		(at 294.64 137.16 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+				(bold yes)
+			)
+			(justify left bottom)
+		)
+		(uuid "e825b83b-380e-5e68-977d-9a2704616f38")
+	)
+	(text "logic | field:  U501 to U505 (optocouplers), U602, U701, U702 (isolators)"
+		(exclude_from_sim no)
+		(at 294.64 143.51 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "eb6ac030-81dc-513d-9922-f2f77dc0ba6a")
+	)
+	(text "3 MCU: STM32F405"
+		(exclude_from_sim no)
+		(at 295.91 50.8 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "f871c2cc-86f6-5f95-85a1-e9e55e8b2413")
+	)
+	(text "field | analog: U203 (DC-DC, isolated AGND)"
+		(exclude_from_sim no)
+		(at 294.64 158.75 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "fef3b3e1-e35c-5899-847a-9168e55042d1")
 	)
 	(wire
 		(pts
@@ -64,9 +899,19 @@
 		)
 		(uuid "1d52bad1-081c-559f-945a-dad5dabb4097")
 	)
+	(polyline
+		(pts
+			(xy 330.2 38.1) (xy 330.2 83.82)
+		)
+		(stroke
+			(width 0.25)
+			(type dash)
+		)
+		(uuid "2c27e1cd-f7f6-5773-b9ef-45bf7bcf8e12")
+	)
 	(wire
 		(pts
-			(xy 203.2 165.1) (xy 228.6 165.1)
+			(xy 203.2 170.18) (xy 228.6 170.18)
 		)
 		(stroke
 			(width 0)
@@ -106,7 +951,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 160.02) (xy 228.6 160.02)
+			(xy 203.2 165.1) (xy 228.6 165.1)
 		)
 		(stroke
 			(width 0)
@@ -136,7 +981,7 @@
 	)
 	(wire
 		(pts
-			(xy 228.6 139.7) (xy 218.44 139.7)
+			(xy 228.6 144.78) (xy 218.44 144.78)
 		)
 		(stroke
 			(width 0)
@@ -156,7 +1001,7 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 162.56) (xy 228.6 162.56)
+			(xy 203.2 167.64) (xy 228.6 167.64)
 		)
 		(stroke
 			(width 0)
@@ -216,13 +1061,23 @@
 	)
 	(wire
 		(pts
-			(xy 203.2 167.64) (xy 228.6 167.64)
+			(xy 203.2 172.72) (xy 228.6 172.72)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
 		(uuid "d0132559-fce5-5a93-8047-f5dafc20ef65")
+	)
+	(polyline
+		(pts
+			(xy 368.3 38.1) (xy 368.3 83.82)
+		)
+		(stroke
+			(width 0.25)
+			(type dash)
+		)
+		(uuid "d0b5d1b6-679e-5ed8-acbb-64ce3b3a0b9f")
 	)
 	(wire
 		(pts
@@ -236,7 +1091,7 @@
 	)
 	(bus
 		(pts
-			(xy 203.2 134.62) (xy 228.6 134.62)
+			(xy 203.2 139.7) (xy 228.6 139.7)
 		)
 		(stroke
 			(width 0)
@@ -254,8 +1109,18 @@
 		)
 		(uuid "f6b996d6-3bfe-508b-9384-a07d0e92659e")
 	)
+	(wire
+		(pts
+			(xy 46.99 195.58) (xy 34.29 195.58)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "fb956b6e-6ca1-5842-a06d-5e65881722f9")
+	)
 	(label "OE_FIELD"
-		(at 218.44 139.7 180)
+		(at 218.44 144.78 180)
 		(effects
 			(font
 				(size 1.27 1.27)
@@ -273,6 +1138,639 @@
 			(justify left bottom)
 		)
 		(uuid "b419ef25-a304-55bb-a0e5-cca3926f2993")
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 241.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "11feed2b-e583-5f59-9009-79db1dfa5f92")
+		(property "Reference" "H102"
+			(at 19.05 240.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "M3"
+			(at 19.05 242.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 15.24 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 15.24 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 15.24 241.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "n/a (mechanical)"
+			(at 15.24 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "H102")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 15.24 25.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "6dc862dd-c721-5bb7-ab20-51f08fc58a51")
+		(property "Reference" "H101"
+			(at 19.05 24.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "M3"
+			(at 19.05 26.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 15.24 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 15.24 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 15.24 25.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "n/a (mechanical)"
+			(at 15.24 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "H101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 393.7 25.4 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "723c507d-afa4-5222-9d92-0ae09c953d60")
+		(property "Reference" "H103"
+			(at 397.51 24.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "M3"
+			(at 397.51 26.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 393.7 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 393.7 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 393.7 25.4 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "n/a (mechanical)"
+			(at 393.7 25.4 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "H103")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Mechanical:MountingHole")
+		(at 393.7 241.3 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "7ee6b17c-9c6d-5a7f-ac6e-b80a240d29fa")
+		(property "Reference" "H104"
+			(at 397.51 240.03 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "M3"
+			(at 397.51 242.57 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "MountingHole:MountingHole_3.2mm_M3"
+			(at 393.7 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 393.7 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 393.7 241.3 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "n/a (mechanical)"
+			(at 393.7 241.3 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "H104")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:Earth_Protective")
+		(at 34.29 195.58 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "a1ac7557-0c24-5af1-a5cd-12b46b504af7")
+		(property "Reference" "#PWR1028"
+			(at 34.29 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "PE"
+			(at 34.29 199.39 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 34.29 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" ""
+			(at 34.29 195.58 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 34.29 195.58 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "0a094190-b591-5964-99ad-617355344c4c")
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "#PWR1028")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "lcsc:Keystone-7770")
+		(at 50.8 196.85 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "da9c2f57-60a1-5ad5-a9ec-07eab910c89b")
+		(property "Reference" "J101"
+			(at 55.88 193.04 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "PE"
+			(at 55.88 200.66 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "lcsc:Keystone_7770_M3_PCB_Terminal"
+			(at 50.8 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/22db36b1040356830bc5828ee87bda7a.pdf?productCode=C5272782"
+			(at 50.8 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 50.8 196.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C5272782"
+			(at 50.8 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "7770"
+			(at 50.8 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Keystone"
+			(at 50.8 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(pin "1"
+			(uuid "182368c5-86c6-5ff0-a564-8542b12cdd66")
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "J101")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "lcec:Accessory")
+		(at 76.2 196.85 0)
+		(unit 1)
+		(body_style 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board no)
+		(in_pos_files yes)
+		(dnp no)
+		(uuid "e8afcf23-979f-5449-8056-f0f85c46a1a5")
+		(property "Reference" "SC101"
+			(at 83.82 196.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "M3 x 6 screw for J101"
+			(at 99.06 196.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 76.2 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C357543.pdf"
+			(at 76.2 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Description" ""
+			(at 76.2 196.85 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "LCSC" "C357543"
+			(at 76.2 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "MPN" "PM3X6"
+			(at 76.2 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Manufacturer" "Shuntian"
+			(at 76.2 196.85 0)
+			(hide yes)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(reference "SC101")
+					(unit 1)
+				)
+			)
+		)
 	)
 	(sheet
 		(at 228.6 88.9)
@@ -467,7 +1965,7 @@
 		)
 	)
 	(sheet
-		(at 228.6 154.94)
+		(at 228.6 160.02)
 		(size 50.8 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -483,7 +1981,7 @@
 		)
 		(uuid "a62aac32-7b47-5bfd-b7eb-abf7050a18bf")
 		(property "Sheetname" "Analog"
-			(at 228.6 153.67 0)
+			(at 228.6 158.75 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -494,7 +1992,7 @@
 			)
 		)
 		(property "Sheetfile" "08_analog.kicad_sch"
-			(at 228.6 176.53 0)
+			(at 228.6 181.61 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -505,7 +2003,7 @@
 			)
 		)
 		(pin "DAC_SCK" input
-			(at 228.6 160.02 180)
+			(at 228.6 165.1 180)
 			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f13")
 			(effects
 				(font
@@ -515,7 +2013,7 @@
 			)
 		)
 		(pin "DAC_MOSI" input
-			(at 228.6 162.56 180)
+			(at 228.6 167.64 180)
 			(uuid "5d28d431-7012-5929-a675-964d7989f27e")
 			(effects
 				(font
@@ -525,7 +2023,7 @@
 			)
 		)
 		(pin "DAC_CS" input
-			(at 228.6 165.1 180)
+			(at 228.6 170.18 180)
 			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b4")
 			(effects
 				(font
@@ -535,7 +2033,7 @@
 			)
 		)
 		(pin "AO_CLAMP" input
-			(at 228.6 167.64 180)
+			(at 228.6 172.72 180)
 			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841d")
 			(effects
 				(font
@@ -553,7 +2051,7 @@
 		)
 	)
 	(sheet
-		(at 228.6 129.54)
+		(at 228.6 134.62)
 		(size 50.8 20.32)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -569,7 +2067,7 @@
 		)
 		(uuid "af24ce38-33c0-5f70-9a00-328d13ca2c07")
 		(property "Sheetname" "Relays"
-			(at 228.6 128.27 0)
+			(at 228.6 133.35 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -580,7 +2078,7 @@
 			)
 		)
 		(property "Sheetfile" "07_relays.kicad_sch"
-			(at 228.6 151.13 0)
+			(at 228.6 156.21 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -591,7 +2089,7 @@
 			)
 		)
 		(pin "DO[1..8]" input
-			(at 228.6 134.62 180)
+			(at 228.6 139.7 180)
 			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef30")
 			(effects
 				(font
@@ -601,7 +2099,7 @@
 			)
 		)
 		(pin "OE_FIELD" input
-			(at 228.6 139.7 180)
+			(at 228.6 144.78 180)
 			(uuid "0e1cbf3b-c7a6-50e7-988e-3d670a25d5a7")
 			(effects
 				(font
@@ -686,7 +2184,7 @@
 	)
 	(sheet
 		(at 152.4 88.9)
-		(size 50.8 91.44)
+		(size 50.8 96.52)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -712,7 +2210,7 @@
 			)
 		)
 		(property "Sheetfile" "03_mcu.kicad_sch"
-			(at 152.4 181.61 0)
+			(at 152.4 186.69 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -873,7 +2371,7 @@
 			)
 		)
 		(pin "DO[1..8]" output
-			(at 203.2 134.62 0)
+			(at 203.2 139.7 0)
 			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef2f")
 			(effects
 				(font
@@ -883,7 +2381,7 @@
 			)
 		)
 		(pin "DAC_SCK" output
-			(at 203.2 160.02 0)
+			(at 203.2 165.1 0)
 			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f12")
 			(effects
 				(font
@@ -893,7 +2391,7 @@
 			)
 		)
 		(pin "DAC_MOSI" output
-			(at 203.2 162.56 0)
+			(at 203.2 167.64 0)
 			(uuid "5d28d431-7012-5929-a675-964d7989f27d")
 			(effects
 				(font
@@ -903,7 +2401,7 @@
 			)
 		)
 		(pin "DAC_CS" output
-			(at 203.2 165.1 0)
+			(at 203.2 170.18 0)
 			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b3")
 			(effects
 				(font
@@ -913,7 +2411,7 @@
 			)
 		)
 		(pin "AO_CLAMP" output
-			(at 203.2 167.64 0)
+			(at 203.2 172.72 0)
 			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841c")
 			(effects
 				(font

@@ -578,16 +578,16 @@ def build_root(libs):
     s = G.Sch(libs, "lcec-io.kicad_sch", "LCEC-IO - EtherCAT slave I/O board", "1", ROOT_UUID, ROOT_UUID,
               comment="Root sheet: all eight sheets; the block diagram, mounting holes and PE follow in M6")
     s.text("LCEC-IO  -  EtherCAT slave I/O board", g(12), g(12), 3.0, justify="left bottom")
-    s.text("Root sheet, milestone M5: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8). "
-           "The block diagram, mounting holes and PE terminal follow in M6.", g(12), g(18))
+    s.text("Root sheet: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8), the PE terminal, "
+           "the four M3 mounting holes and a block diagram of the isolation domains.", g(12), g(18))
     s.sheet("Power", "02_power.kicad_sch", g(20), g(30), g(40), g(24), [], 2, SHEET_UUID["power"])
     my = g(70)
     mx, mw = g(120), g(40)
     left = [("MPG_A", 4), ("MPG_B", 8), ("RELAY_OE", 12), ("DI[1..8]", 36), ("SEL[1..12]", 44)]
-    right = [(n, 4 + 2 * i) for i, n in enumerate(ETH_NETS)] + [("DO[1..8]", 36), ("DAC_SCK", 56), ("DAC_MOSI", 58), ("DAC_CS", 60), ("AO_CLAMP", 62)]
+    right = [(n, 4 + 2 * i) for i, n in enumerate(ETH_NETS)] + [("DO[1..8]", 40), ("DAC_SCK", 60), ("DAC_MOSI", 62), ("DAC_CS", 64), ("AO_CLAMP", 66)]
     assert {n for n, _ in left + right} == set(MCU_HLABELS), set(MCU_HLABELS) ^ {n for n, _ in left + right}
     pins = [(n, MCU_HLABELS[n], "left", g(d)) for n, d in left] + [(n, MCU_HLABELS[n], "right", g(d)) for n, d in right]
-    pos = s.sheet("MCU", "03_mcu.kicad_sch", mx, my, mw, g(72), pins, 3, SHEET_UUID["mcu"])
+    pos = s.sheet("MCU", "03_mcu.kicad_sch", mx, my, mw, g(76), pins, 3, SHEET_UUID["mcu"])
 
     def bus_or_wire(a, b, name):
         (s.bus if "[" in name else s.wire)(a, b)
@@ -610,15 +610,55 @@ def build_root(libs):
     epos = s.sheet("EtherCAT", "04_ethercat.kicad_sch", ex, my, g(40), g(4) + len(ETH_NETS) * g(2) + g(4), epins, 4, SHEET_UUID["ethercat"])
     for n in ETH_NETS:
         s.wire(pos[n], epos[n])
-    rp = s.sheet("Relays", "07_relays.kicad_sch", ex, my + g(32), g(40), g(16),
+    rp = s.sheet("Relays", "07_relays.kicad_sch", ex, my + g(36), g(40), g(16),
                  [("DO[1..8]", "input", "left", g(4)), ("OE_FIELD", "input", "left", g(8))], 7, SHEET_UUID["relays"])
     s.bus(pos["DO[1..8]"], rp["DO[1..8]"])
     s.stub(rp["OE_FIELD"], (-1, 0), g(8), net="OE_FIELD")
-    ap = s.sheet("Analog", "08_analog.kicad_sch", ex, my + g(52), g(40), g(16),
+    ap = s.sheet("Analog", "08_analog.kicad_sch", ex, my + g(56), g(40), g(16),
                  [("DAC_SCK", "input", "left", g(4)), ("DAC_MOSI", "input", "left", g(6)), ("DAC_CS", "input", "left", g(8)),
                   ("AO_CLAMP", "input", "left", g(10))], 8, SHEET_UUID["analog"])
     for n in ("DAC_SCK", "DAC_MOSI", "DAC_CS", "AO_CLAMP"):
         s.wire(pos[n], ap[n])
+
+    # ---- protective earth: screw terminal J101 (the EtherCAT jack shields come here through 1 nF / 1 M, sheet 4)
+    J = s.place("lcsc:C5272782", "J101", g(40), g(155), value="PE", lcsc="C5272782",
+                ref_at=(g(44), g(152)), val_at=(g(44), g(158)), justify="left")
+    e = s.stub(J.pin("1"), (-1, 0), g(10))
+    s.power("power:Earth_Protective", "PE", *e)
+    s.place("lcec:Accessory", "SC101", g(60), g(155), value="M3 x 6 screw for J101", lcsc="C357543", in_bom=True, on_board=False, footprint="",
+            ref_at=(g(66), g(155)), val_at=(g(78), g(155)), justify="left")
+    s.text("PE terminal (M3 ring lug). The Keystone 7770 ships without its screw, so the screw is a separate part.", g(22), g(148))
+    # ---- mounting holes (M3, not connected)
+    for i, (hx, hy) in enumerate(((g(12), g(20)), (g(12), g(190)), (g(310), g(20)), (g(310), g(190)))):
+        s.place("Mechanical:MountingHole", f"H10{i + 1}", hx, hy, value="M3", footprint="MountingHole:MountingHole_3.2mm_M3", in_bom=False,
+                props={"LCSC": "n/a (mechanical)"}, ref_at=(hx + g(3), hy - g(1)), val_at=(hx + g(3), hy + g(1)), justify="left")
+
+    # ---- block diagram: the four isolation domains and what straddles each barrier
+    bx = g(232)
+    s.text("Block diagram: isolation domains", bx, g(26), size=1.8, bold=True)
+    boxes = (("LOGIC  GND_L", bx, ("3 MCU: STM32F405", "4 EtherCAT: LAN9252, 2 x RJ45", "2 Power: URB2403S", "logic side of the isolators")),
+             ("FIELD I/O  0V_IO", bx + g(30), ("5 Inputs: 20 x TLP290", "6 MPG: receiver", "7 Relays: driver, coils", "2 Power: URB2405S")),
+             ("MAINS  load return", bx + g(60), ("7 Relays: 8 contacts", "8 x T5A fuse", "8 x 3-pole terminal", "(behind a routed slot)")))
+    for title, x0, lines in boxes:
+        s.box(x0, g(32), x0 + g(26), g(62), dashed=False)
+        s.text(title, x0 + g(1), g(35), bold=True)
+        for i, ln in enumerate(lines):
+            s.text(ln, x0 + g(1), g(40) + i * g(4))
+    s.box(bx + g(30), g(78), bx + g(56), g(100), dashed=False)
+    s.text("ANALOG  AGND", bx + g(31), g(81), bold=True)
+    s.text("8 Analog: DAC, op-amps", bx + g(31), g(86))
+    s.text("2 Power: URB2415S", bx + g(31), g(90))
+    s.text("AO terminals", bx + g(31), g(94))
+    s.dashed_line(bx + g(28), g(30), bx + g(28), g(66))
+    s.dashed_line(bx + g(58), g(30), bx + g(58), g(66))
+    s.dashed_line(bx + g(28), g(70), bx + g(58), g(70)) if False else None
+    note(s, "Every signal that crosses a barrier goes through one of these parts:", bx, g(108), 1.27, True)
+    for i, ln in enumerate(("logic | field:  U501 to U505 (optocouplers), U602, U701, U702 (isolators)",
+                            "logic | analog: U801 (isolator)",
+                            "logic | 24V_LOGIC: U201 (DC-DC);  field | 24V_IO: U202, U203 (DC-DC)",
+                            "field | analog: U203 (DC-DC, isolated AGND)",
+                            "field | mains: K701 to K708 (coil side to contact side)")):
+        s.text(ln, bx, g(113) + i * g(4))
     return s
 
 

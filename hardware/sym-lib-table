@@ -3,6 +3,7 @@
   (lib (name "lcsc")(type "KiCad")(uri "${KIPRJMOD}/../lib/lcsc.kicad_sym")(options "")(descr "Project LCSC parts imported with easyeda2kicad, corrected by scripts/fix_symbols.py"))
   (lib (name "lcec")(type "KiCad")(uri "${KIPRJMOD}/../lib/lcec.kicad_sym")(options "")(descr "KiCad standard symbols drawn in the orientation the schematics need (scripts/make_std_symbols.py)"))
   (lib (name "Device")(type "KiCad")(uri "${KICAD10_SYMBOL_DIR}/Device.kicad_sym")(options "")(descr "KiCad standard"))
+  (lib (name "Mechanical")(type "KiCad")(uri "${KICAD10_SYMBOL_DIR}/Mechanical.kicad_sym")(options "")(descr "KiCad standard"))
   (lib (name "power")(type "KiCad")(uri "${KICAD10_SYMBOL_DIR}/power.kicad_sym")(options "")(descr "KiCad standard"))
   (lib (name "Connector")(type "KiCad")(uri "${KICAD10_SYMBOL_DIR}/Connector.kicad_sym")(options "")(descr "KiCad standard"))
   (lib (name "Connector_Generic")(type "KiCad")(uri "${KICAD10_SYMBOL_DIR}/Connector_Generic.kicad_sym")(options "")(descr "KiCad standard"))

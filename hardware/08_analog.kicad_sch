@@ -5782,19 +5782,19 @@
 			(uuid "f28d53c8-e066-59ac-b9bf-b0b683c902dd")
 		)
 		(pin "5"
-			(uuid "2acbd26a-59ab-49c1-bc26-d2f77879370a")
+			(uuid "f6516931-12e6-4e9d-9693-911003137ee7")
 		)
 		(pin "6"
-			(uuid "03d1bc92-8e83-46d6-9911-f7bca8c31e1a")
+			(uuid "994e83bd-a101-4a19-bf77-e22b2d19b3b6")
 		)
 		(pin "7"
-			(uuid "9c7146db-b9ac-4cb8-ac56-502623196e90")
+			(uuid "f2f06a19-b5b7-425b-8e8e-514c7f379693")
 		)
 		(pin "4"
-			(uuid "6d866661-2acc-4f64-b917-912dcd8290a5")
+			(uuid "10b1d90d-65cd-4b7b-aad6-d0d90defa7c6")
 		)
 		(pin "8"
-			(uuid "2a6faf1c-bc89-42b6-9f93-5e2730407708")
+			(uuid "2197aca1-26f7-40a5-8c7e-cfeb92a4b858")
 		)
 		(instances
 			(project "lcec-io"
@@ -6442,19 +6442,19 @@
 			(uuid "87e48ccf-c1cc-54eb-87c4-a075ae4e81f1")
 		)
 		(pin "1"
-			(uuid "34640402-320a-4370-b5b0-0c634a504060")
+			(uuid "147112ef-158e-4889-8ff7-bbe8b5e2a77e")
 		)
 		(pin "2"
-			(uuid "f7ce3a70-8d37-42b4-a726-2a634047cb44")
+			(uuid "ff3d31cd-238b-4b3e-ac93-c2fba8aa434d")
 		)
 		(pin "3"
-			(uuid "fce84e42-9a7f-4cbe-893e-1104f8b9fad7")
+			(uuid "56e2302e-cee4-4c50-806c-2908043b8d82")
 		)
 		(pin "4"
-			(uuid "da39b78c-4816-4919-9077-0bf2abc6211b")
+			(uuid "c2b244b9-aa72-44ac-8368-4846dd7ed955")
 		)
 		(pin "8"
-			(uuid "ad472e61-c466-45fb-8175-8d8f0bd49844")
+			(uuid "2af33ea8-fa1d-4536-9ad6-92e9170c96ab")
 		)
 		(instances
 			(project "lcec-io"
@@ -7702,22 +7702,22 @@
 			(uuid "bed7d1b9-baa5-5f6c-802f-423edcda7086")
 		)
 		(pin "1"
-			(uuid "90aea027-409b-420f-a40c-440101febb5f")
+			(uuid "7c4121df-9f01-4b57-ab3c-d8a15a50b161")
 		)
 		(pin "2"
-			(uuid "7b704fb6-c579-4163-b953-5e3165435caf")
+			(uuid "90f2cdc8-f21f-499b-b8a1-7ff1574f41d8")
 		)
 		(pin "3"
-			(uuid "2e39fb53-a530-4383-acac-26d9995c01c7")
+			(uuid "5870689d-a372-491f-bfe8-a24702dbf29d")
 		)
 		(pin "5"
-			(uuid "52d14208-3206-4449-aeec-3e8125f42d50")
+			(uuid "12cf4ade-369f-4d26-8cfb-17c6793ff242")
 		)
 		(pin "6"
-			(uuid "ed1e6ae0-1aab-47da-ac5b-bfbed9e57584")
+			(uuid "ac657572-e436-493e-8838-951b49f23628")
 		)
 		(pin "7"
-			(uuid "748e599c-02ac-44df-85da-445bdc22b145")
+			(uuid "ad4f993c-c169-4a61-bdba-0dba656c63d7")
 		)
 		(instances
 			(project "lcec-io"

@@ -298,7 +298,7 @@ def check_fields(comps):
     bad = 0
     n = 0
     for ref, c in sorted(comps.items()):
-        if ref.startswith("TP") or ref.startswith("#"):
+        if ref.startswith(("TP", "#", "H1")):
             continue
         n += 1
         f = {**c["props"], **c["fields"]}
@@ -612,6 +612,63 @@ def check_io(comps, pinnet):
         ok("sheets 5 to 8: 20 input channels, MPG receiver and isolator, 8 relay channels and the two analog output stages verified from the netlist")
 
 
+def check_bom_complete():
+    """The schematic BOM (KiCad's export, every instance) must equal bom/parts.csv line by line: same LCSC numbers, same quantities."""
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    import export_bom
+    rows = export_bom.export("LCSC", os.path.join(tempfile.mkdtemp(), "bom.csv"))
+    placed = {}
+    for r in rows:
+        if r["LCSC"].startswith("C"):
+            placed[r["LCSC"]] = placed.get(r["LCSC"], 0) + int(r["Qty"])
+    want = {}
+    for r in csv.DictReader(open(os.path.join(ROOT, "bom", "parts.csv"), encoding="utf-8")):
+        if r["LCSC"] and r["Fit"] != "DNP" or (r["LCSC"] and r["Status"] == "NEW" and False):
+            want[r["LCSC"]] = want.get(r["LCSC"], 0) + int(r["Qty"])
+        elif r["LCSC"]:
+            want[r["LCSC"]] = want.get(r["LCSC"], 0) + int(r["Qty"])
+    bad = 0
+    for k in sorted(set(placed) | set(want)):
+        if placed.get(k) != want.get(k):
+            fail(f"BOM {k}: schematic has {placed.get(k)}, bom/parts.csv has {want.get(k)}")
+            bad += 1
+    if not bad:
+        ok(f"BOM complete: all {len(want)} LCSC numbers and quantities in the schematic equal bom/parts.csv ({sum(placed.values())} pieces)")
+
+
+def check_domains(comps, pinnet):
+    """Isolation: no component touches nets of two domains unless it is a DC-DC module, optocoupler or isolator (the plan's nine barrier
+    packages plus the three modules); no global labels anywhere (power symbols only)."""
+    dom = {}
+    for d, names in (("logic", {"+3V3", "GND_L", "VDDA", "+3V3_TXRX1", "+3V3_TXRX2", "+3V3_BIAS", "VDDCR", "VDD12TX"}),
+                     ("logic24", {"+24V_LOGIC", "0V_LOGIC", "24V_LOGIC_IN"}),
+                     ("field", {"+24V_IO", "0V_IO", "+5V_IO", "24V_IO_IN", "SENSE_DI", "SENSE_SEL", "COM_DI", "COM_SEL"}),
+                     ("analog", {"+15V_A", "AGND", "+5V_A"}), ("earth", {"PE", "SHIELD"})):
+        for n in names:
+            dom[n] = d
+    barrier = {"U201", "U202", "U203", "U501", "U502", "U503", "U504", "U505", "U602", "U701", "U702", "U801",
+               "J401", "J402",      # RJ45 jacks: the magnetics isolate the chip side from the shield (1500 Vrms)
+               "J201"}              # the 24 V entry connector carries the two supplies on separate pins
+    seen = {}
+    for (ref, pin), (short, full) in pinnet.items():
+        if short in dom:
+            seen.setdefault(ref, set()).add(dom[short])
+    bad = 0
+    for ref, ds in seen.items():
+        if len(ds) > 1 and ref not in barrier:
+            fail(f"{ref} connects domains {sorted(ds)} but is not a barrier part")
+            bad += 1
+    gl = 0
+    for name in os.listdir(HW):
+        if name.endswith(".kicad_sch"):
+            gl += open(os.path.join(HW, name), encoding="utf-8").read().count("(global_label")
+    if gl:
+        fail(f"{gl} global labels found (only power symbols may be global)")
+        bad += 1
+    if not bad:
+        ok("isolation: only the 12 barrier parts (3 DC-DC modules, 5 optocouplers, 4 isolators), the two RJ45 magnetics and the 24 V entry connector touch two domains; no global labels")
+
+
 def main():
     errs, warns = run_erc()
     comps, pinnet = netlist()
@@ -623,6 +680,8 @@ def main():
     check_fields(comps)
     check_style()
     check_barrier()
+    check_domains(comps, pinnet)
+    check_bom_complete()
     check_bom_quantities(comps)
     print(f"\n{len(fails)} failures, {len(warns)} ERC warnings")
     if "--json" in sys.argv:
