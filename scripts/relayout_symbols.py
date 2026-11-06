@@ -230,7 +230,7 @@ def relayout_lan9252(lib):
         pins1.append(pin_obj(template, num, name, LAN_HALF_W + PIN_LEN, top_y - PITCH * (i + 1), 180, "bidirectional"))
     # unit 2: power. 12.7 mm pitch where a 100 nF capacitor sits beside the pin
     left = [("5", "VDD33", 63.5)] + [(n, "VDDIO", 50.8 - 12.7 * k) for k, n in enumerate(("14", "20", "32", "37", "47"))] \
-        + [("7", "REG_EN", -25.4), ("51", "VDD33TXRX1", -38.1), ("64", "VDD33TXRX2", -50.8), ("58", "VDD33BIAS", -63.5)]
+        + [("7", "REG_EN", -25.4), ("51", "VDD33TXRX1", -38.1), ("64", "VDD33TXRX2", -63.5), ("58", "VDD33BIAS", -88.9)]
     right = [("6", "VDDCR", 63.5), ("24", "VDDCR", 50.8), ("38", "VDDCR", 38.1), ("56", "VDD12TX1", 25.4),
              ("59", "VDD12TX2", 12.7), ("3", "OSCVDD12", 0.0), ("4", "OSCVSS", -12.7), ("65", "VSS", -15.24)]
     pins2 = []
@@ -249,7 +249,7 @@ def relayout_lan9252(lib):
     u2 = copy.deepcopy(u1)
     u2.unitId, u2.styleId = 2, 1
     u2.pins = pins2
-    u2.graphicItems = [SyRect(start=Position(-10.16, 69.85), end=Position(10.16, -69.85))]
+    u2.graphicItems = [SyRect(start=Position(-10.16, 69.85), end=Position(10.16, -95.25))]
     sym.units = [u1, u2]
     print(f"LAN9252: unit 1 signals {len(pins1)} pins ({2 * LAN_HALF_W:g} x {2 * top_y:g} mm), unit 2 power {len(pins2)} pins")
 

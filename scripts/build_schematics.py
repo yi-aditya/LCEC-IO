@@ -444,19 +444,20 @@ def build_ethercat(libs):
     for num in ("2", "12", "15", "16", "21", "22", "23", "25", "26", "27", "28", "29", "30", "31", "33", "35", "36", "39", "40", "49"):
         s.no_connect(*P(num))                                  # OSCO (OSCI is driven by a single-ended oscillator) and unused host-bus / digital I/O pins
 
-    # ---- right side: PHY A (port 0) and PHY B (port 1) lines to the jacks, each with a 49.9 ohm termination to +3V3_PHY
+    # ---- right side: PHY A (port 0) and PHY B (port 1) lines to the jacks, each with a 49.9 ohm termination to the port's own
+    # ferrite-filtered 3.3 V (as in the EVB-LAN9252-SPI reference)
     jacks = {}
-    for ref, (p_tx, n_tx, p_rx, n_rx) in (("J401", ("53", "52", "55", "54")), ("J402", ("62", "63", "60", "61"))):
+    for ref, sup, (p_tx, n_tx, p_rx, n_rx) in (("J401", "+3V3_TXRX1", ("53", "52", "55", "54")), ("J402", "+3V3_TXRX2", ("62", "63", "60", "61"))):
         x0, y0 = P(p_tx)
         JX = x0 + g(44)
         J = s.place("lcsc:C69427", ref, JX, y0 + g(18), value="HY911105AE", lcsc="C69427",
                     ref_at=(JX, y0 - g(8)), val_at=(JX, y0 + g(42)), justify="center")
-        jacks[ref] = J
+        jacks[ref] = (J, sup)
         for chip, jack in ((p_tx, "1"), (n_tx, "2"), (p_rx, "3"), (n_rx, "6")):
             cx, cy = P(chip)
             s.wire((cx, cy), J.pin(jack))
             Rt = vpart(s, "Device:R", rref(), cx + g(10), cy - g(6), "49.9R", "C23185")
-            s.power("power:+3V3", "+3V3_PHY", *Rt.pin("1"))
+            s.power("power:+3V3", sup, *Rt.pin("1"))
             s.wire(Rt.pin("2"), (cx + g(10), cy))
     x, y = P("57")
     s.wire((x, y), (x + g(6), y))
@@ -465,15 +466,15 @@ def build_ethercat(libs):
 
     # ---- jack right sides: centre taps, link LEDs, shield
     for ref, net in (("J401", "LNK_ACT0"), ("J402", "LNK_ACT1")):
-        J = jacks[ref]
+        J, sup = jacks[ref]
         t1, t2 = J.pin("4"), J.pin("5")
         xb = t1[0] + g(6)
         s.wire(t1, (xb, t1[1])); s.wire(t2, (xb, t2[1]))
         s.wire((xb, t1[1]), (xb, t1[1] - g(3)))
         s.wire((xb, t1[1]), (xb, t2[1]))
-        s.power("power:+3V3", "+3V3_PHY", xb, t1[1] - g(3))
+        s.power("power:+3V3", sup, xb, t1[1] - g(3))
         s.wire((xb, t2[1]), (xb + g(8), t2[1]))
-        Cc = vpart(s, "Device:C", cref(), xb + g(8), t2[1], "100nF", "C1591")
+        Cc = vpart(s, "Device:C", cref(), xb + g(8), t2[1], "22nF 50V", "C106222")
         s.power(GND, "GND_L", *Cc.pin("2"))
         s.stub(J.pin("9"), (1, 0), g(4), net=net)                               # green LED anode
         e = s.stub(J.pin("10"), (1, 0), g(4)); s.power(GND, "GND_L", *e)       # cathode
@@ -497,50 +498,56 @@ def build_ethercat(libs):
     s.pwr_flag(sx + g(11), Cs.pin("2")[1])
 
     # ============================================================ U401 unit 2: power pins (left) with their decoupling
-    PX, PY = g(66), g(100)
+    PX, PY = g(66), g(94)
     UP = s.place("lcsc:C80933", "U401", PX, PY, value="LAN9252I/PT", lcsc="C80933", unit=2,
                  ref_at=(PX - g(6), PY - g(58)), val_at=(PX + g(6), PY - g(58)), justify="center")
     Q = UP.pin
     x5 = Q("5")[0]
     rail_a = x5 - g(24)
-    rows_a = ["5", "14", "20", "32", "37", "47", "7"]
     s.power("power:+3V3", "+3V3", rail_a, Q("5")[1] - g(3))
-    s.wire((rail_a, Q("5")[1] - g(3)), (rail_a, Q("7")[1]))
-    for num in rows_a:
+    s.wire((rail_a, Q("5")[1] - g(3)), (rail_a, Q("58")[1]))
+    for num in ("5", "14", "20", "32", "37", "47", "7"):
         px, py = Q(num)
         s.wire((px, py), (rail_a, py))
         if num != "7":
             Cd = vpart(s, "Device:C", cref(), px - g(6), py, "100nF", "C1591")
             s.power(GND, "GND_L", *Cd.pin("2"))
-    # PHY supplies through a ferrite bead (also the supply of the magnetics centre taps)
-    rail_b = rail_a
-    y_fb = Q("51")[1] - g(6)
-    s.wire((rail_b, y_fb - g(3)), (rail_b, Q("58")[1]))
-    s.power("power:+3V3", "+3V3_PHY", rail_b, y_fb - g(3))
-    FB = hpart(s, "lcec:FerriteBead_H", "FB401", rail_b - g(10), y_fb, "600R@100MHz", "C19330")
-    s.wire(FB.pin("2"), (rail_b, y_fb))
-    e = s.stub(FB.pin("1"), (-1, 0), g(3)); s.power("power:+3V3", "+3V3", *e)
-    s.pwr_flag(rail_b, y_fb + g(2))
-    for num in ("51", "64", "58"):
+    # the three PHY supplies each come through their own ferrite bead (EVB reference): FB > node (100 nF) > pin
+    for num, net, fb in (("51", "+3V3_TXRX1", "FB401"), ("64", "+3V3_TXRX2", "FB402"), ("58", "+3V3_BIAS", "FB403")):
         px, py = Q(num)
-        s.wire((px, py), (rail_b, py))
-        Cd = vpart(s, "Device:C", cref(), px - g(6), py, "100nF", "C1591")
+        F = hpart(s, "lcec:FerriteBead_H", fb, px - g(19), py, "220R@100MHz", "C85827")
+        s.wire((rail_a, py), F.pin("1"))
+        s.wire(F.pin("2"), (px, py))
+        Cd = vpart(s, "Device:C", cref(), px - g(9), py, "100nF", "C1591")
         s.power(GND, "GND_L", *Cd.pin("2"))
-    Cb = vpart(s, "Device:C", cref(), Q("51")[0] - g(18), Q("51")[1], "4.7uF", "C19666")
-    s.power(GND, "GND_L", *Cb.pin("2"))
-    # core: VDDCR (internal regulator output) and the PHY 1.2 V supplies tied to it
+        s.wire((px - g(5), py), (px - g(5), py - g(4)))
+        s.power("power:+3V3", net, px - g(5), py - g(4))
+        s.pwr_flag(px - g(2), py)
+    # core: VDDCR (internal regulator output) feeds the PHY 1.2 V pins through a ferrite bead (EVB reference)
     rail_r = Q("6")[0] + g(26)
-    s.wire((rail_r, Q("6")[1]), (rail_r, Q("59")[1] + g(3)))
-    s.label("VDDCR", rail_r, Q("59")[1] + g(3), 0)
-    for num in ("6", "24", "38", "56", "59"):
+    y_fb = Q("38")[1] + g(5)
+    s.wire((rail_r, Q("6")[1]), (rail_r, y_fb))
+    for num in ("6", "24", "38"):
         px, py = Q(num)
         s.wire((px, py), (rail_r, py))
-    for num, caps in (("6", (("1uF", "C559769"), ("470pF", "C1620"))), ("24", (("100nF", "C1591"),)),
-                      ("38", (("100nF", "C1591"),)), ("56", (("100nF", "C1591"),))):
+    s.label("VDDCR", rail_r, y_fb, 180)
+    for num, caps in (("6", (("1uF", "C559769"), ("470pF", "C1620"))), ("24", (("100nF", "C1591"),)), ("38", (("100nF", "C1591"),))):
         px, py = Q(num)
         for k, (val, code) in enumerate(caps):
             Cd = vpart(s, "Device:C", cref(), px + g(6) + g(10) * k, py, val, code)
             s.power(GND, "GND_L", *Cd.pin("2"))
+    F4 = hpart(s, "lcec:FerriteBead_H", "FB404", rail_r, y_fb, "220R@100MHz", "C85827")
+    rail_o = F4.pin("2")[0] + g(4)
+    s.wire(F4.pin("2"), (rail_o, y_fb))
+    s.wire((rail_o, y_fb), (rail_o, Q("59")[1] + g(3)))
+    s.label("VDD12TX", rail_o, Q("59")[1] + g(3), 0)
+    for num in ("56", "59"):
+        px, py = Q(num)
+        s.wire((px, py), (rail_o, py))
+    for k in range(2):
+        px, py = Q("56")
+        Cd = vpart(s, "Device:C", cref(), px + g(6) + g(12) * k, py, "100nF", "C1591")
+        s.power(GND, "GND_L", *Cd.pin("2"))
     s.no_connect(*Q("3"))                                           # OSCVDD12: internal regulator output, no external capacitor required
     g1, g2 = Q("4"), Q("65")
     s.wire(g1, (g1[0] + g(4), g1[1])); s.wire(g2, (g2[0] + g(4), g2[1]))
@@ -582,15 +589,16 @@ def build_ethercat(libs):
     e = s.stub(Le.pin("1"), (1, 0), g(3)); s.power(GND, "GND_L", *e)
     note(s, "EtherCAT ERR LED, red: driven by STM32 pin PD3 (the LAN9252 has no ERR output)", ex2, ey2 - g(5))
 
-    ny = g(176)
+    ny = g(184)
     note(s, "Design notes", g(10), ny, 1.27, True)
     for i, txt in enumerate((
             "RUNLED / E2PSIZE: 10 k pull-up = EEPROM size strap high (32 Kbit and up, 2-byte addressing). The pin is open drain, so the RUN LED is +3V3 > 1 k > LED > pin.",
             "LINKACTLED0 / CHIP_MODE0 and LINKACTLED1 / CHIP_MODE1: 10 k pull-downs = chip mode 00 (2 ports) and active-high LED outputs; 1 k to the green LED in each jack.",
             "TESTMODE to ground (required). FXLOSEN, FXSDENA and FXSDENB to ground = copper twisted pair. REG_EN to 3.3 V = internal 1.2 V regulators. OSCO open (single-ended oscillator on OSCI).",
             "Pins 12, 15 to 16, 21 to 23, 25 to 31, 33, 35, 36, 39, 40 and 49 (host bus, MII, digital I/O) are unused in SPI mode and left open.",
-            "Each twisted-pair line has 49.9 R to +3V3_PHY (ferrite-filtered 3.3 V); the magnetics centre taps are on the same net. RBIAS 12.1 k 1 % to ground.",
-            "VDDCR is the regulator output: 1 uF + 470 pF at pin 6. VDD12TX1 and VDD12TX2 are tied to it. The ESI EEPROM must hold PDI = SPI before the first run.")):
+            "As in the EVB-LAN9252-SPI reference: VDD33TXRX1, VDD33TXRX2 and VDD33BIAS each come from +3V3 through a 220 R ferrite bead with 100 nF; VDD12TX1/2 come from VDDCR through a ferrite bead with 2 x 100 nF.",
+            "Each twisted-pair line has 49.9 R to its port's filtered 3.3 V; the magnetics centre taps (TXCT and RXCT together) are on the same net with 22 nF. RBIAS 12.1 k 1 % to ground. VDDCR: 1 uF + 470 pF at pin 6, 100 nF at pins 24 and 38.",
+            "The ESI EEPROM must hold PDI = SPI before the first run. WP is low so the master can write it (the EVB ties WP high).")):
         note(s, txt, g(10), ny + g(4 + 3 * i))
     return s
 

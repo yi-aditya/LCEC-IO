@@ -429,14 +429,21 @@ def check_ethercat(comps, pinnet):
     # 2. supplies, grounds and straps
     for pin in ("5", "14", "20", "32", "37", "47", "7"):
         want("U401", pin, "+3V3")
-    for pin in ("51", "64", "58"):
-        want("U401", pin, "+3V3_PHY")
+    for pin, supply in (("51", "+3V3_TXRX1"), ("64", "+3V3_TXRX2"), ("58", "+3V3_BIAS")):
+        want("U401", pin, supply)
+        need("+3V3", supply, "220R@100MHz", 1, "FB")
+        need(supply, "GND_L", "100nF", 1, "C")
     for pin in ("4", "65", "41", "8", "9", "10"):
         want("U401", pin, "GND_L")
-    vcr = {net(pinnet, "U401", p) for p in ("6", "24", "38", "56", "59")}
-    if len(vcr) != 1 or "VDDCR" not in vcr:
-        fail(f"VDDCR, VDD12TX1 and VDD12TX2 are not one net called VDDCR: {vcr}")
+    vcr = {net(pinnet, "U401", p) for p in ("6", "24", "38")}
+    if vcr != {"VDDCR"}:
+        fail(f"VDDCR pins 6, 24 and 38 are not one net called VDDCR: {vcr}")
         bad[0] += 1
+    if {net(pinnet, "U401", p) for p in ("56", "59")} != {"VDD12TX"}:
+        fail("VDD12TX1 and VDD12TX2 (pins 56, 59) are not one net called VDD12TX")
+        bad[0] += 1
+    need("VDDCR", "VDD12TX", "220R@100MHz", 1, "FB")
+    need("VDD12TX", "GND_L", "100nF", 2, "C")
     need("VDDCR", "GND_L", "1uF", 1, "C")
     need("VDDCR", "GND_L", "470pF", 1, "C")
     need("+3V3", net(pinnet, "U401", "45"), "10k")           # E2PSIZE strap high
@@ -451,15 +458,17 @@ def check_ethercat(comps, pinnet):
     want("LED401", "1", net(pinnet, "U401", "45"))
     need("+3V3", net(pinnet, "LED401", "2"), "1k")
     # 4. magnetics: each line to its jack pin, 49.9 ohm to +3V3_PHY, centre taps, shield
-    for jack, lines in (("J401", (("53", "1"), ("52", "2"), ("55", "3"), ("54", "6"))), ("J402", (("62", "1"), ("63", "2"), ("60", "3"), ("61", "6")))):
+    for jack, sup, lines in (("J401", "+3V3_TXRX1", (("53", "1"), ("52", "2"), ("55", "3"), ("54", "6"))),
+                             ("J402", "+3V3_TXRX2", (("62", "1"), ("63", "2"), ("60", "3"), ("61", "6")))):
         for chip, jp in lines:
             a, b = net(pinnet, "U401", chip), net(pinnet, jack, jp)
             if a != b:
                 fail(f"LAN9252 pin {chip} ({a}) is not wired to {jack} pin {jp} ({b})")
                 bad[0] += 1
-            need("+3V3_PHY", a, "49.9R")
-        want(jack, "4", "+3V3_PHY")
-        want(jack, "5", "+3V3_PHY")
+            need(sup, a, "49.9R")
+        want(jack, "4", sup)
+        want(jack, "5", sup)
+        need(sup, "GND_L", "22nF 50V", 1, "C")
         for sp in ("8", "SH1", "SH2"):
             want(jack, sp, "SHIELD")
     need("SHIELD", "PE", "1nF 2kV", 1, "C")

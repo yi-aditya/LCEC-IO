@@ -6391,7 +6391,7 @@
 		(symbol "LAN9252I_PT_2_1"
 			(rectangle
 				(start -10.16 69.85)
-				(end 10.16 -69.85)
+				(end 10.16 -95.25)
 				(stroke
 					(width 0)
 					(type default)
@@ -6653,7 +6653,7 @@
 				)
 			)
 			(pin power_in line
-				(at -15.24 -63.5 0)
+				(at -15.24 -88.9 0)
 				(length 5.08)
 				(name "VDD33BIAS"
 					(effects
@@ -6689,7 +6689,7 @@
 				)
 			)
 			(pin power_in line
-				(at -15.24 -50.8 0)
+				(at -15.24 -63.5 0)
 				(length 5.08)
 				(name "VDD33TXRX2"
 					(effects
