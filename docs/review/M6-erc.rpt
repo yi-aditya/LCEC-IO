@@ -1,0 +1,59 @@
+ERC report (2026-11-06T07:49:59, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+
+***** Sheet /Power/
+[ground_pin_not_ground]: Pin GND not connected to ground net
+    ; warning
+    @(274.32 mm, 81.28 mm): Symbol U201 Pin 1 [GND, Power input, Line]
+[ground_pin_not_ground]: Pin GND not connected to ground net
+    ; warning
+    @(274.32 mm, 200.66 mm): Symbol U203 Pin 1 [GND, Power input, Line]
+
+***** Sheet /MCU/
+
+***** Sheet /EtherCAT/
+
+***** Sheet /Inputs/
+
+***** Sheet /MPG/
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(288.29 mm, 81.28 mm): Symbol U602 Pin 15 [GNDB, Power input, Line]
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(288.29 mm, 83.82 mm): Symbol U602 Pin 9 [GNDB, Power input, Line]
+
+***** Sheet /Relays/
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(92.71 mm, 68.58 mm): Symbol U701 Pin 15 [GNDB, Power input, Line]
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(92.71 mm, 71.12 mm): Symbol U701 Pin 9 [GNDB, Power input, Line]
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(92.71 mm, 132.08 mm): Symbol U702 Pin 15 [GNDB, Power input, Line]
+[ground_pin_not_ground]: Pin GNDB not connected to ground net
+    ; warning
+    @(92.71 mm, 134.62 mm): Symbol U702 Pin 9 [GNDB, Power input, Line]
+
+***** Sheet /Analog/
+
+***** Sheet /Inputs/DI1-4/
+
+***** Sheet /Inputs/DI5-8/
+
+***** Sheet /Inputs/SEL1-4/
+
+***** Sheet /Inputs/SEL5-8/
+
+***** Sheet /Inputs/SEL9-12/
+
+ ** ERC messages: 8  Errors 0  Warnings 8
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters
