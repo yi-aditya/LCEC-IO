@@ -360,6 +360,39 @@ def check_bom_quantities(comps):
         ok(f"BOM quantities: {sum(used.values())} parts placed on sheets 2 and 3, none over the BOM quantity")
 
 
+def check_style():
+    """Drawing rules: every component at rotation 0 and unmirrored, all text horizontal, labels pointing left or right."""
+    bad = 0
+    n = 0
+    for name in ("lcec-io", "02_power", "03_mcu"):
+        txt = open(os.path.join(HW, name + ".kicad_sch"), encoding="utf-8").read()
+        tree, _ = G.parse(G.tokenize(txt))
+        for sym in G.find(tree, "symbol"):
+            if not G.find(sym, "lib_id"):
+                continue
+            n += 1
+            ref = next((G.unq(p[2]) for p in G.find(sym, "property") if G.unq(p[1]) == "Reference"), "?")
+            at = G.find(sym, "at")[0]
+            if float(at[3]) != 0:
+                fail(f"{name}: {ref} is rotated ({at[3]} degrees)")
+                bad += 1
+            if G.find(sym, "mirror"):
+                fail(f"{name}: {ref} is mirrored")
+                bad += 1
+            for p in G.find(sym, "property"):
+                pa = G.find(p, "at")
+                if pa and float(pa[0][3]) % 180 != 0:
+                    fail(f"{name}: {ref} property {G.unq(p[1])} is vertical")
+                    bad += 1
+        for kind in ("label", "hierarchical_label", "global_label"):
+            for lb in G.find(tree, kind):
+                if float(G.find(lb, "at")[0][3]) not in (0, 180):
+                    fail(f"{name}: {kind} {G.unq(lb[1])} is not horizontal")
+                    bad += 1
+    if not bad:
+        ok(f"style: all {n} component instances at rotation 0, none mirrored, all text and labels horizontal")
+
+
 def main():
     errs, warns = run_erc()
     comps, pinnet = netlist()
@@ -367,6 +400,7 @@ def main():
     check_power(comps, pinnet)
     check_mcu(comps, pinnet)
     check_fields(comps)
+    check_style()
     check_barrier()
     check_bom_quantities(comps)
     print(f"\n{len(fails)} failures, {len(warns)} ERC warnings")

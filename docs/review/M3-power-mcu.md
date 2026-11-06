@@ -4,6 +4,14 @@ KiCad project: `hardware/lcec-io.kicad_pro`. Sheets: root `lcec-io.kicad_sch` (p
 
 **To review in the browser:** [`M3-schematics.pdf`](M3-schematics.pdf) (all three sheets, A3), or the previews below. ERC report: [`M3-erc.rpt`](M3-erc.rpt).
 
+## Redrawn after review: drawing rules
+
+The first M3 submission was rejected for unprofessional layout (rotated parts, sideways text, cluttered placement). Both sheets were redrawn from scratch under these rules, and `scripts/check_sheets.py` now enforces them (check `style`):
+
+- **Every component instance is at rotation 0 and never mirrored; all text and labels are horizontal.** Where a circuit needs a part drawn the other way (series fuse, diode, resistor or ferrite on a horizontal rail; shunt TVS or capacitor), the standard KiCad graphics were rotated once in the library instead (`scripts/make_std_symbols.py` -> `lib/lcec.kicad_sym`), so they look standard.
+- No symbol pin sits on the top or bottom edge (KiCad prints those names sideways). The STM32 is a two-unit symbol: signals (U301A, left and right pins in functional groups) and power (U301B). URB modules and the oscillator have inputs left, outputs right.
+- Parts are aligned in rows and columns, decoupling capacitors sit beside the pin they serve, every net runs directly or ends in a short stub with a label, and notes and captions are kept clear of pins and the page frame.
+
 ## Definition of done
 
 | Requirement (`CLAUDE.md`) | Result |
@@ -67,7 +75,8 @@ Datasheet context: the URB's own EMC circuit uses a fuse and a 330 uF/50 V bulk 
 
 ## Library changes made in M3 (all re-run by the library scripts)
 
-- **STM32F405VGT6** and the three **URB** symbols were re-laid out for readability (`scripts/relayout_symbols.py`): pin numbers, names and types are unchanged apart from a short alternate function after the port name, so the datasheet check (44 of 44 symbols clean) still passes.
+- New project library `lib/lcec.kicad_sym` (registered as `lcec`): rotated/mirrored copies of KiCad's standard fuse, resistor, ferrite, LED, Schottky and Zener graphics, single-row connectors with pins on the right, and the pin-less BOM accessory symbol. Pin numbers match the LCSC footprints.
+- **STM32F405VGT6** and the three **URB** symbols were re-laid out for readability (`scripts/relayout_symbols.py`): pin numbers, names and types are unchanged apart from a short alternate function after the port name, so the datasheet check (44 of 44 symbols clean, re-run) still passes.
 - STM32 `VCAP_1`/`VCAP_2` pins are now passive (they are the internal regulator's output; as power inputs they raised false "not driven" errors).
 - `lib/lcsc.kicad_sym` is now committed in **native KiCad 10 format** (`scripts/finalize_lib.py`), so the library KiCad loads is exactly what the schematics embed.
 - Project library tables in `hardware/` now list KiCad's standard symbol and footprint libraries too.

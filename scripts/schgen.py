@@ -104,15 +104,21 @@ class SymDef:
         self.libid = libid
         self.tree = tree
         self.pins = {}          # number -> (x, y, angle, length, name, type)
-        self.nopins = False
+        self.unit_of = {}       # pin number -> unit (0 = common to all units)
+        self.units = set()
         for sub in find(tree, "symbol"):
+            parts = unq(sub[1]).rsplit("_", 2)
+            unit = int(parts[1]) if len(parts) == 3 and parts[1].isdigit() else 1
+            self.units.add(unit)
             for p in find(sub, "pin"):
                 at = find(p, "at")[0]
                 ln = find(p, "length")[0]
                 nm = find(p, "name")[0]
                 nb = find(p, "number")[0]
                 self.pins[unq(nb[1])] = (float(at[1]), float(at[2]), float(at[3]), float(ln[1]), unq(nm[1]), p[1])
+                self.unit_of[unq(nb[1])] = unit
         self.props = {unq(p[1]): unq(p[2]) for p in find(tree, "property")}
+        self.units.discard(0)
 
     def embedded(self):
         t = list(self.tree)
@@ -129,7 +135,7 @@ class Libs:
         up = os.path.join(self._tmp, "lcsc.kicad_sym")
         subprocess.run(["cp", os.path.join(ROOT, "lib", "lcsc.kicad_sym"), up], check=True)
         subprocess.run(["kicad-cli", "sym", "upgrade", up], check=True, capture_output=True)
-        self.paths = {"lcsc": up}
+        self.paths = {"lcsc": up, "lcec": os.path.join(ROOT, "lib", "lcec.kicad_sym")}
         self.cache = {}
 
     def _load(self, nick):
@@ -181,19 +187,19 @@ def rot_point(x, y, rot):
 
 
 class Placed:
-    def __init__(self, sch, libid, ref, x, y, rot, sd):
-        self.sch, self.libid, self.ref, self.x, self.y, self.rot, self.sd = sch, libid, ref, x, y, rot, sd
+    """A placed symbol. Every instance sits at rotation 0 (never rotated or mirrored)."""
+
+    def __init__(self, sch, libid, ref, x, y, sd, unit=1):
+        self.sch, self.libid, self.ref, self.x, self.y, self.sd, self.unit = sch, libid, ref, x, y, sd, unit
 
     def pin(self, number):
         px, py = self.sd.pins[str(number)][:2]
-        dx, dy = rot_point(px, py, self.rot)
-        return (snap(self.x + dx), snap(self.y + dy))
+        return (snap(self.x + px), snap(self.y - py))
 
     def pin_dir(self, number):
-        """Unit vector pointing away from the symbol body at this pin (schematic space)."""
-        a = self.sd.pins[str(number)][2]   # KiCad: direction the pin line runs from its connection point to the body
-        dx, dy = rot_point(math.cos(math.radians(a)), math.sin(math.radians(a)), self.rot)
-        return (-round(dx), -round(dy))     # away from the body
+        """Unit vector pointing away from the symbol body at this pin."""
+        a = math.radians(self.sd.pins[str(number)][2])   # direction the pin line runs toward the body
+        return (-round(math.cos(a)), round(math.sin(a)))
 
 
 class Sch:
@@ -244,11 +250,13 @@ class Sch:
         self.items.append(f"(no_connect (at {fmt(x)} {fmt(y)}) (uuid {q(self._u('nc'))}))")
 
     def label(self, name, x, y, rot=0):
+        assert rot in (0, 180), "labels are horizontal only"
         x, y = snap(x), snap(y)
         just = "left bottom" if rot in (0, 90) else "right bottom"
         self.items.append(f"(label {q(name)} (at {fmt(x)} {fmt(y)} {rot}) (fields_autoplaced yes) {self._eff(justify=just)} (uuid {q(self._u('l'))}))")
 
     def hlabel(self, name, shape, x, y, rot=0):
+        assert rot in (0, 180), "hierarchical labels are horizontal only"
         x, y = snap(x), snap(y)
         just = "left" if rot in (0, 90) else "right"
         self.items.append(f"(hierarchical_label {q(name)} (shape {shape}) (at {fmt(x)} {fmt(y)} {rot}) {self._eff(justify=just)} (uuid {q(self._u('hl'))}))")
@@ -269,13 +277,18 @@ class Sch:
         self.refs[prefix] = self.refs.get(prefix, 0) + 1
         return f"{prefix}{self.page}{self.refs[prefix]:02d}"
 
-    def place(self, libid, ref, x, y, rot=0, value=None, lcsc=None, props=None, ref_at=None, val_at=None,
-              in_bom=True, on_board=True, show_value=True, footprint=None, justify=None, ref_rot=0):
+    def place(self, libid, ref, x, y, value=None, lcsc=None, unit=1, props=None, text="auto", ref_at=None,
+              val_at=None, justify=None, val_justify=None, in_bom=True, on_board=True, show_value=True,
+              footprint=None):
+        """Place a symbol at rotation 0. All text is horizontal.
+
+        text: 'auto' puts the reference above and the value below a horizontal part, and both to the right of a
+        vertical one; 'right' / 'above' force one of those; ref_at / val_at override the positions."""
         sd = self.libs.get(libid)
         libid = sd.libid
         x, y = snap(x), snap(y)
         self.used_libs[libid] = sd
-        P = Placed(self, libid, ref, x, y, rot, sd)
+        P = Placed(self, libid, ref, x, y, sd, unit)
         fields = {}
         d = bom().get(lcsc, {}) if lcsc else {}
         fields["Footprint"] = footprint if footprint is not None else (d.get("Footprint") or sd.props.get("Footprint", ""))
@@ -290,52 +303,34 @@ class Sch:
             fields["Datasheet"] = sd.props.get("Datasheet", "")
         fields.update(props or {})
         val = value if value is not None else sd.props.get("Value", sd.libid.split(":")[1])
-        refx, refy = ref_at if ref_at else (x + g(2), y - g(1))
-        valx, valy = val_at if val_at else (x + g(2), y + g(1))
-        just = justify or "left"
-        lines = [f"(symbol (lib_id {q(libid)}) (at {fmt(x)} {fmt(y)} {rot}) (unit 1) (exclude_from_sim no) "
-                 f"(in_bom {'yes' if in_bom else 'no'}) (on_board {'yes' if on_board else 'no'}) (dnp no) (uuid {q(uid(self.uuid_root, 'sym', ref))})",
-                 f" (property \"Reference\" {q(ref)} (at {fmt(refx)} {fmt(refy)} {(ref_rot - (rot if rot in (90, 270) else 0)) % 360}) {self._eff(justify=just)})",
-                 f" (property \"Value\" {q(val)} (at {fmt(valx)} {fmt(valy)} {(0 - (rot if rot in (90, 270) else 0)) % 360}) {self._eff(justify=just, hide=not show_value)})"]
+        mine = [n for n in sd.pins if sd.unit_of[n] in (0, unit)]
+        xs = [sd.pins[n][0] for n in mine] or [0]
+        ys = [sd.pins[n][1] for n in mine] or [0]
+        horizontal = (max(xs) - min(xs)) > (max(ys) - min(ys)) and len(mine) <= 2
+        if text == "auto":
+            text = "above" if horizontal else "right"
+        if text == "above":
+            ref_at = ref_at or (x, y - g(4)); val_at = val_at or (x, y + g(4)); just = justify or "center"
+        else:
+            half = max(max(xs), 0) + g(1)
+            ref_at = ref_at or (x + half + g(1), y - g(1)); val_at = val_at or (x + half + g(1), y + g(1)); just = justify or "left"
+        lines = [f"(symbol (lib_id {q(libid)}) (at {fmt(x)} {fmt(y)} 0) (unit {unit}) (exclude_from_sim no) "
+                 f"(in_bom {'yes' if in_bom else 'no'}) (on_board {'yes' if on_board else 'no'}) (dnp no) "
+                 f"(uuid {q(uid(self.uuid_root, 'sym', ref, unit))})",
+                 f" (property \"Reference\" {q(ref)} (at {fmt(ref_at[0])} {fmt(ref_at[1])} 0) {self._eff(justify=just)})",
+                 f" (property \"Value\" {q(val)} (at {fmt(val_at[0])} {fmt(val_at[1])} 0) {self._eff(justify=val_justify or just, hide=not show_value)})"]
         for k, v in fields.items():
             lines.append(f" (property {q(k)} {q(v)} (at {fmt(x)} {fmt(y)} 0) {self._eff(hide=True)})")
-        for n in sd.pins:
-            lines.append(f" (pin {q(n)} (uuid {q(uid(self.uuid_root, 'pin', ref, n))}))")
+        for n in mine:
+            lines.append(f" (pin {q(n)} (uuid {q(uid(self.uuid_root, 'pin', ref, unit, n))}))")
             self.pins_at.append(P.pin(n))
-        lines.append(f" (instances (project {q(PROJECT)} (path {q('/' + self.root_uuid + '/' + self.sheet_uuid)} (reference {q(ref)}) (unit 1)))))")
+        lines.append(f" (instances (project {q(PROJECT)} (path {q('/' + self.root_uuid + '/' + self.sheet_uuid)} "
+                     f"(reference {q(ref)}) (unit {unit})))))")
         self.items.append("\n".join(lines))
         return P
 
-    def place2(self, libid, ref, a_pin, b_pin, a_at, direction, **kw):
-        """Place a two-terminal part so that pin a_pin sits at a_at and pin b_pin lies in `direction`
-        ('right', 'left', 'down' or 'up') from it. Returns the Placed part; text goes beside it."""
-        sd = self.libs.get(libid)
-        want = {"right": (1, 0), "left": (-1, 0), "down": (0, 1), "up": (0, -1)}[direction]
-        ax, ay = sd.pins[str(a_pin)][:2]
-        bx, by = sd.pins[str(b_pin)][:2]
-        for rot in (0, 90, 180, 270):
-            da, db = rot_point(ax, ay, rot), rot_point(bx, by, rot)
-            v = (db[0] - da[0], db[1] - da[1])
-            if abs(v[0]) > 1e-6 and abs(v[1]) < 1e-6:
-                sgn = (1 if v[0] > 0 else -1, 0)
-            elif abs(v[1]) > 1e-6 and abs(v[0]) < 1e-6:
-                sgn = (0, 1 if v[1] > 0 else -1)
-            else:
-                continue
-            if sgn == want:
-                x, y = a_at[0] - da[0], a_at[1] - da[1]
-                cx, cy = a_at[0] + v[0] / 2, a_at[1] + v[1] / 2
-                if direction in ("right", "left"):
-                    kw.setdefault("ref_at", (cx, cy - g(4)))
-                    kw.setdefault("val_at", (cx, cy + g(4)))
-                    kw.setdefault("justify", "center")
-                else:
-                    kw.setdefault("ref_at", (cx + g(3), cy - g(1)))
-                    kw.setdefault("val_at", (cx + g(3), cy + g(1)))
-                return self.place(libid, ref, x, y, rot, **kw)
-        raise ValueError(f"{libid}: cannot orient pins {a_pin}->{b_pin} {direction}")
-
-    def power(self, glyph, net, x, y, rot=0, ref=None, show_value=True):
+    def power(self, glyph, net, x, y, ref=None, show_value=True):
+        rot = 0
         """Power symbol (glyph = e.g. 'power:GND'); the net name is the Value field."""
         self.counter += 1
         ref = ref or f"#PWR{self.page}{self.counter:03d}"
@@ -378,13 +373,14 @@ class Sch:
         self.power("power:PWR_FLAG", "PWR_FLAG", x, y, ref=f"#FLG{self.page}{self.counter + 1:03d}", show_value=False)
 
     # -- connection helpers
-    def stub(self, pt, direction, length, net=None, label_rot=None):
-        """Wire from pt in `direction` for `length` mm; optional label at the end. Returns the end point."""
+    def stub(self, pt, direction, length, net=None):
+        """Wire from pt in `direction` for `length` mm; an optional net label at the end (horizontal wires only,
+        because labels are never rotated). Returns the end point."""
         end = (snap(pt[0] + direction[0] * length), snap(pt[1] + direction[1] * length))
         self.wire(pt, end)
         if net:
-            r = label_rot if label_rot is not None else {(1, 0): 0, (-1, 0): 180, (0, -1): 90, (0, 1): 270}[tuple(direction)]
-            self.label(net, end[0], end[1], r)
+            assert direction[1] == 0, "net labels go on horizontal wires"
+            self.label(net, end[0], end[1], 0 if direction[0] > 0 else 180)
         return end
 
     def autojunctions(self):

@@ -1,4 +1,4 @@
-ERC report (2026-11-06T05:45:53, Encoding UTF8)
+ERC report (2026-11-06T06:10:49, Encoding UTF8)
 Report includes: Errors, Warnings, Exclusions
 
 ***** Sheet /
@@ -6,10 +6,10 @@ Report includes: Errors, Warnings, Exclusions
 ***** Sheet /Power/
 [ground_pin_not_ground]: Pin GND not connected to ground net
     ; warning
-    @(226.06 mm, 114.30 mm): Symbol U203 Pin 1 [GND, Power input, Line]
+    @(274.32 mm, 81.28 mm): Symbol U201 Pin 1 [GND, Power input, Line]
 [ground_pin_not_ground]: Pin GND not connected to ground net
     ; warning
-    @(226.06 mm, 200.66 mm): Symbol U201 Pin 1 [GND, Power input, Line]
+    @(274.32 mm, 200.66 mm): Symbol U203 Pin 1 [GND, Power input, Line]
 
 ***** Sheet /MCU/
 
