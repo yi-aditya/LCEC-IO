@@ -9,7 +9,7 @@
 		(date "2026-11-06")
 		(rev "A")
 		(company "Yantra Innovation - LCEC-IO")
-		(comment 1 "Root sheet: Power, MCU and EtherCAT sheets")
+		(comment 1 "Root sheet: all eight sheets; the block diagram, mounting holes and PE follow in M6")
 	)
 	(lib_symbols)
 	(text "LCEC-IO  -  EtherCAT slave I/O board"
@@ -23,7 +23,7 @@
 		)
 		(uuid "81b2eb9e-b6e9-5d6b-a6bb-3a6368748f28")
 	)
-	(text "Root sheet, milestone M4: Power (2), MCU (3) and EtherCAT (4). Sheets 5 to 8 (digital inputs, MPG, relay outputs, analog outputs) are added in M5; the full root sheet follows in M6."
+	(text "Root sheet, milestone M5: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8). The block diagram, mounting holes and PE terminal follow in M6."
 		(exclude_from_sim no)
 		(at 15.24 22.86 0)
 		(effects
@@ -34,60 +34,19 @@
 		)
 		(uuid "827bcbb1-f13f-56d4-a515-f4c25f827b23")
 	)
-	(text "No-connect flags on the MCU sheet pins are placeholders: they are replaced by wires to sheets 5 to 8 in M5."
-		(exclude_from_sim no)
-		(at 127 109.22 0)
-		(effects
-			(font
-				(size 1.27 1.27)
-			)
-			(justify left bottom)
+	(wire
+		(pts
+			(xy 203.2 101.6) (xy 228.6 101.6)
 		)
-		(uuid "b1f17b75-4819-58c3-8198-1e39ad87c0e6")
-	)
-	(no_connect
-		(at 177.8 83.82)
-		(uuid "408d7480-9290-5a91-8dbd-ac98e5ee1283")
-	)
-	(no_connect
-		(at 177.8 88.9)
-		(uuid "49e97bb7-3edf-5a2d-9db8-66f540703bd6")
-	)
-	(no_connect
-		(at 177.8 91.44)
-		(uuid "4f47016b-abd7-5ea7-b8ac-8150123b00dd")
-	)
-	(no_connect
-		(at 177.8 86.36)
-		(uuid "8549f259-754a-5825-89a5-122616c7c524")
-	)
-	(no_connect
-		(at 177.8 81.28)
-		(uuid "aaadb7f9-da52-5067-9661-ed41f3921347")
-	)
-	(no_connect
-		(at 127 60.96)
-		(uuid "b2634811-9d0a-5d9c-a53a-5e24b0b61706")
-	)
-	(no_connect
-		(at 127 58.42)
-		(uuid "b3798be3-99a9-5ce0-9557-668f4d8009c5")
-	)
-	(no_connect
-		(at 127 63.5)
-		(uuid "b57292f1-1ed3-5c90-afd1-c597adc85993")
-	)
-	(no_connect
-		(at 177.8 93.98)
-		(uuid "bbf2d05b-f26b-51a9-9c5e-4381a995a830")
-	)
-	(no_connect
-		(at 127 55.88)
-		(uuid "ea1036a6-ffee-5bbb-82f1-89ccc1b373c8")
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "100b8792-db34-5d95-a5ff-a6ffea97dbde")
 	)
 	(wire
 		(pts
-			(xy 177.8 60.96) (xy 228.6 60.96)
+			(xy 114.3 104.14) (xy 152.4 104.14)
 		)
 		(stroke
 			(width 0)
@@ -97,7 +56,7 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 55.88) (xy 228.6 55.88)
+			(xy 114.3 93.98) (xy 152.4 93.98)
 		)
 		(stroke
 			(width 0)
@@ -107,7 +66,17 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 63.5) (xy 228.6 63.5)
+			(xy 203.2 165.1) (xy 228.6 165.1)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2dcba4aa-602b-58ec-95cf-a71dce30f26c")
+	)
+	(wire
+		(pts
+			(xy 114.3 109.22) (xy 124.46 109.22)
 		)
 		(stroke
 			(width 0)
@@ -117,7 +86,37 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 73.66) (xy 228.6 73.66)
+			(xy 203.2 104.14) (xy 228.6 104.14)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ee21492-455a-5994-b7b9-14498ee3fdc3")
+	)
+	(wire
+		(pts
+			(xy 203.2 109.22) (xy 228.6 109.22)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "4707bde8-6a68-53ab-9e6b-15e321ee7c6b")
+	)
+	(wire
+		(pts
+			(xy 203.2 160.02) (xy 228.6 160.02)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "68328265-2390-5dfb-a016-f27def73e6cd")
+	)
+	(wire
+		(pts
+			(xy 203.2 93.98) (xy 228.6 93.98)
 		)
 		(stroke
 			(width 0)
@@ -127,17 +126,67 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 66.04) (xy 228.6 66.04)
+			(xy 203.2 114.3) (xy 228.6 114.3)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "7a36bed5-f44d-5f16-a1df-a25793f05c68")
+		(uuid "71af2d62-8884-5516-8e80-db874e02a3cf")
 	)
 	(wire
 		(pts
-			(xy 177.8 78.74) (xy 228.6 78.74)
+			(xy 228.6 139.7) (xy 218.44 139.7)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "83b20ca4-a80a-52ae-8501-8aed12e6a286")
+	)
+	(bus
+		(pts
+			(xy 114.3 134.62) (xy 152.4 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8695c52f-31e1-5da5-b0d9-b81827134e8f")
+	)
+	(wire
+		(pts
+			(xy 203.2 162.56) (xy 228.6 162.56)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8cb784c8-f553-5636-99df-f85b32b3cc2f")
+	)
+	(bus
+		(pts
+			(xy 114.3 144.78) (xy 152.4 144.78)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9c03a4b0-dbcb-5e81-993e-bd8b031f0364")
+	)
+	(wire
+		(pts
+			(xy 203.2 111.76) (xy 228.6 111.76)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "9cbda453-b1e5-5138-9635-b3cc73555aed")
+	)
+	(wire
+		(pts
+			(xy 203.2 99.06) (xy 228.6 99.06)
 		)
 		(stroke
 			(width 0)
@@ -147,7 +196,7 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 58.42) (xy 228.6 58.42)
+			(xy 114.3 99.06) (xy 152.4 99.06)
 		)
 		(stroke
 			(width 0)
@@ -157,27 +206,27 @@
 	)
 	(wire
 		(pts
-			(xy 177.8 68.58) (xy 228.6 68.58)
+			(xy 203.2 116.84) (xy 228.6 116.84)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "be230070-6954-57b1-838d-e1623e608431")
+		(uuid "c6516ace-8b9e-505c-82df-88066939ae6f")
 	)
 	(wire
 		(pts
-			(xy 177.8 71.12) (xy 228.6 71.12)
+			(xy 203.2 167.64) (xy 228.6 167.64)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "c3995fd9-08b5-54be-993f-9d0e2a7c49be")
+		(uuid "d0132559-fce5-5a93-8047-f5dafc20ef65")
 	)
 	(wire
 		(pts
-			(xy 177.8 76.2) (xy 228.6 76.2)
+			(xy 203.2 96.52) (xy 228.6 96.52)
 		)
 		(stroke
 			(width 0)
@@ -185,8 +234,48 @@
 		)
 		(uuid "e0d7b447-a9b8-59d3-a354-747f4ec4f32e")
 	)
+	(bus
+		(pts
+			(xy 203.2 134.62) (xy 228.6 134.62)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "e8e4f48b-086f-5d58-b4e8-97de9d1ce9f5")
+	)
+	(wire
+		(pts
+			(xy 203.2 106.68) (xy 228.6 106.68)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "f6b996d6-3bfe-508b-9384-a07d0e92659e")
+	)
+	(label "OE_FIELD"
+		(at 218.44 139.7 180)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right bottom)
+		)
+		(uuid "84da296b-a68b-5a50-a81b-2b52b0026eef")
+	)
+	(label "OE_FIELD"
+		(at 124.46 109.22 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b419ef25-a304-55bb-a0e5-cca3926f2993")
+	)
 	(sheet
-		(at 228.6 50.8)
+		(at 228.6 88.9)
 		(size 50.8 35.56)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -202,7 +291,7 @@
 		)
 		(uuid "72bb68cf-d9d8-5e97-be6c-0f320889b6f7")
 		(property "Sheetname" "EtherCAT"
-			(at 228.6 49.53 0)
+			(at 228.6 87.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -213,7 +302,7 @@
 			)
 		)
 		(property "Sheetfile" "04_ethercat.kicad_sch"
-			(at 228.6 87.63 0)
+			(at 228.6 125.73 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -224,7 +313,7 @@
 			)
 		)
 		(pin "CLK_ESC" input
-			(at 228.6 55.88 180)
+			(at 228.6 93.98 180)
 			(uuid "7512ec39-30d7-5086-9c80-1360b6bc96a1")
 			(effects
 				(font
@@ -234,7 +323,7 @@
 			)
 		)
 		(pin "ESC_CS" input
-			(at 228.6 58.42 180)
+			(at 228.6 96.52 180)
 			(uuid "c29fc164-fbca-5d5a-8c28-725c0559e958")
 			(effects
 				(font
@@ -244,7 +333,7 @@
 			)
 		)
 		(pin "ESC_SCK" input
-			(at 228.6 60.96 180)
+			(at 228.6 99.06 180)
 			(uuid "409b7c04-c880-54e1-978a-c48d8921fa1f")
 			(effects
 				(font
@@ -254,7 +343,7 @@
 			)
 		)
 		(pin "ESC_MOSI" input
-			(at 228.6 63.5 180)
+			(at 228.6 101.6 180)
 			(uuid "5b488b87-3c18-5754-86a8-ce7ec299b811")
 			(effects
 				(font
@@ -264,7 +353,7 @@
 			)
 		)
 		(pin "ESC_RST" bidirectional
-			(at 228.6 66.04 180)
+			(at 228.6 104.14 180)
 			(uuid "6d366f1e-8bbb-518f-bbc3-5fa1cba565a9")
 			(effects
 				(font
@@ -274,7 +363,7 @@
 			)
 		)
 		(pin "ESC_MISO" output
-			(at 228.6 68.58 180)
+			(at 228.6 106.68 180)
 			(uuid "c0eb2065-3337-55af-bbc7-ab719999c839")
 			(effects
 				(font
@@ -284,7 +373,7 @@
 			)
 		)
 		(pin "ESC_IRQ" output
-			(at 228.6 71.12 180)
+			(at 228.6 109.22 180)
 			(uuid "51948056-9eb5-5b8a-9163-763524195151")
 			(effects
 				(font
@@ -294,7 +383,7 @@
 			)
 		)
 		(pin "ESC_SYNC0" output
-			(at 228.6 73.66 180)
+			(at 228.6 111.76 180)
 			(uuid "66745c47-04b7-5949-bf68-b55c85467078")
 			(effects
 				(font
@@ -304,7 +393,7 @@
 			)
 		)
 		(pin "ESC_SYNC1" output
-			(at 228.6 76.2 180)
+			(at 228.6 114.3 180)
 			(uuid "09076996-0244-573c-83fb-95dd9bd2dc79")
 			(effects
 				(font
@@ -314,7 +403,7 @@
 			)
 		)
 		(pin "ERR_LED" input
-			(at 228.6 78.74 180)
+			(at 228.6 116.84 180)
 			(uuid "587bb476-1d24-5c9e-b1a1-e9f0dc101e8d")
 			(effects
 				(font
@@ -332,7 +421,7 @@
 		)
 	)
 	(sheet
-		(at 25.4 50.8)
+		(at 25.4 38.1)
 		(size 50.8 30.48)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -348,7 +437,7 @@
 		)
 		(uuid "7700c9f4-0f38-59ff-b564-9d3300b164d7")
 		(property "Sheetname" "Power"
-			(at 25.4 49.53 0)
+			(at 25.4 36.83 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -359,7 +448,7 @@
 			)
 		)
 		(property "Sheetfile" "02_power.kicad_sch"
-			(at 25.4 82.55 0)
+			(at 25.4 69.85 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -378,8 +467,226 @@
 		)
 	)
 	(sheet
-		(at 127 50.8)
-		(size 50.8 50.8)
+		(at 228.6 154.94)
+		(size 50.8 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "a62aac32-7b47-5bfd-b7eb-abf7050a18bf")
+		(property "Sheetname" "Analog"
+			(at 228.6 153.67 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "08_analog.kicad_sch"
+			(at 228.6 176.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "DAC_SCK" input
+			(at 228.6 160.02 180)
+			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f13")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DAC_MOSI" input
+			(at 228.6 162.56 180)
+			(uuid "5d28d431-7012-5929-a675-964d7989f27e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DAC_CS" input
+			(at 228.6 165.1 180)
+			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b4")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "AO_CLAMP" input
+			(at 228.6 167.64 180)
+			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "8")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 228.6 129.54)
+		(size 50.8 20.32)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "af24ce38-33c0-5f70-9a00-328d13ca2c07")
+		(property "Sheetname" "Relays"
+			(at 228.6 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "07_relays.kicad_sch"
+			(at 228.6 151.13 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "DO[1..8]" input
+			(at 228.6 134.62 180)
+			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef30")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "OE_FIELD" input
+			(at 228.6 139.7 180)
+			(uuid "0e1cbf3b-c7a6-50e7-988e-3d670a25d5a7")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "7")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 63.5 129.54)
+		(size 50.8 25.4)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "ca713196-387e-5ae6-bdff-9b3b7881f1dc")
+		(property "Sheetname" "Inputs"
+			(at 63.5 128.27 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "05_inputs.kicad_sch"
+			(at 63.5 156.21 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "DI[1..8]" output
+			(at 114.3 134.62 0)
+			(uuid "a110612d-6d21-5864-b486-8d79e1925872")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "SEL[1..12]" output
+			(at 114.3 144.78 0)
+			(uuid "b04114b7-444b-5391-8401-6e111cad978f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "5")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 152.4 88.9)
+		(size 50.8 91.44)
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -394,7 +701,7 @@
 		)
 		(uuid "e64e3fdd-a962-5e6c-8579-0809fabc1b27")
 		(property "Sheetname" "MCU"
-			(at 127 49.53 0)
+			(at 152.4 87.63 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -405,7 +712,7 @@
 			)
 		)
 		(property "Sheetfile" "03_mcu.kicad_sch"
-			(at 127 102.87 0)
+			(at 152.4 181.61 0)
 			(show_name no)
 			(do_not_autoplace no)
 			(effects
@@ -415,168 +722,8 @@
 				(justify left top)
 			)
 		)
-		(pin "CLK_ESC" output
-			(at 177.8 55.88 0)
-			(uuid "7512ec39-30d7-5086-9c80-1360b6bc96a0")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_CS" output
-			(at 177.8 58.42 0)
-			(uuid "c29fc164-fbca-5d5a-8c28-725c0559e957")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_SCK" output
-			(at 177.8 60.96 0)
-			(uuid "409b7c04-c880-54e1-978a-c48d8921fa1e")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_MOSI" output
-			(at 177.8 63.5 0)
-			(uuid "5b488b87-3c18-5754-86a8-ce7ec299b810")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_RST" output
-			(at 177.8 66.04 0)
-			(uuid "6d366f1e-8bbb-518f-bbc3-5fa1cba565a8")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_MISO" input
-			(at 177.8 68.58 0)
-			(uuid "c0eb2065-3337-55af-bbc7-ab719999c838")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_IRQ" input
-			(at 177.8 71.12 0)
-			(uuid "51948056-9eb5-5b8a-9163-763524195150")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_SYNC0" input
-			(at 177.8 73.66 0)
-			(uuid "66745c47-04b7-5949-bf68-b55c85467077")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ESC_SYNC1" input
-			(at 177.8 76.2 0)
-			(uuid "09076996-0244-573c-83fb-95dd9bd2dc78")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "ERR_LED" output
-			(at 177.8 78.74 0)
-			(uuid "587bb476-1d24-5c9e-b1a1-e9f0dc101e8c")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "RELAY_OE" output
-			(at 177.8 81.28 0)
-			(uuid "0a6f063e-0652-5afb-abb4-68836f5a9118")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DAC_CS" output
-			(at 177.8 83.82 0)
-			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b3")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DAC_SCK" output
-			(at 177.8 86.36 0)
-			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f12")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DAC_MOSI" output
-			(at 177.8 88.9 0)
-			(uuid "5d28d431-7012-5929-a675-964d7989f27d")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "AO_CLAMP" output
-			(at 177.8 91.44 0)
-			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841c")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(pin "DO[1..8]" output
-			(at 177.8 93.98 0)
-			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef2f")
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
 		(pin "MPG_A" input
-			(at 127 55.88 180)
+			(at 152.4 93.98 180)
 			(uuid "00fef74d-7608-56be-a0c9-7721e4942414")
 			(effects
 				(font
@@ -586,7 +733,7 @@
 			)
 		)
 		(pin "MPG_B" input
-			(at 127 58.42 180)
+			(at 152.4 99.06 180)
 			(uuid "79f66d07-feec-53db-8b6b-8d85252c95e1")
 			(effects
 				(font
@@ -595,8 +742,18 @@
 				(justify right)
 			)
 		)
+		(pin "RELAY_OE" output
+			(at 152.4 104.14 180)
+			(uuid "0a6f063e-0652-5afb-abb4-68836f5a9118")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
 		(pin "DI[1..8]" input
-			(at 127 60.96 180)
+			(at 152.4 134.62 180)
 			(uuid "a110612d-6d21-5864-b486-8d79e1925871")
 			(effects
 				(font
@@ -606,7 +763,7 @@
 			)
 		)
 		(pin "SEL[1..12]" input
-			(at 127 63.5 180)
+			(at 152.4 144.78 180)
 			(uuid "b04114b7-444b-5391-8401-6e111cad978e")
 			(effects
 				(font
@@ -615,10 +772,246 @@
 				(justify right)
 			)
 		)
+		(pin "CLK_ESC" output
+			(at 203.2 93.98 0)
+			(uuid "7512ec39-30d7-5086-9c80-1360b6bc96a0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_CS" output
+			(at 203.2 96.52 0)
+			(uuid "c29fc164-fbca-5d5a-8c28-725c0559e957")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_SCK" output
+			(at 203.2 99.06 0)
+			(uuid "409b7c04-c880-54e1-978a-c48d8921fa1e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_MOSI" output
+			(at 203.2 101.6 0)
+			(uuid "5b488b87-3c18-5754-86a8-ce7ec299b810")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_RST" output
+			(at 203.2 104.14 0)
+			(uuid "6d366f1e-8bbb-518f-bbc3-5fa1cba565a8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_MISO" input
+			(at 203.2 106.68 0)
+			(uuid "c0eb2065-3337-55af-bbc7-ab719999c838")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_IRQ" input
+			(at 203.2 109.22 0)
+			(uuid "51948056-9eb5-5b8a-9163-763524195150")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_SYNC0" input
+			(at 203.2 111.76 0)
+			(uuid "66745c47-04b7-5949-bf68-b55c85467077")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_SYNC1" input
+			(at 203.2 114.3 0)
+			(uuid "09076996-0244-573c-83fb-95dd9bd2dc78")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ERR_LED" output
+			(at 203.2 116.84 0)
+			(uuid "587bb476-1d24-5c9e-b1a1-e9f0dc101e8c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DO[1..8]" output
+			(at 203.2 134.62 0)
+			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef2f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_SCK" output
+			(at 203.2 160.02 0)
+			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_MOSI" output
+			(at 203.2 162.56 0)
+			(uuid "5d28d431-7012-5929-a675-964d7989f27d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_CS" output
+			(at 203.2 165.1 0)
+			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AO_CLAMP" output
+			(at 203.2 167.64 0)
+			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
 		(instances
 			(project "lcec-io"
 				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
 					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 63.5 88.9)
+		(size 50.8 30.48)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "fc23005a-e0f5-51b9-8adc-279fe4d00de2")
+		(property "Sheetname" "MPG"
+			(at 63.5 87.63 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "06_mpg.kicad_sch"
+			(at 63.5 120.65 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPG_A" output
+			(at 114.3 93.98 0)
+			(uuid "00fef74d-7608-56be-a0c9-7721e4942415")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "MPG_B" output
+			(at 114.3 99.06 0)
+			(uuid "79f66d07-feec-53db-8b6b-8d85252c95e2")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "RELAY_OE" input
+			(at 114.3 104.14 0)
+			(uuid "0a6f063e-0652-5afb-abb4-68836f5a9119")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "OE_FIELD" output
+			(at 114.3 109.22 0)
+			(uuid "0e1cbf3b-c7a6-50e7-988e-3d670a25d5a6")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "6")
 				)
 			)
 		)

@@ -203,9 +203,11 @@ class Placed:
 
 
 class Sch:
-    def __init__(self, libs, filename, title, page, root_uuid, sheet_uuid, rev="A", paper="A3", comment=""):
+    def __init__(self, libs, filename, title, page, root_uuid, sheet_uuid, rev="A", paper="A3", comment="", paths=None):
         self.libs, self.filename, self.title, self.page = libs, filename, title, page
         self.root_uuid, self.sheet_uuid = root_uuid, sheet_uuid
+        # instance paths of this sheet file: one per place it is used (a reused sheet has several)
+        self.paths = paths or (["/" + root_uuid] if page == "1" else ["/" + root_uuid + "/" + sheet_uuid])
         self.rev, self.paper, self.comment = rev, paper, comment
         self.items, self.used_libs, self.refs = [], {}, {}
         self.wires, self.pins_at, self.counter = [], [], 0
@@ -279,7 +281,7 @@ class Sch:
 
     def place(self, libid, ref, x, y, value=None, lcsc=None, unit=1, props=None, text="auto", ref_at=None,
               val_at=None, justify=None, val_justify=None, in_bom=True, on_board=True, show_value=True,
-              footprint=None):
+              footprint=None, dnp=False):
         """Place a symbol at rotation 0. All text is horizontal.
 
         text: 'auto' puts the reference above and the value below a horizontal part, and both to the right of a
@@ -288,6 +290,8 @@ class Sch:
         libid = sd.libid
         x, y = snap(x), snap(y)
         self.used_libs[libid] = sd
+        refs = [ref(k) if callable(ref) else ref for k in range(len(self.paths))]
+        ref = refs[0]
         P = Placed(self, libid, ref, x, y, sd, unit)
         fields = {}
         d = bom().get(lcsc, {}) if lcsc else {}
@@ -315,7 +319,7 @@ class Sch:
             half = max(max(xs), 0) + g(1)
             ref_at = ref_at or (x + half + g(1), y - g(1)); val_at = val_at or (x + half + g(1), y + g(1)); just = justify or "left"
         lines = [f"(symbol (lib_id {q(libid)}) (at {fmt(x)} {fmt(y)} 0) (unit {unit}) (exclude_from_sim no) "
-                 f"(in_bom {'yes' if in_bom else 'no'}) (on_board {'yes' if on_board else 'no'}) (dnp no) "
+                 f"(in_bom {'yes' if in_bom else 'no'}) (on_board {'yes' if on_board else 'no'}) (dnp {'yes' if dnp else 'no'}) "
                  f"(uuid {q(uid(self.uuid_root, 'sym', ref, unit))})",
                  f" (property \"Reference\" {q(ref)} (at {fmt(ref_at[0])} {fmt(ref_at[1])} 0) {self._eff(justify=just)})",
                  f" (property \"Value\" {q(val)} (at {fmt(val_at[0])} {fmt(val_at[1])} 0) {self._eff(justify=val_justify or just, hide=not show_value)})"]
@@ -324,8 +328,8 @@ class Sch:
         for n in mine:
             lines.append(f" (pin {q(n)} (uuid {q(uid(self.uuid_root, 'pin', ref, unit, n))}))")
             self.pins_at.append(P.pin(n))
-        lines.append(f" (instances (project {q(PROJECT)} (path {q('/' + self.root_uuid + '/' + self.sheet_uuid)} "
-                     f"(reference {q(ref)}) (unit {unit})))))")
+        paths = " ".join(f"(path {q(pp)} (reference {q(rr)}) (unit {unit}))" for pp, rr in zip(self.paths, refs))
+        lines.append(f" (instances (project {q(PROJECT)} {paths})))")
         self.items.append("\n".join(lines))
         return P
 
@@ -346,10 +350,10 @@ class Sch:
             f" (property \"Footprint\" \"\" (at {fmt(x)} {fmt(y)} 0) {self._eff(hide=True)})\n"
             f" (property \"Datasheet\" \"\" (at {fmt(x)} {fmt(y)} 0) {self._eff(hide=True)})\n"
             f" (pin \"1\" (uuid {q(uid(self.uuid_root, 'pwrpin', ref))}))\n"
-            f" (instances (project {q(PROJECT)} (path {q('/' + self.root_uuid + '/' + self.sheet_uuid)} (reference {q(ref)}) (unit 1)))))")
+            f" (instances (project {q(PROJECT)} " + " ".join(f"(path {q(pp)} (reference {q(ref)}) (unit 1))" for pp in self.paths) + ")))")
         self.pins_at.append((x, y))
 
-    def sheet(self, name, filename, x, y, w, h, pins, page, sheet_uuid):
+    def sheet(self, name, filename, x, y, w, h, pins, page, sheet_uuid, parent_path=None):
         """Hierarchical sheet symbol. pins = [(name, shape, side, y_offset_mm)], side 'left' or 'right'.
         Returns {pin name: (x, y)} so callers can wire or no-connect them."""
         x, y, w, h = snap(x), snap(y), snap(w), snap(h)
@@ -366,7 +370,7 @@ class Sch:
             f" (property \"Sheetname\" {q(name)} (at {fmt(x)} {fmt(y - 1.27)} 0) {self._eff(justify='left bottom')})\n"
             f" (property \"Sheetfile\" {q(filename)} (at {fmt(x)} {fmt(y + h + 1.27)} 0) {self._eff(justify='left top')})\n"
             + "\n".join(lines) + "\n"
-            f" (instances (project {q(PROJECT)} (path {q('/' + self.root_uuid)} (page {q(str(page))}))))\n)")
+            f" (instances (project {q(PROJECT)} (path {q(parent_path or self.paths[0])} (page {q(str(page))}))))\n)")
         return out
 
     def pwr_flag(self, x, y):
