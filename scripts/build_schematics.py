@@ -22,39 +22,9 @@ from schgen import g  # noqa: E402
 
 HW = os.path.join(G.ROOT, "hardware")
 ROOT_UUID = G.uid("root")
-SHEET_UUID = {"power": G.uid("sheet", "power"), "mcu": G.uid("sheet", "mcu"), "ethercat": G.uid("sheet", "ethercat")}
-TP_FP = "TestPoint:TestPoint_Pad_D2.0mm"
-GND = "power:GND"
+SHEET_UUID = {"inputs": G.uid("sheet", "inputs"), "in4": [G.uid("sheet", "in4", k) for k in range(5)], "analog": G.uid("sheet", "analog"), "relays": G.uid("sheet", "relays"), "mpg": G.uid("sheet", "mpg"), "power": G.uid("sheet", "power"), "mcu": G.uid("sheet", "mcu"), "ethercat": G.uid("sheet", "ethercat")}
+from drawing import GND, TP_FP, hpart, note, testpoint, tp_at_net, vpart  # noqa: E402
 MCU_HLABELS = {}                    # hierarchical labels of the MCU sheet: name -> shape (drives the root sheet pins)
-
-
-# ------------------------------------------------------------------ small drawing helpers
-def note(s, text, x, y, size=1.27, bold=False):
-    s.text(text, x, y, size=size, bold=bold)
-
-
-def vpart(s, libid, ref, x, y_top, value, lcsc, **kw):
-    """Vertical two-pin part (pins 3.81 mm above and below its centre) with its TOP pin at (x, y_top).
-    Returns the part; its bottom pin is at y_top + 7.62."""
-    return s.place(libid, ref, x, y_top + g(3), value=value, lcsc=lcsc, **kw)
-
-
-def hpart(s, libid, ref, x_left, y, value, lcsc, **kw):
-    """Horizontal two-pin part with its LEFT pin at (x_left, y); the right pin is 7.62 mm further right."""
-    return s.place(libid, ref, x_left + g(3), y, value=value, lcsc=lcsc, **kw)
-
-
-def testpoint(s, ref, net, x, y, **kw):
-    """Test point with its pin at (x, y) and the pad drawn above it; the value (net name) is not repeated."""
-    return s.place("Connector:TestPoint", ref, x, y, value=net, footprint=TP_FP, in_bom=False,
-                   props={"LCSC": "n/a (bare pad)"}, show_value=False, ref_at=(x + g(2), y - g(3)), justify="left", **kw)
-
-
-def tp_at_net(s, ref, net, x, y):
-    """Test point whose pin is wired down 2.54 mm to a net label (row of test points at the bottom of a sheet)."""
-    testpoint(s, ref, net, x, y)
-    s.wire((x, y), (x, y + g(2)))
-    s.label(net, x, y + g(2), 0)
 
 
 # =============================================================== sheet 2: power
@@ -606,31 +576,49 @@ def build_ethercat(libs):
 # =============================================================== root sheet
 def build_root(libs):
     s = G.Sch(libs, "lcec-io.kicad_sch", "LCEC-IO - EtherCAT slave I/O board", "1", ROOT_UUID, ROOT_UUID,
-              comment="Root sheet: Power, MCU and EtherCAT sheets")
+              comment="Root sheet: all eight sheets; the block diagram, mounting holes and PE follow in M6")
     s.text("LCEC-IO  -  EtherCAT slave I/O board", g(12), g(12), 3.0, justify="left bottom")
-    s.text("Root sheet, milestone M4: Power (2), MCU (3) and EtherCAT (4). Sheets 5 to 8 (digital inputs, MPG, relay outputs, analog outputs) "
-           "are added in M5; the full root sheet follows in M6.", g(12), g(18))
-    s.sheet("Power", "02_power.kicad_sch", g(20), g(40), g(40), g(24), [], 2, SHEET_UUID["power"])
-    # MCU sheet: the EtherCAT nets leave on the right, in the order of the EtherCAT sheet, so each wire to sheet 4 is straight
-    eth = list(ETH_NETS)
-    rest_in = [n for n, sh in MCU_HLABELS.items() if sh == "input" and n not in ETH_NETS]
-    rest_out = [n for n, sh in MCU_HLABELS.items() if sh == "output" and n not in ETH_NETS]
-    h = max(len(rest_in), len(eth) + len(rest_out)) * g(2) + g(8)
-    pins = [(n, MCU_HLABELS[n], "right", g(4) + i * g(2)) for i, n in enumerate(eth)]
-    pins += [(n, "output", "right", g(4) + (len(eth) + i) * g(2)) for i, n in enumerate(rest_out)]
-    pins += [(n, "input", "left", g(4) + i * g(2)) for i, n in enumerate(rest_in)]
-    mx, my, mw = g(100), g(40), g(40)
-    pos = s.sheet("MCU", "03_mcu.kicad_sch", mx, my, mw, h, pins, 3, SHEET_UUID["mcu"])
+    s.text("Root sheet, milestone M5: Power (2), MCU (3), EtherCAT (4), Inputs (5), MPG (6), Relays (7), Analog (8). "
+           "The block diagram, mounting holes and PE terminal follow in M6.", g(12), g(18))
+    s.sheet("Power", "02_power.kicad_sch", g(20), g(30), g(40), g(24), [], 2, SHEET_UUID["power"])
+    my = g(70)
+    mx, mw = g(120), g(40)
+    left = [("MPG_A", 4), ("MPG_B", 8), ("RELAY_OE", 12), ("DI[1..8]", 36), ("SEL[1..12]", 44)]
+    right = [(n, 4 + 2 * i) for i, n in enumerate(ETH_NETS)] + [("DO[1..8]", 36), ("DAC_SCK", 56), ("DAC_MOSI", 58), ("DAC_CS", 60), ("AO_CLAMP", 62)]
+    assert {n for n, _ in left + right} == set(MCU_HLABELS), set(MCU_HLABELS) ^ {n for n, _ in left + right}
+    pins = [(n, MCU_HLABELS[n], "left", g(d)) for n, d in left] + [(n, MCU_HLABELS[n], "right", g(d)) for n, d in right]
+    pos = s.sheet("MCU", "03_mcu.kicad_sch", mx, my, mw, g(72), pins, 3, SHEET_UUID["mcu"])
+
+    def bus_or_wire(a, b, name):
+        (s.bus if "[" in name else s.wire)(a, b)
+
+    # left of the MCU: MPG (6) and Inputs (5)
+    sh = {"output": "output", "input": "input"}
+    mp = s.sheet("MPG", "06_mpg.kicad_sch", g(50), my, g(40), g(24),
+                 [("MPG_A", "output", "right", g(4)), ("MPG_B", "output", "right", g(8)), ("RELAY_OE", "input", "right", g(12)),
+                  ("OE_FIELD", "output", "right", g(16))], 6, SHEET_UUID["mpg"])
+    for n in ("MPG_A", "MPG_B", "RELAY_OE"):
+        s.wire(mp[n], pos[n])
+    s.stub(mp["OE_FIELD"], (1, 0), g(8), net="OE_FIELD")
+    ip = s.sheet("Inputs", "05_inputs.kicad_sch", g(50), my + g(32), g(40), g(20),
+                 [("DI[1..8]", "output", "right", g(4)), ("SEL[1..12]", "output", "right", g(12))], 5, SHEET_UUID["inputs"])
+    for n in ("DI[1..8]", "SEL[1..12]"):
+        s.bus(ip[n], pos[n])
+    # right of the MCU: EtherCAT (4), Relays (7) and Analog (8)
     ex = g(180)
-    epins = [(n, ETH_NETS[n], "left", g(4) + i * g(2)) for i, n in enumerate(eth)]
-    epos = s.sheet("EtherCAT", "04_ethercat.kicad_sch", ex, my, g(40), g(4) + len(eth) * g(2) + g(4), epins, 4, SHEET_UUID["ethercat"])
-    for n in eth:
+    epins = [(n, ETH_NETS[n], "left", g(4) + i * g(2)) for i, n in enumerate(ETH_NETS)]
+    epos = s.sheet("EtherCAT", "04_ethercat.kicad_sch", ex, my, g(40), g(4) + len(ETH_NETS) * g(2) + g(4), epins, 4, SHEET_UUID["ethercat"])
+    for n in ETH_NETS:
         s.wire(pos[n], epos[n])
-    for n, pt in pos.items():
-        if n not in ETH_NETS:
-            s.no_connect(*pt)
-    s.text("No-connect flags on the MCU sheet pins are placeholders: they are replaced by wires to sheets 5 to 8 in M5.",
-           g(100), my + h + g(6))
+    rp = s.sheet("Relays", "07_relays.kicad_sch", ex, my + g(32), g(40), g(16),
+                 [("DO[1..8]", "input", "left", g(4)), ("OE_FIELD", "input", "left", g(8))], 7, SHEET_UUID["relays"])
+    s.bus(pos["DO[1..8]"], rp["DO[1..8]"])
+    s.stub(rp["OE_FIELD"], (-1, 0), g(8), net="OE_FIELD")
+    ap = s.sheet("Analog", "08_analog.kicad_sch", ex, my + g(52), g(40), g(16),
+                 [("DAC_SCK", "input", "left", g(4)), ("DAC_MOSI", "input", "left", g(6)), ("DAC_CS", "input", "left", g(8)),
+                  ("AO_CLAMP", "input", "left", g(10))], 8, SHEET_UUID["analog"])
+    for n in ("DAC_SCK", "DAC_MOSI", "DAC_CS", "AO_CLAMP"):
+        s.wire(pos[n], ap[n])
     return s
 
 
@@ -640,6 +628,12 @@ def main():
     out = [build_power(libs).write(HW)]
     out.append(build_mcu(libs).write(HW))
     out.append(build_ethercat(libs).write(HW))
+    import sheets_io
+    out.append(sheets_io.build_input4(libs, ROOT_UUID, SHEET_UUID["inputs"], SHEET_UUID["in4"]).write(HW))
+    out.append(sheets_io.build_inputs(libs, ROOT_UUID, SHEET_UUID["inputs"], SHEET_UUID["in4"]).write(HW))
+    out.append(sheets_io.build_mpg(libs, ROOT_UUID, SHEET_UUID["mpg"]).write(HW))
+    out.append(sheets_io.build_relays(libs, ROOT_UUID, SHEET_UUID["relays"]).write(HW))
+    out.append(sheets_io.build_analog(libs, ROOT_UUID, SHEET_UUID["analog"]).write(HW))
     out.append(build_root(libs).write(HW))
     print("wrote", *[os.path.basename(p) for p in out])
 

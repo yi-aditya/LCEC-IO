@@ -306,6 +306,118 @@ def relayout_eeprom(lib):
         print("EEPROM symbol re-laid out")
 
 
+def _sym_by_lcsc(lib, code):
+    for sym in lib.symbols:
+        if {p.key: p.value for p in sym.properties}.get("LCSC") == code:
+            return sym
+    sys.exit(f"{code} not in library")
+
+
+def _relay_pins(sym):
+    old = {}
+    for u in sym.units:
+        for p in u.pins:
+            old[p.number] = p
+    return old, next(iter(old.values()))
+
+
+def _set_pins(sym, spec, rect, unit_id=1):
+    """spec: [(number, name, x, y, angle, type)], rect: (x1, y1, x2, y2). Replaces all units with one unit."""
+    old, template = _relay_pins(sym)
+    pins = [pin_obj(old[num], num, name, x, y, ang, ptype) for num, name, x, y, ang, ptype in spec]
+    unit = sym.units[0]
+    unit.pins = pins
+    unit.graphicItems = [SyRect(start=Position(rect[0], rect[1]), end=Position(rect[2], rect[3]))]
+    unit.unitId, unit.styleId = unit_id, 1
+    sym.units = [unit]
+
+
+def relayout_small(lib):
+    """P2R-05P socket: coil left, contacts right (the isolation barrier runs through the body); CA-IS3742LN with the field side
+    (side B) on the left and the logic side (side A) on the right, so the MPG sheet flows left to right; the dual MOSFET and the
+    78L05 without pins on the top or bottom edge."""
+    s = _sym_by_lcsc(lib, "C1524860")
+    _set_pins(s, [("1", "COIL1", -10.16, 2.54, 0, "passive"), ("5", "COIL2", -10.16, -2.54, 0, "passive"),
+                  ("2", "COM", 10.16, 7.62, 180, "passive"), ("3", "NO", 10.16, -7.62, 180, "passive"), ("4", "NC", 10.16, -15.24, 180, "passive")],
+              (-5.08, 10.16, 5.08, -17.78))
+    # digital isolators: supply and enable pins grouped at the top, grounds at the bottom, signals aligned across the barrier
+    for code in ("C428888", "C528653"):                               # CA-IS3740LN / HW: four forward channels, logic side left
+        s = _sym_by_lcsc(lib, code)
+        spec = [("1", "VDDA", -16.51, 15.24, 0, "power_in"), ("7", "NC", -16.51, 12.7, 0, "no_connect"),
+                ("3", "VI1", -16.51, 7.62, 0, "input"), ("4", "VI2", -16.51, 5.08, 0, "input"),
+                ("5", "VI3", -16.51, 2.54, 0, "input"), ("6", "VI4", -16.51, 0, 0, "input"),
+                ("2", "GNDA", -16.51, -5.08, 0, "power_in"), ("8", "GNDA", -16.51, -7.62, 0, "power_in"),
+                ("16", "VDDB", 16.51, 15.24, 180, "power_in"), ("10", "ENB", 16.51, 12.7, 180, "input"),
+                ("14", "VO1", 16.51, 7.62, 180, "output"), ("13", "VO2", 16.51, 5.08, 180, "output"),
+                ("12", "VO3", 16.51, 2.54, 180, "output"), ("11", "VO4", 16.51, 0, 180, "output"),
+                ("15", "GNDB", 16.51, -5.08, 180, "power_in"), ("9", "GNDB", 16.51, -7.62, 180, "power_in")]
+        _set_pins(s, spec, (-11.43, 17.78, 11.43, -10.16))
+    s = _sym_by_lcsc(lib, "C5347249")                                  # CA-IS3742LN: field side (B) left, logic side (A) right
+    _set_pins(s, [("16", "VDDB", -16.51, 15.24, 0, "power_in"), ("10", "ENB", -16.51, 12.7, 0, "input"),
+                  ("12", "VI3", -16.51, 7.62, 0, "input"), ("11", "VI4", -16.51, 5.08, 0, "input"),
+                  ("14", "VO1", -16.51, 2.54, 0, "output"), ("13", "VO2", -16.51, 0, 0, "output"),
+                  ("15", "GNDB", -16.51, -5.08, 0, "power_in"), ("9", "GNDB", -16.51, -7.62, 0, "power_in"),
+                  ("1", "VDDA", 16.51, 15.24, 180, "power_in"), ("7", "ENA", 16.51, 12.7, 180, "input"),
+                  ("5", "VO3", 16.51, 7.62, 180, "output"), ("6", "VO4", 16.51, 5.08, 180, "output"),
+                  ("3", "VI1", 16.51, 2.54, 180, "input"), ("4", "VI2", 16.51, 0, 180, "input"),
+                  ("2", "GNDA", 16.51, -5.08, 180, "power_in"), ("8", "GNDA", 16.51, -7.62, 180, "power_in")],
+              (-11.43, 17.78, 11.43, -10.16))
+    s = _sym_by_lcsc(lib, "C6180")                                     # AM26LS32A: inputs left, outputs and controls right
+    _set_pins(s, [("2", "1A", -12.7, 12.7, 0, "input"), ("1", "1B", -12.7, 10.16, 0, "input"),
+                  ("6", "2A", -12.7, 7.62, 0, "input"), ("7", "2B", -12.7, 5.08, 0, "input"),
+                  ("10", "3A", -12.7, 2.54, 0, "input"), ("9", "3B", -12.7, 0, 0, "input"),
+                  ("14", "4A", -12.7, -2.54, 0, "input"), ("15", "4B", -12.7, -5.08, 0, "input"),
+                  ("16", "VCC", 12.7, 17.78, 180, "power_in"), ("4", "G", 12.7, 15.24, 180, "input"),
+                  ("3", "1Y", 12.7, 11.43, 180, "output"), ("5", "2Y", 12.7, 6.35, 180, "output"),
+                  ("11", "3Y", 12.7, 1.27, 180, "output"), ("13", "4Y", 12.7, -3.81, 180, "output"),
+                  ("12", "~{G}", 12.7, -7.62, 180, "input"), ("8", "GND", 12.7, -10.16, 180, "power_in")],
+              (-7.62, 20.32, 7.62, -12.7))
+    s = _sym_by_lcsc(lib, "C83571")
+    _set_pins(s, [("5", "G1", -10.16, 2.54, 0, "input"), ("2", "G2", -10.16, 0, 0, "input"),
+                  ("3", "D1", 10.16, 7.62, 180, "passive"), ("6", "D2", 10.16, 5.08, 180, "passive"),
+                  ("4", "S1", 10.16, -2.54, 180, "passive"), ("1", "S2", 10.16, -5.08, 180, "passive")],
+              (-5.08, 10.16, 5.08, -7.62))
+    s = _sym_by_lcsc(lib, "C16040")                                    # MCP4822: supply and LDAC at the top/bottom of the left side
+    _set_pins(s, [("1", "VDD", -13.97, 15.24, 0, "power_in"), ("4", "SDI", -13.97, 7.62, 0, "input"),
+                  ("3", "SCK", -13.97, 5.08, 0, "input"), ("2", "~{CS}", -13.97, 2.54, 0, "input"),
+                  ("5", "~{LDAC}", -13.97, -2.54, 0, "input"),
+                  ("8", "VOUTA", 13.97, 7.62, 180, "output"), ("6", "VOUTB", 13.97, 2.54, 180, "output"),
+                  ("7", "VSS", 13.97, -5.08, 180, "power_in")], (-8.89, 17.78, 8.89, -7.62))
+    s = _sym_by_lcsc(lib, "C42738")
+    _set_pins(s, [("3", "VIN", -10.16, 2.54, 0, "power_in"), ("2", "GND", -10.16, -2.54, 0, "power_in"),
+                  ("1", "VOUT", 10.16, 2.54, 180, "power_out")], (-5.08, 5.08, 5.08, -5.08))
+    print("socket, isolator (field side left), MOSFET and LDO symbols re-laid out")
+
+
+def relayout_opamp(lib):
+    """LM2904: two op-amp triangles (units 1 and 2) and a power unit (3); no pin on the top or bottom edge."""
+    from kiutils.items.syitems import SyPolyLine
+    from kiutils.items.common import Stroke, Fill
+    s = _sym_by_lcsc(lib, "C7934")
+    old, _ = _relay_pins(s)
+
+    def tri():
+        return SyPolyLine(points=[Position(-5.08, 7.62), Position(-5.08, -7.62), Position(7.62, 0), Position(-5.08, 7.62)],
+                          stroke=Stroke(width=0.254), fill=Fill(type="none"))
+
+    units = []
+    for uid, (num_n, num_p, num_o, tag) in enumerate((("2", "3", "1", "1"), ("6", "5", "7", "2")), start=1):
+        u = copy.deepcopy(s.units[0])
+        u.unitId, u.styleId = uid, 1
+        u.pins = [pin_obj(old[num_p], num_p, f"{tag}IN+", -10.16, 2.54, 0, "input"),
+                  pin_obj(old[num_n], num_n, f"{tag}IN-", -10.16, -2.54, 0, "input"),
+                  pin_obj(old[num_o], num_o, f"{tag}OUT", 12.7, 0, 180, "output")]
+        u.graphicItems = [tri()]
+        units.append(u)
+    u = copy.deepcopy(s.units[0])
+    u.unitId, u.styleId = 3, 1
+    u.pins = [pin_obj(old["8"], "8", "VCC", -10.16, 2.54, 0, "power_in"), pin_obj(old["4"], "4", "GND", -10.16, -2.54, 0, "power_in")]
+    u.graphicItems = [SyRect(start=Position(-5.08, 5.08), end=Position(5.08, -5.08))]
+    units.append(u)
+    s.units = units
+    print("LM2904 re-laid out as two op-amps and a power unit")
+
+
 def main():
     lib = SymbolLib.from_file(LIB)
     relayout_osc(lib)
@@ -314,6 +426,8 @@ def main():
     relayout_lan9252(lib)
     relayout_rj45(lib)
     relayout_eeprom(lib)
+    relayout_small(lib)
+    relayout_opamp(lib)
     libio.save(lib, LIB)
 
 

@@ -135,6 +135,7 @@ def build():
     out.append(transform(std("Device", "R"), ["r90"], "R_H", None, "R", "R"))
     out.append(transform(std("Device", "FerriteBead"), ["r90"], "FerriteBead_H", None, "FB", "FerriteBead"))
     out.append(transform(std("Device", "LED"), ["mx"], "LED_AK_H", None, "LED", "LED"))
+    out.append(transform(std("Device", "R_Pack04"), ["r90"], "R_Pack04_H", None, "RN", "R_Pack04"))   # pins 1-4 right, 8-5 left; pair 1-8, 2-7, 3-6, 4-5
     for n in (2, 3, 4, 6):
         out.append(conn_right(f"Conn_R_01x0{n}", n, 2.54))
     out.append(conn_right("Conn_R_01x04_P7", 4, 7.62))     # wide pitch for the 24 V entry: room to fan out each pole
