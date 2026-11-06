@@ -258,7 +258,23 @@ COLUMNS = [
 ]
 
 
+def library_footprints():
+    """LCSC number -> footprint assigned in lib/lcsc.kicad_sym ('' = accessory, not on the PCB)."""
+    path = os.path.join(ROOT, "lib", "lcsc.kicad_sym")
+    if not os.path.exists(path):
+        return {}
+    from kiutils.symbol import SymbolLib
+    out = {}
+    for sym in SymbolLib.from_file(path).symbols:
+        props = {p.key: p.value for p in sym.properties}
+        c = props.get("LCSC") or props.get("LCSC Part")
+        if c:
+            out[c] = props.get("Footprint", "") if sym.onBoard else ""
+    return out
+
+
 def build():
+    libfp = library_footprints()
     today = datetime.date.today().isoformat()
     cache = {}
     problems = []
@@ -297,6 +313,10 @@ def build():
                 elif stock is not None and stock < 10 * qty and status != "DECISION":
                     problems.append(
                         f"{lcsc} ({desc}): LOW stock {stock} for qty {qty}")
+        if lcsc in libfp:
+            fp = libfp[lcsc] or "n/a (accessory, not on the PCB)"
+        elif fp.startswith("TBD"):
+            problems.append(f"{lcsc} ({desc}): footprint still TBD, not in lib/lcsc.kicad_sym")
         if lcsc == "C2671811":
             temp = temp or "0..+70 C (plan; not shown on LCSC page)"
         if not temp and lcsc:
