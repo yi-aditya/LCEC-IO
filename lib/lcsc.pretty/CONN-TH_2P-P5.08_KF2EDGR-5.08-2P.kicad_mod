@@ -37,7 +37,7 @@
 	(fp_line (start 5.21 -1.30) (end 5.21 11.16) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 5.21 11.16) (end -5.21 11.16) (layer F.CrtYd) (width 0.05))
 	(fp_line (start -5.21 11.16) (end -5.21 -1.30) (layer F.CrtYd) (width 0.05))
-	(model "${KIPRJMOD}/lib/lcsc.3dshapes/CONN-TH_DB5.08-WI-2P.wrl"
+	(model "${KIPRJMOD}/../lib/lcsc.3dshapes/CONN-TH_DB5.08-WI-2P.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))

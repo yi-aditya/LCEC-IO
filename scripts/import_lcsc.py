@@ -33,6 +33,10 @@ STANDARD = re.compile(
 PASSIVE_WORDS = ("resistor", " R 1%", " k 1%", " M 1%", " nF ", " uF ", "LED", "Ferrite bead", "x4 resistor")
 
 
+# EasyEDA has no data for these (404): added by scripts/make_manual_parts.py
+MANUAL = {"C440881", "C440884", "C5272782"}
+
+
 def wanted_codes():
     codes = []
     for r in csv.DictReader(open(BOM, encoding="utf-8")):
@@ -55,6 +59,8 @@ def wanted_codes():
             is_passive = True
         if is_passive and "electrolytic" not in low:
             continue
+        if c in MANUAL:
+            continue
         codes.append(c)
     return codes
 
@@ -68,13 +74,15 @@ def import_one(code, tries=8):
     for attempt in range(1, tries + 1):
         p = subprocess.run(
             ["easyeda2kicad", "--lcsc_id", code, "--full", "--output", SYM,
-             "--project-relative", "--use-cache", "--overwrite"],
+             "--project-relative", "--use-cache", "--overwrite", "--debug"],
             cwd=ROOT, capture_output=True, text=True,
         )
         out = p.stdout + p.stderr
         if p.returncode == 0 and "[ERROR]" not in out and "Created" in out + "Created":
             if "Failed" not in out:
                 return True, out
+        if "not found" in out.lower() or "404" in out:
+            return False, out + "\n(EasyEDA has no data for this part: permanent, not retried)"
         if "403" in out or "Forbidden" in out or "Failed to fetch" in out:
             time.sleep(delay)
             delay = min(delay * 2, 90)

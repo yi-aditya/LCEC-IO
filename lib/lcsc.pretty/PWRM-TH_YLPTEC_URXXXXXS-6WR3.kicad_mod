@@ -28,7 +28,7 @@
 	(fp_line (start 11.00 -2.70) (end 11.00 6.80) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 11.00 6.80) (end -11.00 6.80) (layer F.CrtYd) (width 0.05))
 	(fp_line (start -11.00 6.80) (end -11.00 -2.70) (layer F.CrtYd) (width 0.05))
-	(model "${KIPRJMOD}/lib/lcsc.3dshapes/PWRM-TH_YLPTEC_URXXXXXS-6WR3.wrl"
+	(model "${KIPRJMOD}/../lib/lcsc.3dshapes/PWRM-TH_YLPTEC_URXXXXXS-6WR3.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))

@@ -244,7 +244,8 @@ ROWS = [
     ("2 Power", "P201", "Terminal plug 4-pole 5.08 mm", 1, "fixed", "TBD lcsc.pretty (M2)",
      "C440882", "KF2EDGK-5.08-4P", "Y", "NEW", "", ""),
     ("1 Root", "J101", "PE screw terminal M3 PCB (Keystone 7770)", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C5272782", "7770", "Y", "NEW", "", "Takes an M3 ring lug; also the shield-to-PE point."),
+     "C5272782", "7770", "Y", "NEW-FLAG", "",
+     "Takes an M3 ring lug; also the shield-to-PE point. M2 finding: the Keystone datasheet says 7770 is supplied LESS SCREW (LCSC text says 'with screw'). The screw-installed 7772 (C5544059) has zero stock. An M3 screw is not in the BOM yet: open question."),
 ]
 
 # Test points and mounting holes are footprints only, no purchased part.
@@ -256,6 +257,18 @@ COLUMNS = [
     "Price_USD_qty1", "Library", "Fit", "Status", "Proposed_LCSC", "Notes",
     "Checked",
 ]
+
+
+def jlc_stock(code):
+    """Stock of this LCSC number in the JLCPCB parts catalogue (None if not found/unreachable)."""
+    try:
+        from jlc_search import search
+        for c in search(code, 3):
+            if c.get("componentCode") == code:
+                return c.get("stockCount")
+    except Exception:
+        return None
+    return None
 
 
 def library_footprints():
@@ -308,14 +321,16 @@ def build():
                     problems.append(
                         f"{lcsc} ({desc}): LCSC model '{mpn}' does not contain '{expect}'")
                 if stock is not None and stock < qty:
+                    js = jlc_stock(lcsc)
+                    extra = f"; JLCPCB catalogue shows {js}" if js is not None else ""
                     problems.append(
-                        f"{lcsc} ({desc}): stock {stock} < qty needed {qty}")
+                        f"{lcsc} ({desc}): LCSC page stock {stock} < qty needed {qty}{extra}")
                 elif stock is not None and stock < 10 * qty and status != "DECISION":
                     problems.append(
                         f"{lcsc} ({desc}): LOW stock {stock} for qty {qty}")
         if lcsc in libfp:
             fp = libfp[lcsc] or "n/a (accessory, not on the PCB)"
-        elif fp.startswith("TBD"):
+        elif fp.startswith("TBD") and lcsc:
             problems.append(f"{lcsc} ({desc}): footprint still TBD, not in lib/lcsc.kicad_sym")
         if lcsc == "C2671811":
             temp = temp or "0..+70 C (plan; not shown on LCSC page)"

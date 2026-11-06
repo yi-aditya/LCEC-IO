@@ -85,7 +85,9 @@ def check(libpath):
                     rows.append((num, pins[num].name, "-", False))
                     continue
                 name = pins[num].name
-                if exp.get("match") == "set":
+                if all(a in ("+", "-") for a in epins[num]):
+                    ok = name.strip() in epins[num]  # polarity-only names compare literally
+                elif exp.get("match") == "set":
                     ok = pieces(name) == {alias_norm(a) for a in epins[num]}
                 else:
                     ok = bool(tokens(name) & {alias_norm(a) for a in epins[num]})

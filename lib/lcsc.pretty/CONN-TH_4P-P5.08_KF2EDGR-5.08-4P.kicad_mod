@@ -55,7 +55,7 @@
 	(fp_line (start 10.29 -1.43) (end 10.29 11.03) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 10.29 11.03) (end -10.29 11.03) (layer F.CrtYd) (width 0.05))
 	(fp_line (start -10.29 11.03) (end -10.29 -1.43) (layer F.CrtYd) (width 0.05))
-	(model "${KIPRJMOD}/lib/lcsc.3dshapes/CONN-TH_4P-P5.08_KF2EDGR-5.08-4P.wrl"
+	(model "${KIPRJMOD}/../lib/lcsc.3dshapes/CONN-TH_4P-P5.08_KF2EDGR-5.08-4P.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))

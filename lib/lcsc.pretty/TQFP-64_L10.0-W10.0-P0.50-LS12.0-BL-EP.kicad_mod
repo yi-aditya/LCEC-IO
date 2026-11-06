@@ -99,7 +99,7 @@
 	(fp_line (start -5.00 -5.00) (end 5.00 -5.00) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 5.00 -5.00) (end 5.00 5.00) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 5.00 5.00) (end -5.00 5.00) (layer F.CrtYd) (width 0.05))
-	(model "${KIPRJMOD}/lib/lcsc.3dshapes/TQFP-64_L10.0-W10.0-H1.2-LS12.0-P0.50.wrl"
+	(model "${KIPRJMOD}/../lib/lcsc.3dshapes/TQFP-64_L10.0-W10.0-H1.2-LS12.0-P0.50.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 270))

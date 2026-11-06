@@ -24,7 +24,7 @@ from lcsc_lookup import fetch  # noqa: E402
 
 LIB = os.path.join(ROOT, "lib", "lcsc.kicad_sym")
 META = os.path.join(ROOT, "lib", "datasheets.json")
-LOG = os.path.join(ROOT, "docs", "review", "M2-symbol-fixes.md")
+LOG = None  # only written when --log is given (run it on lib/raw/lcsc.imported.kicad_sym)
 
 # pin renames by LCSC number: {pin number: new name}; sources in scripts/pin_tables.py
 PIN_RENAMES = {
@@ -115,7 +115,39 @@ def fix_footprints():
     return n
 
 
+def remove_orphans(lib):
+    """Delete footprints no symbol uses (accessory placeholders) and 3D models no footprint uses."""
+    import glob
+    used = set()
+    for sym in lib.symbols:
+        for p in sym.properties:
+            if p.key == "Footprint" and p.value:
+                used.add(p.value.split(":", 1)[-1])
+    removed = []
+    pretty = os.path.join(ROOT, "lib", "lcsc.pretty")
+    for f in glob.glob(os.path.join(pretty, "*.kicad_mod")):
+        if os.path.basename(f)[:-len(".kicad_mod")] not in used:
+            os.remove(f)
+            removed.append(os.path.basename(f))
+    models = set()
+    for f in glob.glob(os.path.join(pretty, "*.kicad_mod")):
+        for m in re.findall(r'\(model "([^"]+)"', open(f, encoding="utf-8").read()):
+            models.add(os.path.basename(m))
+    for f in glob.glob(os.path.join(ROOT, "lib", "lcsc.3dshapes", "*")):
+        base = os.path.basename(f)
+        stem = os.path.splitext(base)[0]
+        if not any(os.path.splitext(m)[0] == stem for m in models):
+            os.remove(f)
+            removed.append(base)
+    return removed
+
+
 def main():
+    global LIB, LOG
+    if "--lib" in sys.argv:
+        LIB = os.path.abspath(sys.argv[sys.argv.index("--lib") + 1])
+    if "--log" in sys.argv:
+        LOG = os.path.abspath(sys.argv[sys.argv.index("--log") + 1])
     nfp = fix_footprints()
     bom = {}
     for r in csv.DictReader(open(os.path.join(ROOT, "bom", "parts.csv"), encoding="utf-8")):
@@ -176,13 +208,24 @@ def main():
                 if p.electricalType != t:
                     p.electricalType = t
     lib.to_file(LIB)
+    if os.path.abspath(LIB) == os.path.join(ROOT, "lib", "lcsc.kicad_sym"):
+        gone = remove_orphans(lib)
+        print(f"removed {len(gone)} unused footprint/3D files: {gone[:6]}...")
+    if not LOG:
+        print(f"{len(log)} changes applied (no --log given, log not written)")
+        return
     os.makedirs(os.path.dirname(LOG), exist_ok=True)
     with open(LOG, "w", encoding="utf-8") as f:
         f.write("# M2 - Fixes applied to the imported symbols\n\n"
                 "easyeda2kicad output is generic. `scripts/fix_symbols.py` corrects it from the datasheets "
                 "(re-runnable). Pin electrical types are also set on every symbol (power in/out, input, output, "
                 "bidirectional, open collector, no connect, passive); before this every pin was 'unspecified', "
-                "which would make ERC silent.\n\n| Symbol | Change |\n|---|---|\n")
+                "which would make ERC silent.\n\n"
+                "The log below is produced by running the fixer on the raw EasyEDA import "
+                "(`python3 -I scripts/fix_symbols.py --lib <raw copy> --log docs/review/M2-symbol-fixes.md`). "
+                "Three parts have no EasyEDA data (404) and were made by `scripts/make_manual_parts.py`: "
+                "C5272782 Keystone 7770 (footprint drawn from the Keystone drawing) and the cable plugs C440881 and C440884.\n\n"
+                "| Symbol | Change |\n|---|---|\n")
         f.write("\n".join(l for l in log if "type" not in l) + "\n")
     print(f"{len(log)} symbol changes logged -> {LOG}; 3D model path fixed in {nfp} footprints")
 
