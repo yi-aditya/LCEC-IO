@@ -41,20 +41,20 @@ PIN_RENAMES = {
 }
 
 # parts that are accessories, not placed on the PCB
-NOT_ON_BOARD = {"C440880", "C440881", "C440882", "C440884", "C5305", "C3116", "C3118"}
+NOT_ON_BOARD = {"C440880", "C440881", "C440882", "C440884", "C5305", "C3116", "C3118", "C187509", "C357543"}
 
 REFERENCE = {
-    "C15742": "U", "C80933": "U", "C615715": "U", "C16040": "U", "C7934": "U", "C42738": "U", "C6180": "U",
+    "C56621": "U", "C80933": "U", "C615715": "U", "C16040": "U", "C7934": "U", "C42738": "U", "C6180": "U",
     "C428888": "U", "C528653": "U", "C5347249": "U", "C845537": "U", "C5369843": "U", "C3031185": "U",
     "C5369844": "U", "C39031": "U", "C2595919": "X", "C3975188": "J", "C2937625": "J", "C69427": "J",
     "C441204": "J", "C441205": "J", "C441206": "J", "C441208": "J", "C5272782": "J",
     "C440880": "P", "C440881": "P", "C440882": "P", "C440884": "P", "C5305": "JP",
     "C320242": "D", "C22452": "D", "C148216": "D", "C32677": "D", "C83571": "Q",
-    "C58066": "F", "C3116": "F", "C3118": "F", "C151168": "RT", "C70068": "RT",
+    "C206887": "F", "C187509": "F", "C357543": "H", "C3116": "F", "C3118": "F", "C151168": "RT", "C70068": "RT",
     "C970679": "C", "C2960285": "C", "C1524860": "K",
 }
 
-IC_PARTS = {"C15742", "C80933", "C2595919", "C615715", "C16040", "C7934", "C42738", "C6180", "C428888",
+IC_PARTS = {"C56621", "C80933", "C2595919", "C615715", "C16040", "C7934", "C42738", "C6180", "C428888",
             "C528653", "C5347249", "C845537", "C5369843", "C3031185", "C5369844"}
 POWER_IN = re.compile(r"^(VDD|VCC|VBAT|VDDA|VDDB|VDDIO|VDDCR|VDD33|VDD12TX\d|VDD33TXRX\d|VDD33BIAS|OSCVDD12|VIN|VCAP_\d|"
                       r"GND|GNDA|GNDB|VSS|VSSA|OSCVSS)$")
@@ -85,7 +85,7 @@ def pin_type(lcsc, name):
         return "input"
     if lcsc == "C615715" and nn == "SDA":
         return "bidirectional"
-    if lcsc in ("C15742", "C80933"):
+    if lcsc in ("C56621", "C80933"):
         return "bidirectional"
     if lcsc in IC_PARTS:
         return "passive"
@@ -155,6 +155,14 @@ def main():
             bom[r["LCSC"]] = r
     lib = SymbolLib.from_file(LIB)
     log = []
+    # drop symbols for parts that are no longer in the BOM (e.g. after a part is replaced)
+    def _code(sym):
+        pr = {q.key: q.value for q in sym.properties}
+        return pr.get("LCSC") or pr.get("LCSC Part")
+    gone = [sym.entryName for sym in lib.symbols if _code(sym) not in bom]
+    lib.symbols = [sym for sym in lib.symbols if _code(sym) in bom]
+    if gone:
+        log.append(f"| {', '.join(gone)} | removed: part no longer in bom/parts.csv |")
 
     def note(sym, msg):
         log.append(f"| {sym} | {msg} |")

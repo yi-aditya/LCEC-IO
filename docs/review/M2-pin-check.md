@@ -2,14 +2,13 @@
 
 Every imported symbol is compared with the manufacturer datasheet pin table (`scripts/pin_tables.py`, each entry names its source), and with its footprint pad numbers. Re-run with `python3 -I scripts/pincheck.py --md docs/review/M2-pin-check.md`.
 
-**42 symbols checked, 42 clean, 0 with problems.**
+**44 symbols checked, 44 clean, 0 with problems.**
 
 | LCSC | Symbol | Pins | Pads | Datasheet check | Result |
 |---|---|---|---|---|---|
-| C15742 | STM32F405RGT6 | 64 | 64 | yes | OK |
 | C2595919 | ECS-3225MVQ-250-CN-TR | 4 | 4 | yes | OK |
 | C3975188 | PZ127-2-05-S | 10 | 10 | no table (generic part) | OK |
-| C2937625 | PZ254V-11-03P_C2937625 | 3 | 3 | no table (generic part) | OK |
+| C2937625 | PZ254V-11-03P_C2937625 | 3 | 3 | yes | OK |
 | C80933 | LAN9252I_PT | 65 | 65 | yes | OK |
 | C615715 | 24LC32AT-I_SN | 8 | 8 | yes | OK |
 | C69427 | HY911105AE | 14 | 14 | yes | OK |
@@ -18,18 +17,17 @@ Every imported symbol is compared with the manufacturer datasheet pin table (`sc
 | C5369844 | URB2415S-6WR3_C5369844 | 7 | 7 | yes | OK |
 | C320242 | SMBJ33A_C320242 | 2 | 2 | yes | OK |
 | C22452 | SS54_C22452 | 2 | 2 | yes | OK |
-| C58066 | Fusetransparentseat | 2 | 2 | no table (generic part) | OK |
 | C3116 | 1A250VAC | 0 | - | no table (generic part) | OK |
 | C3118 | 3A250VACGlasstubefuse | 0 | - | no table (generic part) | OK |
 | C970679 | RVT1H470M060747UF50V | 2 | 2 | yes | OK |
 | C2960285 | 100V100UFCD288 | 2 | 2 | yes | OK |
 | C39031 | TLP290-4 | 16 | 16 | yes | OK |
-| C441205 | KF2EDGR-5.08-3P | 3 | 3 | no table (generic part) | OK |
+| C441205 | KF2EDGR-5.08-3P | 3 | 3 | yes | OK |
 | C151168 | 1812L050_30PR | 2 | 2 | no table (generic part) | OK |
 | C5305 | 2.54短路帽开口 | 0 | - | no table (generic part) | OK |
 | C6180 | AM26LS32ACDR | 16 | 16 | yes | OK |
 | C5347249 | CA-IS3742LN | 16 | 16 | yes | OK |
-| C441208 | KF2EDGR-5.08-6P | 6 | 6 | no table (generic part) | OK |
+| C441208 | KF2EDGR-5.08-6P | 6 | 6 | yes | OK |
 | C70068 | nSMD025 | 2 | 2 | no table (generic part) | OK |
 | C32677 | PSM712-LF-T7 | 3 | 3 | yes | OK |
 | C428888 | CA-IS3740LN | 16 | 16 | yes | OK |
@@ -41,86 +39,19 @@ Every imported symbol is compared with the manufacturer datasheet pin table (`sc
 | C42738 | L78L05ABUTR | 3 | 3 | yes | OK |
 | C83571 | 2N7002DW-7-F | 6 | 6 | yes | OK |
 | C148216 | SMAJ15A-C148216 | 2 | 2 | yes | OK |
-| C441204 | KF2EDGR-5.08-2P | 2 | 2 | no table (generic part) | OK |
+| C441204 | KF2EDGR-5.08-2P | 2 | 2 | yes | OK |
 | C440880 | KF2EDGK-5.08-2P-AA | 0 | - | no table (generic part) | OK |
-| C441206 | KF2EDGR-5.08-4P | 4 | 4 | no table (generic part) | OK |
+| C441206 | KF2EDGR-5.08-4P | 4 | 4 | yes | OK |
 | C440882 | KF2EDGK-5.08-4P-AA | 0 | - | no table (generic part) | OK |
+| C56621 | STM32F405VGT6 | 100 | 100 | yes | OK |
+| C206887 | 64600001003 | 2 | 2 | yes | OK |
 | C440881 | KF2EDGK-5.08-3P-AA | 0 | - | no table (generic part) | OK |
 | C440884 | KF2EDGK-5.08-6P | 0 | - | no table (generic part) | OK |
-| C5272782 | Keystone-7770 | 1 | 1 | no table (generic part) | OK |
+| C187509 | 64800001009 | 0 | - | no table (generic part) | OK |
+| C357543 | PM3X6 | 0 | - | no table (generic part) | OK |
+| C5272782 | Keystone-7770 | 1 | 1 | yes | OK |
 
 ## Pin-by-pin tables
-
-### C15742 STM32F405RGT6 (LQFP-64)
-
-Source: DocID022152 Rev 4: Fig. 12 'LQFP64 pinout' (pins 1-16, 33-48 read from the figure; the rest from Table 7 LQFP64 column, PB3/JTDO row 55)
-
-| Pin | Symbol name | Datasheet | OK |
-|---|---|---|---|
-| 1 | VBAT | VBAT | yes |
-| 2 | PC13 | PC13 | yes |
-| 3 | PC14-OSC32_IN(PC14) | PC14 | yes |
-| 4 | PC15-OSC32_OUT(PC15) | PC15 | yes |
-| 5 | PH0-OSC_IN(PH0) | PH0 | yes |
-| 6 | PH1-OSC_OUT(PH1) | PH1 | yes |
-| 7 | NRST | NRST | yes |
-| 8 | PC0 | PC0 | yes |
-| 9 | PC1 | PC1 | yes |
-| 10 | PC2 | PC2 | yes |
-| 11 | PC3 | PC3 | yes |
-| 12 | VSSA | VSSA | yes |
-| 13 | VDDA | VDDA | yes |
-| 14 | PA0-WKUP(PA0) | PA0 | yes |
-| 15 | PA1 | PA1 | yes |
-| 16 | PA2 | PA2 | yes |
-| 17 | PA3 | PA3 | yes |
-| 18 | VSS | VSS | yes |
-| 19 | VDD | VDD | yes |
-| 20 | PA4 | PA4 | yes |
-| 21 | PA5 | PA5 | yes |
-| 22 | PA6 | PA6 | yes |
-| 23 | PA7 | PA7 | yes |
-| 24 | PC4 | PC4 | yes |
-| 25 | PC5 | PC5 | yes |
-| 26 | PB0 | PB0 | yes |
-| 27 | PB1 | PB1 | yes |
-| 28 | PB2-BOOT1(PB2) | PB2 | yes |
-| 29 | PB10 | PB10 | yes |
-| 30 | PB11 | PB11 | yes |
-| 31 | VCAP_1 | VCAP_1 | yes |
-| 32 | VDD | VDD | yes |
-| 33 | PB12 | PB12 | yes |
-| 34 | PB13 | PB13 | yes |
-| 35 | PB14 | PB14 | yes |
-| 36 | PB15 | PB15 | yes |
-| 37 | PC6 | PC6 | yes |
-| 38 | PC7 | PC7 | yes |
-| 39 | PC8 | PC8 | yes |
-| 40 | PC9 | PC9 | yes |
-| 41 | PA8 | PA8 | yes |
-| 42 | PA9 | PA9 | yes |
-| 43 | PA10 | PA10 | yes |
-| 44 | PA11 | PA11 | yes |
-| 45 | PA12 | PA12 | yes |
-| 46 | PA13(JTMS-SWDIO) | PA13 | yes |
-| 47 | VCAP_2 | VCAP_2 | yes |
-| 48 | VDD | VDD | yes |
-| 49 | PA14(JTCK-SWCLK) | PA14 | yes |
-| 50 | PA15(JTDI) | PA15 | yes |
-| 51 | PC10 | PC10 | yes |
-| 52 | PC11 | PC11 | yes |
-| 53 | PC12 | PC12 | yes |
-| 54 | PD2 | PD2 | yes |
-| 55 | PB3(JTDOTRACESWO) | PB3 | yes |
-| 56 | PB4(NJTRST) | PB4 | yes |
-| 57 | PB5 | PB5 | yes |
-| 58 | PB6 | PB6 | yes |
-| 59 | PB7 | PB7 | yes |
-| 60 | BOOT0 | BOOT0 | yes |
-| 61 | PB8 | PB8 | yes |
-| 62 | PB9 | PB9 | yes |
-| 63 | VSS | VSS | yes |
-| 64 | VDD | VDD | yes |
 
 ### C2595919 ECS-3225MVQ-250-CN-TR (3.2x2.5 mm, 4-pin)
 
@@ -132,6 +63,22 @@ Source: ECS-3225MVQ datasheet pin table: 1 tri-state (OE, NC = active), 2 GND, 3
 | 2 | Gnd | GND | yes |
 | 3 | Output | OUTPUT | yes |
 | 4 | Vdd | VDD | yes |
+
+### C2937625 PZ254V-11-03P 1x3 pin header
+
+Source: 2.54 mm pitch pin header, pin n = position n
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+| 3 | 3 | 3 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 2.54 dy 0.0 | dx 2.54 dy 0.00 | yes |
 
 ### C80933 LAN9252I/PT (64-TQFP-EP)
 
@@ -222,7 +169,7 @@ Source: 24LC32A datasheet, 8-pin SOIC pinout
 
 ### C69427 HY911105AE RJ45 with magnetics and LEDs
 
-Source: Hanrun HY911105AE datasheet p.1 schematic: P1 TD+, P2 TD-, P3 RD+, P4 TX centre tap, P5 RX centre tap, P6 RD-, P7 NC, P8 chassis, green LED 9(A)-10(K), yellow LED 12(A)-11(K)
+Source: Hanrun HY911105AE datasheet p.1 schematic: P1 TD+, P2 TD-, P3 RD+, P4 TX centre tap, P5 RX centre tap, P6 RD-, P7 NC, P8 chassis, green LED 9(A)-10(K), yellow LED 12(A)-11(K); pad distances from the 'Mounting Pattern' drawing (13.25, 11.43, 15.49, 4.90, 8.89, 2.54 mm)
 
 | Pin | Symbol name | Datasheet | OK |
 |---|---|---|---|
@@ -241,6 +188,20 @@ Source: Hanrun HY911105AE datasheet p.1 schematic: P1 TD+, P2 TD-, P3 RD+, P4 TX
 | SH1 | SH1 | SH1 | yes |
 | SH2 | SH2 | SH2 | yes |
 
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 9-12 | dx 13.25 dy - | dx 13.26 dy 0.00 | yes |
+| 9-10 | dx 2.54 dy - | dx 2.54 dy 0.00 | yes |
+| 11-12 | dx 2.54 dy - | dx 2.54 dy 0.00 | yes |
+| SH1-SH2 | dx 15.49 dy - | dx 15.48 dy 0.00 | yes |
+| 1-3 | dx 2.54 dy - | dx 2.54 dy 0.00 | yes |
+| 2-1 | dx - dy 2.54 | dx 1.27 dy 2.54 | yes |
+| np1-np2 | dx 11.43 dy - | dx 11.44 dy 0.00 | yes |
+| 9-np1 | dx - dy 4.9 | dx 0.91 dy 4.89 | yes |
+| np1-2 | dx - dy 8.89 | dx 2.54 dy 8.89 | yes |
+
 ### C5369843 URB2403S-6WR3 (SIP-8, pin 4 absent)
 
 Source: URB_S-6WR3 datasheet p.5 Pin-Out: 1 GND (input), 2 Vin, 3 Ctrl, 5 NC, 6 +Vo, 7 0V (output), 8 NC
@@ -254,6 +215,17 @@ Source: URB_S-6WR3 datasheet p.5 Pin-Out: 1 GND (input), 2 Vin, 3 Ctrl, 5 NC, 6 
 | 6 | +VO | VO | yes |
 | 7 | -VO | VO | yes |
 | 8 | NC | NC | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 2.54 dy 0.0 | dx 2.54 dy 0.00 | yes |
+| 1-3 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+| 1-5 | dx 10.16 dy 0.0 | dx 10.16 dy 0.00 | yes |
+| 1-6 | dx 12.7 dy 0.0 | dx 12.70 dy 0.00 | yes |
+| 1-7 | dx 15.24 dy 0.0 | dx 15.24 dy 0.00 | yes |
+| 1-8 | dx 17.78 dy 0.0 | dx 17.78 dy 0.00 | yes |
 
 ### C3031185 URB2405S-6WR3 (SIP-8, pin 4 absent)
 
@@ -269,6 +241,17 @@ Source: URB_S-6WR3 datasheet p.5 Pin-Out: 1 GND (input), 2 Vin, 3 Ctrl, 5 NC, 6 
 | 7 | -Vo | VO | yes |
 | 8 | NC | NC | yes |
 
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 2.54 dy 0.0 | dx 2.54 dy 0.00 | yes |
+| 1-3 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+| 1-5 | dx 10.16 dy 0.0 | dx 10.16 dy 0.00 | yes |
+| 1-6 | dx 12.7 dy 0.0 | dx 12.70 dy 0.00 | yes |
+| 1-7 | dx 15.24 dy 0.0 | dx 15.24 dy 0.00 | yes |
+| 1-8 | dx 17.78 dy 0.0 | dx 17.78 dy 0.00 | yes |
+
 ### C5369844 URB2415S-6WR3 (SIP-8, pin 4 absent)
 
 Source: URB_S-6WR3 datasheet p.5 Pin-Out: 1 GND (input), 2 Vin, 3 Ctrl, 5 NC, 6 +Vo, 7 0V (output), 8 NC
@@ -282,6 +265,17 @@ Source: URB_S-6WR3 datasheet p.5 Pin-Out: 1 GND (input), 2 Vin, 3 Ctrl, 5 NC, 6 
 | 6 | +VO | VO | yes |
 | 7 | -VO | VO | yes |
 | 8 | NC | NC | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 2.54 dy 0.0 | dx 2.54 dy 0.00 | yes |
+| 1-3 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+| 1-5 | dx 10.16 dy 0.0 | dx 10.16 dy 0.00 | yes |
+| 1-6 | dx 12.7 dy 0.0 | dx 12.70 dy 0.00 | yes |
+| 1-7 | dx 15.24 dy 0.0 | dx 15.24 dy 0.00 | yes |
+| 1-8 | dx 17.78 dy 0.0 | dx 17.78 dy 0.00 | yes |
 
 ### C320242 SMBJ33A (SMB)
 
@@ -342,6 +336,22 @@ Source: TLP290-4 datasheet rev 5.0 section 4 figure: ch1 LED 1-2 / C16 E15, ch2 
 | 15 | E1 | E1 | yes |
 | 16 | C1 | C1 | yes |
 
+### C441205 KF2EDGR-5.08-3P header
+
+Source: 5.08 mm pitch pluggable terminal (manufacturer pitch); pin n = position n
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+| 3 | 3 | 3 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+
 ### C6180 AM26LS32ACDR (SOIC-16)
 
 Source: SLLS115E logic diagram: 1B=1, 1A=2, 1Y=3, G=4, 2Y=5, 2A=6, 2B=7, GND=8, 3B=9, 3A=10, 3Y=11, /G=12, 4Y=13, 4A=14, 4B=15, VCC=16
@@ -387,6 +397,25 @@ Source: CA-IS374x datasheet v1.05 Table 6-1 (CA-IS3742 column): VO3, VO4 on side
 | 14 | VO1 | VO1 | yes |
 | 15 | GNDB | GNDB | yes |
 | 16 | VDDB | VDDB | yes |
+
+### C441208 KF2EDGR-5.08-6P header
+
+Source: 5.08 mm pitch pluggable terminal (manufacturer pitch); pin n = position n
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+| 3 | 3 | 3 | yes |
+| 4 | 4 | 4 | yes |
+| 5 | 5 | 5 | yes |
+| 6 | 6 | 6 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
 
 ### C32677 PSM712-LF-T7 (SOT-23)
 
@@ -448,7 +477,7 @@ Source: UMW ULN2803 datasheet 'Pin descriptions (DIP/SOP-18)': inputs 1-8, outpu
 
 ### C1524860 Omron P2R-05P socket (for G2R-1-S)
 
-Source: Omron G2RS datasheet p.5 'G2R-1-S terminal arrangement' (coil 1-5, COM 2, NO 3, NC 4: contact arm rests on 4) and p.8 P2R-05P bottom view
+Source: Omron G2RS datasheet p.5 'G2R-1-S terminal arrangement' (coil 1-5, COM 2, NO 3, NC 4: contact arm rests on 4) and p.8 P2R-05P bottom view; pad distances from the 'Mounting Holes' drawing (6, 4.5, 15, 4, 4, 7 mm)
 
 | Pin | Symbol name | Datasheet | OK |
 |---|---|---|---|
@@ -457,6 +486,15 @@ Source: Omron G2RS datasheet p.5 'G2R-1-S terminal arrangement' (coil 1-5, COM 2
 | 3 | NO | NO | yes |
 | 4 | NC | NC | yes |
 | 5 | COIL2 | COIL2 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 3-4 | dx 4.0 dy 6.0 | dx 4.00 dy 6.00 | yes |
+| 4-2 | dx 4.0 dy 4.5 | dx 4.00 dy 4.50 | yes |
+| 4-1 | dx - dy 15.0 | dx 5.50 dy 15.00 | yes |
+| 1-5 | dx 7.0 dy 4.0 | dx 7.00 dy 4.00 | yes |
 
 ### C528653 CA-IS3740HW (SOIC-16 wide-body, 4 forward)
 
@@ -544,3 +582,171 @@ Source: Footprint silkscreen band is at pad 1: pad 1 = cathode, pad 2 = anode
 |---|---|---|---|
 | 1 | C | C | yes |
 | 2 | A | A | yes |
+
+### C441204 KF2EDGR-5.08-2P header
+
+Source: 5.08 mm pitch pluggable terminal (manufacturer pitch); pin n = position n
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+
+### C441206 KF2EDGR-5.08-4P header
+
+Source: 5.08 mm pitch pluggable terminal (manufacturer pitch); pin n = position n
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+| 3 | 3 | 3 | yes |
+| 4 | 4 | 4 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 5.08 dy 0.0 | dx 5.08 dy 0.00 | yes |
+
+### C56621 STM32F405VGT6 (LQFP-100)
+
+Source: DocID022152 Rev 4 Table 7 'pin and ball definitions', LQFP100 column (pins whose names wrap over two lines read from the next line: PC14, PH0, PH1, PA0, PB2, PA13, PA14, PA15, PB3, PB4) cross-checked with Fig. 13 'LQFP100 pinout'
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | PE2 | PE2 | yes |
+| 2 | PE3 | PE3 | yes |
+| 3 | PE4 | PE4 | yes |
+| 4 | PE5 | PE5 | yes |
+| 5 | PE6 | PE6 | yes |
+| 6 | VBAT | VBAT | yes |
+| 7 | PC13 | PC13 | yes |
+| 8 | PC14-OSC32_IN(PC14) | PC14 | yes |
+| 9 | PC15-OSC32_OUT(PC15) | PC15 | yes |
+| 10 | VSS | VSS | yes |
+| 11 | VDD | VDD | yes |
+| 12 | PH0-OSC_IN(PH0) | PH0 | yes |
+| 13 | PH1-OSC_OUT(PH1) | PH1 | yes |
+| 14 | NRST | NRST | yes |
+| 15 | PC0 | PC0 | yes |
+| 16 | PC1 | PC1 | yes |
+| 17 | PC2 | PC2 | yes |
+| 18 | PC3 | PC3 | yes |
+| 19 | VDD | VDD | yes |
+| 20 | VSSA | VSSA | yes |
+| 21 | VREF+ | VREF+ | yes |
+| 22 | VDDA | VDDA | yes |
+| 23 | PA0-WKUP(PA0) | PA0 | yes |
+| 24 | PA1 | PA1 | yes |
+| 25 | PA2 | PA2 | yes |
+| 26 | PA3 | PA3 | yes |
+| 27 | VSS | VSS | yes |
+| 28 | VDD | VDD | yes |
+| 29 | PA4 | PA4 | yes |
+| 30 | PA5 | PA5 | yes |
+| 31 | PA6 | PA6 | yes |
+| 32 | PA7 | PA7 | yes |
+| 33 | PC4 | PC4 | yes |
+| 34 | PC5 | PC5 | yes |
+| 35 | PB0 | PB0 | yes |
+| 36 | PB1 | PB1 | yes |
+| 37 | PB2-BOOT1(PB2) | PB2 | yes |
+| 38 | PE7 | PE7 | yes |
+| 39 | PE8 | PE8 | yes |
+| 40 | PE9 | PE9 | yes |
+| 41 | PE10 | PE10 | yes |
+| 42 | PE11 | PE11 | yes |
+| 43 | PE12 | PE12 | yes |
+| 44 | PE13 | PE13 | yes |
+| 45 | PE14 | PE14 | yes |
+| 46 | PE15 | PE15 | yes |
+| 47 | PB10 | PB10 | yes |
+| 48 | PB11 | PB11 | yes |
+| 49 | VCAP_1 | VCAP_1 | yes |
+| 50 | VDD | VDD | yes |
+| 51 | PB12 | PB12 | yes |
+| 52 | PB13 | PB13 | yes |
+| 53 | PB14 | PB14 | yes |
+| 54 | PB15 | PB15 | yes |
+| 55 | PD8 | PD8 | yes |
+| 56 | PD9 | PD9 | yes |
+| 57 | PD10 | PD10 | yes |
+| 58 | PD11 | PD11 | yes |
+| 59 | PD12 | PD12 | yes |
+| 60 | PD13 | PD13 | yes |
+| 61 | PD14 | PD14 | yes |
+| 62 | PD15 | PD15 | yes |
+| 63 | PC6 | PC6 | yes |
+| 64 | PC7 | PC7 | yes |
+| 65 | PC8 | PC8 | yes |
+| 66 | PC9 | PC9 | yes |
+| 67 | PA8 | PA8 | yes |
+| 68 | PA9 | PA9 | yes |
+| 69 | PA10 | PA10 | yes |
+| 70 | PA11 | PA11 | yes |
+| 71 | PA12 | PA12 | yes |
+| 72 | PA13(JTMS-SWDIO) | PA13 | yes |
+| 73 | VCAP_2 | VCAP_2 | yes |
+| 74 | VSS | VSS | yes |
+| 75 | VDD | VDD | yes |
+| 76 | PA14(JTCK-SWCLK) | PA14 | yes |
+| 77 | PA15(JTDI) | PA15 | yes |
+| 78 | PC10 | PC10 | yes |
+| 79 | PC11 | PC11 | yes |
+| 80 | PC12 | PC12 | yes |
+| 81 | PD0 | PD0 | yes |
+| 82 | PD1 | PD1 | yes |
+| 83 | PD2 | PD2 | yes |
+| 84 | PD3 | PD3 | yes |
+| 85 | PD4 | PD4 | yes |
+| 86 | PD5 | PD5 | yes |
+| 87 | PD6 | PD6 | yes |
+| 88 | PD7 | PD7 | yes |
+| 89 | PB3(JTDOTRACESWO) | PB3 | yes |
+| 90 | PB4(NJTRST) | PB4 | yes |
+| 91 | PB5 | PB5 | yes |
+| 92 | PB6 | PB6 | yes |
+| 93 | PB7 | PB7 | yes |
+| 94 | BOOT0 | BOOT0 | yes |
+| 95 | PB8 | PB8 | yes |
+| 96 | PB9 | PB9 | yes |
+| 97 | PE0 | PE0 | yes |
+| 98 | PE1 | PE1 | yes |
+| 99 | VSS | VSS | yes |
+| 100 | VDD | VDD | yes |
+
+### C206887 Littelfuse 646 fuse block 64600001003 (5x20 mm)
+
+Source: Littelfuse 646 series datasheet rev 08/07/17, 'Recommended Hole Pattern': 22.6 mm (+0.3/-0.1) between solder-pin holes, hole 1.5 mm
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | 1 | 1 | yes |
+| 2 | 2 | 2 | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| 1-2 | dx 22.6 dy 0.0 | dx 22.60 dy 0.00 | yes |
+
+### C5272782 Keystone 7770 PE terminal (M3, vertical)
+
+Source: Keystone 7770 drawing: four 1.52 mm square pins, .197 in (5.00 mm) x .276 in (7.01 mm), holes 1.85 mm; one electrical terminal
+
+| Pin | Symbol name | Datasheet | OK |
+|---|---|---|---|
+| 1 | PE | PE | yes |
+
+Footprint geometry against the datasheet drawing:
+
+| Pads | Datasheet | Footprint | OK |
+|---|---|---|---|
+| pad bounding box | 5.0 x 7.01 | 5.00 x 7.01 | yes |

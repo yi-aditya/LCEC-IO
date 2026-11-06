@@ -51,9 +51,9 @@ RA4 = "Resistor_SMD:R_Array_Convex_4x0603"
 #   proposed: "LCSC-number" proposed replacement for DECISION rows
 ROWS = [
     # ---------------------------------------------------------------- MCU
-    ("3 MCU", "U301", "STM32F405RGT6 MCU LQFP-64", 1, "fixed", "Package_QFP:LQFP-64_10x10mm_P0.5mm",
-     "C15742", "STM32F405RGT6", "Y", "PLAN-FLAG", "",
-     "Plan says about $3.2; LCSC lists about $6.9 at qty 1 and only a few dozen in stock. Check price breaks and stock before the PCB order."),
+    ("3 MCU", "U301", "STM32F405VGT6 MCU LQFP-100", 1, "fixed", "Package_QFP:LQFP-100_14x14mm_P0.5mm",
+     "C56621", "STM32F405VGT6", "Y", "CHANGED", "",
+     "Owner decision 2026-11-06: 100-pin package instead of the plan's LQFP-64 F405RGT6 (82 I/O, room for the EtherCAT ERR LED and future pins). Same F4 core, 1 MB flash. About $7.6 at qty 1 (plan: about $3.2) with about 900 in stock on lcsc.com. 6 VDD pins need 6 decoupling capacitors."),
     ("3 MCU", "X301", "25 MHz CMOS oscillator, 3.2x2.5 mm", 1, "fixed", "Oscillator:Oscillator_SMD_3.2x2.5mm",
      "C2595919", "ECS-3225MVQ-250-CN", "Y", "PLAN-FLAG", "",
      "Ordering code -CN decodes to +/-25 ppm, -40..+85 C (datasheet ordering table), meets the <= +/-50 ppm target. Datasheet note says +/-25 ppm is 'contact ECS for availability' and LCSC stock is under 100: confirm before ordering."),
@@ -103,9 +103,9 @@ ROWS = [
      "Vc = 53.3 V at 11.3 A, above the URB modules' 40 V input maximum. Decision 2026-11-05: keep the part, design module-side limiting on the power sheet in M3 and bring it for approval."),
     ("2 Power", "D203-D204", "SS54 Schottky 40 V 5 A SMA (reverse polarity)", 2, "fixed", "Diode_SMD:D_SMA",
      "C22452", "SS54", "Y", "NEW", "", "Basic part. 40 V reverse rating vs 28.8 V max input."),
-    ("2 Power", "F201-F202", "Fuse holder 5x20 mm PCB with cover (24V_LOGIC, 24V_IO)", 2, "fixed", "TBD lcsc.pretty (M2)",
-     "C58066", "C58066", "Y", "CHANGED", "",
-     "Owner chose replaceable 5x20 fuses for the two 24 V inputs (2026-11-05). Same holder as the relay fuses; 80 C limit accepted."),
+    ("2 Power", "F201-F202", "Fuse block 5x20 mm PCB, Littelfuse 646 (24V_LOGIC, 24V_IO)", 2, "fixed", "TBD lcsc.pretty (M2)",
+     "C206887", "64600001003", "Y", "CHANGED", "",
+     "Owner chose replaceable 5x20 fuses for the two 24 V inputs (2026-11-05). Same block as the relay fuses (replaces the C58066 holder, which had no dimensioned drawing). Footprint checked against the Littelfuse hole-pattern drawing (22.6 mm)."),
     ("2 Power", "F201", "Fuse 5x20 mm 1 A 250 V glass (24V_LOGIC)", 1, "fixed", "n/a (in holder)",
      "C3116", "5F.1000210000R1", "Y", "CHANGED", "",
      "Fitted at assembly (cheap, on LCSC). 5F series = fast-acting; confirm blow characteristic vs inrush into 47 uF at M3."),
@@ -115,7 +115,7 @@ ROWS = [
     ("2 Power", "C2xx", "47 uF 50 V aluminium electrolytic SMD 6.3x7.7", 2, "fixed", "Capacitor_SMD:CP_Elec_6.3x7.7",
      "C970679", "RVT1H470M0607", "Y", "NEW", "", "One per 24 V input."),
     ("2 Power", "C2xx", "1 uF 50 V X7R 0805", 2, "fixed", C0805,
-     "C28323", "CL21B105KBFNNNE", "Y", "NEW", "", "One per 24 V input."),
+     "C91185", "CC0805KKX7R9BB105", "Y", "CHANGED", "", "One per 24 V input. Replaces C28323 (lcsc.com stock 0)."),
     ("2 Power", "C2xx", "22 uF 25 V X5R 0805 (URB output capacitor)", 3, "fixed", C0805,
      "C45783", "CL21A226MAQNNNE", "Y", "NEW", "",
      "Datasheet Cout: 22 uF/16 V for 3.3 V and 5 V, 22 uF/25 V for 15 V. One 25 V part covers all three."),
@@ -136,16 +136,16 @@ ROWS = [
      "BOOT0, PD2 pull-down, PB14 and PC5 pull-ups, LAN9252 straps. Final count at schematic."),
     ("3 MCU", "R3xx", "1 k 1% 0603 (status LED resistors)", 7, "est", R0603,
      "C21190", "0603WAF1001T5E", "Y", "NEW", "", "Heartbeat, RUN, ERR and four jack LEDs."),
-    ("all", "C xx", "100 nF 50 V X7R 0603", 45, "est", C0603,
-     "C14663", "CC0603KRX7R9BB104", "Y", "NEW", "",
-     "Estimate: 6 on STM32, 1 NRST, about 10 LAN9252, 2 per isolator package x4, oscillator, EEPROM, DAC, op-amp, 78L05. Exact count at schematic."),
+    ("all", "C xx", "100 nF 50 V X7R 0603", 47, "est", C0603,
+     "C1591", "CL10B104KB8NNNC", "Y", "CHANGED", "",
+     "Estimate: 6 VDD + VDDA + VBAT on the STM32, 1 NRST, about 10 LAN9252, 2 per isolator package x4, oscillator, EEPROM, DAC, op-amp, 78L05. Exact count at schematic."),
     # ------------------------------------------------------ Digital inputs (x5)
     ("5 Inputs", "U501-U505", "TLP290-4(GB) AC-input quad optocoupler SOP-16", 5, "fixed", "Package_SO:SOP-16_4.4x10.4mm_P1.27mm",
      "C39031", "TLP290-4", "Y", "PLAN", "", "Datasheet input type AC/DC, -55..+110 C, 2.5 kV."),
     ("5 Inputs", "R501-R520", "4.7 k 1% 1206 (24 V input resistor)", 20, "fixed", R1206,
      "C17936", "1206W4F4701T5E", "Y", "NEW", "", "0.16 W worst case of 0.25 W."),
     ("5 Inputs", "C501-C520", "10 nF 50 V X7R 0603 (input filter)", 20, "fixed", C0603,
-     "C57112", "0603B103K500NT", "Y", "NEW", "", "Basic part."),
+     "C1589", "CL10B103KB8NNNC", "Y", "CHANGED", "", "Replaces C57112 (lcsc.com stock 0)."),
     ("5 Inputs", "LED501-LED520", "Input state LED (yellow-green) 0603", 20, "fixed", L0603,
      "C89809", "NCD0603C3", "Y", "CHANGED", "", "Yellow-green accepted (see RUN LED)."),
     ("5 Inputs", "RN501-RN505", "1 k x4 resistor array 0603 (LED resistors)", 5, "fixed", RA4,
@@ -188,9 +188,12 @@ ROWS = [
      "C1524860", "P2R-05P", "Y", "PLAN-FLAG", "", "Stock 44 (need 8 per board). Plan allows Mouser/DigiKey if LCSC runs out."),
     ("7 Relays", "K701-K708", "Omron G2R-1-S DC24 relay (buy locally in India)", 8, "fixed", "n/a (plugs into socket)",
      "", "G2R-1-S DC24", "DNP", "LOCAL", "", "Not on the assembly line. Rating: -40..+70 C per plan, confirm against the Omron datasheet."),
-    ("7 Relays", "F701-F708", "Fuse holder 5x20 mm PCB with cover", 8, "fixed", "TBD lcsc.pretty (M2)",
-     "C58066", "C58066", "Y", "PLAN-FLAG", "",
-     "Datasheet: ABS base, polystyrene cover, 6-10 A 250 VAC, and 'temperature resistance 80 C'. That equals the top of the enclosure range and a 5 A fuse adds self-heating. Fallback in plan: Littelfuse 649 series (Mouser). Owner: accept or switch."),
+    ("7 Relays", "F701-F708", "Fuse block 5x20 mm PCB, Littelfuse 646", 8, "fixed", "TBD lcsc.pretty (M2)",
+     "C206887", "64600001003", "Y", "CHANGED", "",
+     "Owner decision 2026-11-06: replace the C58066 holder (no dimensioned drawing, 80 C rating) with the Littelfuse 646 series, which has a full drawing. 250 V, 6.3 A (5 A / 1 W with the 648 cover). The datasheet states no operating temperature (PA 6.6 housing, UL 94 V-0): ask Littelfuse or accept."),
+    ("7 Relays", "F701-F708 + F201-F202 (cover)", "Clear cover for the 646 fuse block (Littelfuse 648, polycarbonate)", 10, "fixed", "n/a (clips on the block)",
+     "C187509", "64800001009", "Y", "CHANGED", "",
+     "Covers the live fuse clips (mains side on F701-F708). Ordered with the block; accessory, no footprint."),
     ("7 Relays", "F701-F708 (fuse)", "Fuse 5x20 mm T5A 250 VAC ceramic (buy locally in India)", 8, "fixed", "n/a (in holder)",
      "", "T5A 250V 5x20 ceramic", "DNP", "LOCAL", "", "Not on the assembly line."),
     ("7 Relays", "J701-J708", "Terminal header 3-pole 5.08 mm, one per relay (COM via fuse, NO, NC)", 8, "fixed", "TBD lcsc.pretty (M2)",
@@ -229,10 +232,10 @@ ROWS = [
      "C22775", "0603WAF1000T5E", "Y", "NEW", "", ""),
     ("8 Analog", "R8xx", "1 k 1% 0603 (DAC to op-amp)", 2, "fixed", R0603,
      "C21190", "0603WAF1001T5E", "Y", "NEW", "", ""),
-    ("8 Analog", "C8xx", "1 uF 50 V X5R 0603", 6, "est", C0603,
-     "C15849", "CL10A105KB8NNNC", "Y", "NEW", "", "VDDA, 78L05 in/out, URB Cout0 and others; final count at schematic."),
+    ("8 Analog", "C8xx", "1 uF 50 V X7R 0603", 6, "est", C0603,
+     "C559769", "CC0603KRX7R9BB105", "Y", "CHANGED", "", "VDDA, 78L05 in/out, URB Cout0 and others; final count at schematic. X7R replaces X5R at 50 V (less DC-bias loss); replaces C15849."),
     ("8 Analog", "C8xx", "10 nF 50 V X7R 0603 (AO output)", 2, "fixed", C0603,
-     "C57112", "0603B103K500NT", "Y", "NEW", "", ""),
+     "C1589", "CL10B103KB8NNNC", "Y", "CHANGED", "", ""),
     ("8 Analog", "J801-J802", "Terminal header 2-pole 5.08 mm, one per output (AO, AGND)", 2, "fixed", "TBD lcsc.pretty (M2)",
      "C441204", "KF2EDGR-5.08-2P", "Y", "CHANGED", "",
      "Owner decision 2026-11-05: one connector per I/O (replaces the single 3-pole AO1/AO2/AGND terminal)."),
@@ -244,8 +247,11 @@ ROWS = [
     ("2 Power", "P201", "Terminal plug 4-pole 5.08 mm", 1, "fixed", "TBD lcsc.pretty (M2)",
      "C440882", "KF2EDGK-5.08-4P", "Y", "NEW", "", ""),
     ("1 Root", "J101", "PE screw terminal M3 PCB (Keystone 7770)", 1, "fixed", "TBD lcsc.pretty (M2)",
-     "C5272782", "7770", "Y", "NEW-FLAG", "",
-     "Takes an M3 ring lug; also the shield-to-PE point. M2 finding: the Keystone datasheet says 7770 is supplied LESS SCREW (LCSC text says 'with screw'). The screw-installed 7772 (C5544059) has zero stock. An M3 screw is not in the BOM yet: open question."),
+     "C5272782", "7770", "Y", "NEW", "",
+     "Takes an M3 ring lug; also the shield-to-PE point. The 7770 ships WITHOUT its screw (Keystone datasheet), so the M3 screw below is a separate part. Footprint drawn from the Keystone drawing (5.00 x 7.01 mm, 1.85 mm holes)."),
+    ("1 Root", "J101 (screw)", "M3 x 6 pan-head cross-slot screw for the PE terminal (M3 x 0.5)", 1, "fixed", "n/a (accessory)",
+     "C357543", "PM3X6", "Y", "CHANGED", "",
+     "Owner decision 2026-11-06: keep the 7770 and add a screw. Nickel-plated carbon steel, head 5 mm. Length 6 mm: confirm against the ring lug and wire at the mechanical review."),
 ]
 
 # Test points and mounting holes are footprints only, no purchased part.
@@ -257,18 +263,6 @@ COLUMNS = [
     "Price_USD_qty1", "Library", "Fit", "Status", "Proposed_LCSC", "Notes",
     "Checked",
 ]
-
-
-def jlc_stock(code):
-    """Stock of this LCSC number in the JLCPCB parts catalogue (None if not found/unreachable)."""
-    try:
-        from jlc_search import search
-        for c in search(code, 3):
-            if c.get("componentCode") == code:
-                return c.get("stockCount")
-    except Exception:
-        return None
-    return None
 
 
 def library_footprints():
@@ -321,10 +315,8 @@ def build():
                     problems.append(
                         f"{lcsc} ({desc}): LCSC model '{mpn}' does not contain '{expect}'")
                 if stock is not None and stock < qty:
-                    js = jlc_stock(lcsc)
-                    extra = f"; JLCPCB catalogue shows {js}" if js is not None else ""
                     problems.append(
-                        f"{lcsc} ({desc}): LCSC page stock {stock} < qty needed {qty}{extra}")
+                        f"{lcsc} ({desc}): lcsc.com stock {stock} < qty needed {qty}")
                 elif stock is not None and stock < 10 * qty and status != "DECISION":
                     problems.append(
                         f"{lcsc} ({desc}): LOW stock {stock} for qty {qty}")
@@ -361,13 +353,20 @@ Decided by the owner on 2026-11-05 (status CHANGED in the list, recorded in `doc
 - Module input capacitors: **3 x 100 uF/100 V** added, per the URB datasheet.
 - Status LEDs: **yellow-green NCD0603C3** accepted in place of green.
 - 24 V input fuses: **replaceable 5x20 mm fuses** (same covered holder as the relay fuses, 1 A and 3 A glass fuses on LCSC) instead of SMD fuses.
-- Relay fuse holder: **C58066 kept** (80 C limit accepted).
+- Relay fuse holder: C58066 kept (superseded on 2026-11-06, see below).
 - Terminals: **one connector per I/O** (supersedes the 7-sets answer): 20 inputs and 8 relays on 3-pole 5.08 mm, 2 analog outputs on 2-pole, MPG 6-pole and power 4-pole unchanged. No 8-, 10- or 14-pole terminals remain.
 - SMBJ33A vs the URB 40 V input maximum: **parts kept, module-side limiting designed in M3** and brought for approval.
 
+Changed during the M2 review (2026-11-06):
+
+- MCU: **STM32F405VGT6 (LQFP-100, C56621)** replaces the 64-pin part. The EtherCAT ERR LED goes on a spare pin.
+- Fuse holders: **Littelfuse 646 block (C206887) + 648 clear cover (C187509)** replace C58066, which had no dimensioned drawing.
+- PE terminal: Keystone 7770 kept and an **M3 x 6 screw (C357543)** added.
+- Sourcing: **PCBPower buys every component from lcsc.com**, so lcsc.com stock is the only stock that counts. Four capacitors that lcsc.com showed at 0 were replaced by C1591, C1589, C559769 and C91185. JLCPCB is not used for sourcing or stock.
+
 Still open:
 
-1. **STM32F405RGT6 price.** About $6.9 at qty 1 on LCSC (plan: about $3.2), about 54 in stock. Information only.
+1. **STM32F405VGT6 price.** About $7.6 at qty 1 on lcsc.com (plan: about $3.2 for the 64-pin part), about 900 in stock. Information only.
 2. **PTC margins.** The 0.5 A sensor PTC is rated 30 V against a 28.8 V maximum input. Information only.
 3. **Estimated counts.** Rows with Qty_basis = est (100 nF, 10 uF, 4.7 uF, 10 k, 1 k, 49.9 R, 1 uF) are estimates; exact counts come from the schematic sheets.
 """

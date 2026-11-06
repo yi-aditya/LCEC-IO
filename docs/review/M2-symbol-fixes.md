@@ -6,9 +6,6 @@ The log below is produced by running the fixer on the raw EasyEDA import (`pytho
 
 | Symbol | Change |
 |---|---|
-| STM32F405RGT6 | field 'LCSC Part' renamed to 'LCSC' |
-| STM32F405RGT6 | Manufacturer: 'ST(意法半导体)' -> 'ST' |
-| STM32F405RGT6 | Datasheet: 'https://lcsc.com/product-detail/ST-Micro' -> 'https://datasheet.lcsc.com/datasheet/pdf/eded9b3eda904d8bb3a' |
 | ECS-3225MVQ-250-CN-TR | field 'LCSC Part' renamed to 'LCSC' |
 | ECS-3225MVQ-250-CN-TR | Datasheet: 'https://www.lcsc.com/datasheet/C2595919.' -> 'https://datasheet.lcsc.com/datasheet/pdf/c3df565c0c0763e3f49' |
 | ECS-3225MVQ-250-CN-TR | Reference 'U' -> 'X' |
@@ -54,9 +51,6 @@ The log below is produced by running the fixer on the raw EasyEDA import (`pytho
 | SS54_C22452 | field 'LCSC Part' renamed to 'LCSC' |
 | SS54_C22452 | Manufacturer: 'MDD(辰达半导体)' -> 'MDD(Microdiode Semiconductor)' |
 | SS54_C22452 | Datasheet: 'https://lcsc.com/product-detail/Schottky' -> 'https://datasheet.lcsc.com/datasheet/pdf/3d29bdcdc3c46ec127d' |
-| Fusetransparentseat | field 'LCSC Part' renamed to 'LCSC' |
-| Fusetransparentseat | Manufacturer: 'xcfuse(旭程)' -> 'Xucheng Elec' |
-| Fusetransparentseat | Datasheet: 'https://lcsc.com/product-detail/Fusehold' -> 'https://datasheet.lcsc.com/datasheet/pdf/2ca6bf8100ecb6f5efc' |
 | 1A250VAC | field 'LCSC Part' renamed to 'LCSC' |
 | 1A250VAC | Manufacturer: 'xcfuse(旭程)' -> 'Xucheng Elec' |
 | 1A250VAC | Datasheet: 'https://lcsc.com/product-detail/Glass-Fu' -> 'https://datasheet.lcsc.com/datasheet/pdf/0720ae667fc4987d8d7' |
@@ -176,3 +170,10 @@ The log below is produced by running the fixer on the raw EasyEDA import (`pytho
 | KF2EDGK-5.08-4P-AA | Datasheet: 'https://www.lcsc.com/datasheet/C440882.p' -> 'https://datasheet.lcsc.com/datasheet/pdf/976c61d45369c406685' |
 | KF2EDGK-5.08-4P-AA | Reference 'CN' -> 'P' |
 | KF2EDGK-5.08-4P-AA | accessory, not on the PCB: 1 placeholder pin(s) and footprint removed, set 'exclude from board' |
+| STM32F405VGT6 | field 'LCSC Part' renamed to 'LCSC' |
+| STM32F405VGT6 | Manufacturer: 'ST(意法半导体)' -> 'ST' |
+| STM32F405VGT6 | Datasheet: 'https://lcsc.com/product-detail/ST-Micro' -> 'https://datasheet.lcsc.com/datasheet/pdf/524532d2c17d4323843' |
+| 64600001003 | field 'LCSC Part' renamed to 'LCSC' |
+| 64600001003 | Manufacturer: 'Littelfuse(美国力特)' -> 'Littelfuse' |
+| 64600001003 | Datasheet: 'https://lcsc.com/product-detail/Others_L' -> 'https://datasheet.lcsc.com/datasheet/pdf/4a64479984970992d6e' |
+| 64600001003 | Reference 'FH' -> 'F' |

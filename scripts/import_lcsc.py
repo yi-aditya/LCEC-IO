@@ -10,7 +10,7 @@ skipped (re-run safely). Resistors, capacitors, LEDs, ferrite beads and resistor
 arrays are NOT imported: they use KiCad's standard symbols and footprints with
 the LCSC field filled (CLAUDE.md).
 
-Usage:  python3 -I scripts/import_lcsc.py [--only C15742 C80933 ...]
+Usage:  python3 -I scripts/import_lcsc.py [--only C56621 C80933 ...]
 """
 import csv
 import os
@@ -34,7 +34,7 @@ PASSIVE_WORDS = ("resistor", " R 1%", " k 1%", " M 1%", " nF ", " uF ", "LED", "
 
 
 # EasyEDA has no data for these (404): added by scripts/make_manual_parts.py
-MANUAL = {"C440881", "C440884", "C5272782"}
+MANUAL = {"C440881", "C440884", "C5272782", "C187509", "C357543"}
 
 
 def wanted_codes():

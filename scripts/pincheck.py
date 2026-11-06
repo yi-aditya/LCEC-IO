@@ -44,6 +44,49 @@ def alias_norm(a):
     return re.sub(r"[^A-Z0-9]", "", a.upper().replace("_", ""))
 
 
+def pad_list(fp_dir, fp_name):
+    """[(number, x, y)] in file order; unnumbered pads are np1, np2, ..."""
+    path = os.path.join(fp_dir, fp_name.split(":", 1)[-1] + ".kicad_mod")
+    if not os.path.exists(path):
+        return None
+    s = open(path, encoding="utf-8").read()
+    out, n = [], 0
+    for m in re.finditer(r'\(pad "?([A-Za-z0-9_]*)"?\s+\w+\s+\w+\s+\(at ([-\d.]+) ([-\d.]+)', s):
+        num = m.group(1)
+        if not num:
+            n += 1
+            num = f"np{n}"
+        out.append((num, float(m.group(2)), float(m.group(3))))
+    return out
+
+
+def geometry_errors(exp, pads, tol=0.15):
+    errs, rows = [], []
+    first = {}
+    for num, x, y in pads:
+        first.setdefault(num, (x, y))
+    for a, b, dx, dy in exp.get("geometry", []):
+        if a not in first or b not in first:
+            errs.append(f"geometry: pad {a} or {b} not found")
+            continue
+        gx, gy = abs(first[a][0] - first[b][0]), abs(first[a][1] - first[b][1])
+        ok = (dx is None or abs(gx - dx) <= tol) and (dy is None or abs(gy - dy) <= tol)
+        rows.append((f"{a}-{b}", f"dx {dx if dx is not None else '-'} dy {dy if dy is not None else '-'}",
+                     f"dx {gx:.2f} dy {gy:.2f}", ok))
+        if not ok:
+            errs.append(f"geometry pads {a}-{b}: footprint dx {gx:.2f} dy {gy:.2f} vs datasheet dx {dx} dy {dy}")
+    if exp.get("bbox"):
+        xs = [x for _, x, _ in pads]
+        ys = [y for _, _, y in pads]
+        w, h = max(xs) - min(xs), max(ys) - min(ys)
+        bw, bh = exp["bbox"]
+        ok = abs(w - bw) <= 0.05 and abs(h - bh) <= 0.05
+        rows.append(("pad bounding box", f"{bw} x {bh}", f"{w:.2f} x {h:.2f}", ok))
+        if not ok:
+            errs.append(f"bounding box {w:.2f} x {h:.2f} vs datasheet {bw} x {bh}")
+    return errs, rows
+
+
 def pad_numbers(fp_dir, fp_name):
     path = os.path.join(fp_dir, fp_name.split(":", 1)[-1] + ".kicad_mod")
     if not os.path.exists(path):
@@ -106,7 +149,15 @@ def check(libpath):
                 sp, fpp = set(pins), pads
                 if sp != fpp:
                     errs.append(f"symbol pins {sorted(sp - fpp)} have no pad; pads {sorted(fpp - sp)} have no pin")
-        results.append(dict(symbol=s.entryName, lcsc=lcsc, rows=rows, errs=errs, exp=exp,
+        grows = []
+        if exp and (exp.get("geometry") or exp.get("bbox")) and fp:
+            pl = pad_list(fp_dir, fp)
+            if pl is None:
+                errs.append("geometry: footprint file not found")
+            else:
+                gerrs, grows = geometry_errors(exp, pl)
+                errs += gerrs
+        results.append(dict(symbol=s.entryName, lcsc=lcsc, rows=rows, grows=grows, errs=errs, exp=exp,
                             npins=len(pins), fp=fp, npads=None if pads is None else len(pads)))
     return results
 
@@ -133,6 +184,12 @@ def render_md(results):
         for num, sym, ds, ok in r["rows"]:
             L.append(f"| {num} | {sym} | {ds} | {'yes' if ok else '**NO**'} |")
         L.append("")
+        if r.get("grows"):
+            L.append("Footprint geometry against the datasheet drawing:\n")
+            L.append("| Pads | Datasheet | Footprint | OK |\n|---|---|---|---|")
+            for a, b, c, ok in r["grows"]:
+                L.append(f"| {a} | {b} | {c} | {'yes' if ok else '**NO**'} |")
+            L.append("")
     return "\n".join(L)
 
 

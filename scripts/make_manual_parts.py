@@ -6,6 +6,8 @@
             one electrical pin 'PE' on all four pads. No 3D model.
   C440881   KF2EDGK-5.08-3P-AA cable plug  } accessories, no pins, not on the PCB:
   C440884   KF2EDGK-5.08-6P cable plug     } cloned from the sibling plug symbol.
+  C187509   Littelfuse 648 clear cover for the fuse block   } accessories, no pins,
+  C357543   M3 x 6 screw for the PE terminal                  } not on the PCB.
 
 Run after import_lcsc.py and before fix_symbols.py. Safe to re-run.
 """
@@ -53,7 +55,7 @@ def keystone_footprint():
     return FP_NAME
 
 
-MANUAL = {"C440881", "C440884", "C5272782"}
+MANUAL = {"C440881", "C440884", "C5272782", "C187509", "C357543"}
 
 
 def rename_units(sym, old, new):
@@ -100,6 +102,10 @@ def main():
         clone("C440880", "C440881", "KF2EDGK-5.08-3P-AA", "KF2EDGK-5.08-3P-AA", "P")
     if "C440884" not in have:
         clone("C440880", "C440884", "KF2EDGK-5.08-6P", "KF2EDGK-5.08-6P", "P")
+    if "C187509" not in have:
+        clone("C440880", "C187509", "64800001009", "64800001009", "F")
+    if "C357543" not in have:
+        clone("C440880", "C357543", "PM3X6", "PM3X6", "H")
     if "C5272782" not in have:
         d = have["C441204"]  # 2-pole header symbol as the graphic donor
         s = copy.deepcopy(d)

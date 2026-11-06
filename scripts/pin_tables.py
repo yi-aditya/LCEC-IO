@@ -81,29 +81,32 @@ LAN9252 = {1: ['OSCI'],
  65: ['VSS']}
 
 
-def stm32_lqfp64():
+def stm32_lqfp100():
     names = {
-        1: "VBAT", 2: "PC13", 3: "PC14", 4: "PC15", 5: "PH0", 6: "PH1", 7: "NRST",
-        8: "PC0", 9: "PC1", 10: "PC2", 11: "PC3", 12: "VSSA", 13: "VDDA", 14: "PA0",
-        15: "PA1", 16: "PA2", 17: "PA3", 18: "VSS", 19: "VDD", 20: "PA4", 21: "PA5",
-        22: "PA6", 23: "PA7", 24: "PC4", 25: "PC5", 26: "PB0", 27: "PB1", 28: "PB2",
-        29: "PB10", 30: "PB11", 31: "VCAP_1", 32: "VDD", 33: "PB12", 34: "PB13",
-        35: "PB14", 36: "PB15", 37: "PC6", 38: "PC7", 39: "PC8", 40: "PC9", 41: "PA8",
-        42: "PA9", 43: "PA10", 44: "PA11", 45: "PA12", 46: "PA13", 47: "VCAP_2",
-        48: "VDD", 49: "PA14", 50: "PA15", 51: "PC10", 52: "PC11", 53: "PC12",
-        54: "PD2", 55: "PB3", 56: "PB4", 57: "PB5", 58: "PB6", 59: "PB7", 60: "BOOT0",
-        61: "PB8", 62: "PB9", 63: "VSS", 64: "VDD",
+        1: "PE2", 2: "PE3", 3: "PE4", 4: "PE5", 5: "PE6", 6: "VBAT", 7: "PC13", 8: "PC14",
+        9: "PC15", 10: "VSS", 11: "VDD", 12: "PH0", 13: "PH1", 14: "NRST", 15: "PC0", 16: "PC1",
+        17: "PC2", 18: "PC3", 19: "VDD", 20: "VSSA", 21: "VREF+", 22: "VDDA", 23: "PA0", 24: "PA1",
+        25: "PA2", 26: "PA3", 27: "VSS", 28: "VDD", 29: "PA4", 30: "PA5", 31: "PA6", 32: "PA7",
+        33: "PC4", 34: "PC5", 35: "PB0", 36: "PB1", 37: "PB2", 38: "PE7", 39: "PE8", 40: "PE9",
+        41: "PE10", 42: "PE11", 43: "PE12", 44: "PE13", 45: "PE14", 46: "PE15", 47: "PB10",
+        48: "PB11", 49: "VCAP_1", 50: "VDD", 51: "PB12", 52: "PB13", 53: "PB14", 54: "PB15",
+        55: "PD8", 56: "PD9", 57: "PD10", 58: "PD11", 59: "PD12", 60: "PD13", 61: "PD14",
+        62: "PD15", 63: "PC6", 64: "PC7", 65: "PC8", 66: "PC9", 67: "PA8", 68: "PA9", 69: "PA10",
+        70: "PA11", 71: "PA12", 72: "PA13", 73: "VCAP_2", 74: "VSS", 75: "VDD", 76: "PA14",
+        77: "PA15", 78: "PC10", 79: "PC11", 80: "PC12", 81: "PD0", 82: "PD1", 83: "PD2", 84: "PD3",
+        85: "PD4", 86: "PD5", 87: "PD6", 88: "PD7", 89: "PB3", 90: "PB4", 91: "PB5", 92: "PB6",
+        93: "PB7", 94: "BOOT0", 95: "PB8", 96: "PB9", 97: "PE0", 98: "PE1", 99: "VSS", 100: "VDD",
     }
     return {k: [v] for k, v in names.items()}
 
 
 T = {}
 
-T["C15742"] = dict(
-    part="STM32F405RGT6 (LQFP-64)",
-    source="DocID022152 Rev 4: Fig. 12 'LQFP64 pinout' (pins 1-16, 33-48 read from the figure; the rest from Table 7 LQFP64 column, PB3/JTDO row 55)",
+T["C56621"] = dict(
+    part="STM32F405VGT6 (LQFP-100)",
+    source="DocID022152 Rev 4 Table 7 'pin and ball definitions', LQFP100 column (pins whose names wrap over two lines read from the next line: PC14, PH0, PH1, PA0, PB2, PA13, PA14, PA15, PB3, PB4) cross-checked with Fig. 13 'LQFP100 pinout'",
     match="token",
-    pins=stm32_lqfp64(),
+    pins=stm32_lqfp100(),
 )
 T["C80933"] = dict(
     part="LAN9252I/PT (64-TQFP-EP)",
@@ -248,3 +251,49 @@ for _c, _n in (("C970679", "47 uF 50 V SMD electrolytic"), ("C2960285", "100 uF 
         pins={1: ["+"], 2: ["-"]},
         renamed=True,
     )
+
+
+# ---------------------------------------------------------------------------
+# Footprint geometry from the printed dimensions on each datasheet drawing.
+# geometry: (pad A, pad B, |dx| mm, |dy| mm); None = not given on the drawing.
+# bbox: (width, height) of the bounding box of all pad centres.
+# Pads without a number are called np1, np2, ... in file order.
+# ---------------------------------------------------------------------------
+T["C206887"] = dict(
+    part="Littelfuse 646 fuse block 64600001003 (5x20 mm)",
+    source="Littelfuse 646 series datasheet rev 08/07/17, 'Recommended Hole Pattern': 22.6 mm (+0.3/-0.1) between solder-pin holes, hole 1.5 mm",
+    match="token",
+    pins={1: ["1"], 2: ["2"]},
+    geometry=[("1", "2", 22.6, 0.0)],
+)
+T["C5272782"] = dict(
+    part="Keystone 7770 PE terminal (M3, vertical)",
+    source="Keystone 7770 drawing: four 1.52 mm square pins, .197 in (5.00 mm) x .276 in (7.01 mm), holes 1.85 mm; one electrical terminal",
+    match="token",
+    pins={1: ["PE"]},
+    bbox=(5.00, 7.01),
+)
+for _c in ("C5369843", "C3031185", "C5369844"):
+    T[_c]["geometry"] = [("1", "2", 2.54, 0.0), ("1", "3", 5.08, 0.0), ("1", "5", 10.16, 0.0),
+                         ("1", "6", 12.70, 0.0), ("1", "7", 15.24, 0.0), ("1", "8", 17.78, 0.0)]
+T["C1524860"]["geometry"] = [("3", "4", 4.0, 6.0), ("4", "2", 4.0, 4.5), ("4", "1", None, 15.0), ("1", "5", 7.0, 4.0)]
+T["C1524860"]["source"] += "; pad distances from the 'Mounting Holes' drawing (6, 4.5, 15, 4, 4, 7 mm)"
+T["C69427"]["geometry"] = [("9", "12", 13.25, None), ("9", "10", 2.54, None), ("11", "12", 2.54, None),
+                           ("SH1", "SH2", 15.49, None), ("1", "3", 2.54, None), ("2", "1", None, 2.54),
+                           ("np1", "np2", 11.43, None), ("9", "np1", None, 4.90), ("np1", "2", None, 8.89)]
+T["C69427"]["source"] += "; pad distances from the 'Mounting Pattern' drawing (13.25, 11.43, 15.49, 4.90, 8.89, 2.54 mm)"
+for _c, _n in (("C441204", 2), ("C441205", 3), ("C441206", 4), ("C441208", 6)):
+    T[_c] = dict(
+        part=f"KF2EDGR-5.08-{_n}P header",
+        source="5.08 mm pitch pluggable terminal (manufacturer pitch); pin n = position n",
+        match="token",
+        pins={i: [str(i)] for i in range(1, _n + 1)},
+        geometry=[("1", "2", 5.08, 0.0)],
+    )
+T["C2937625"] = dict(
+    part="PZ254V-11-03P 1x3 pin header",
+    source="2.54 mm pitch pin header, pin n = position n",
+    match="token",
+    pins={1: ["1"], 2: ["2"], 3: ["3"]},
+    geometry=[("1", "2", 2.54, 0.0)],
+)
