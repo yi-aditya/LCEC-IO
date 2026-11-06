@@ -61,11 +61,11 @@ def tp_at_net(s, ref, net, x, y):
 def build_power(libs):
     s = G.Sch(libs, "02_power.kicad_sch", "LCEC-IO - 2 Power", "2", ROOT_UUID, SHEET_UUID["power"],
               comment="Two 24 V entries, protection, three isolated DC-DC modules")
-    TVS = "C320242"      # SMBJ33A (approved plan part; see the M3 PR for the proposed SMBJ30A swap)
+    TVS = "C83851"       # SMBJ30A (owner decision 2026-11-06, replaces the plan's SMBJ33A)
     OX = g(228)           # module centre x; the isolation barrier is the vertical line through it
 
     note(s, "2  POWER  -  24 V entries, protection, three isolated DC-DC modules", g(10), g(8), 2.54, True)
-    note(s, "Input 24 VDC +/-20 % = 19.2 ... 28.8 V.  Per input: fuse > SS54 reverse-polarity diode > SMBJ33A TVS > 47 uF + 1 uF, "
+    note(s, "Input 24 VDC +/-20 % = 19.2 ... 28.8 V.  Per input: fuse > SS54 reverse-polarity diode > SMBJ30A TVS > 47 uF + 1 uF, "
             "then a 100 uF/100 V input capacitor at each URB module (URB datasheet Cin).", g(10), g(13))
 
     # ---- entry connector, pins 1..4 top to bottom: +24V_LOGIC, 0V_LOGIC, +24V_IO, 0V_IO
@@ -92,7 +92,7 @@ def build_power(libs):
         s.wire(F.pin("2"), D.pin("1"))
         rail_end = (OX - g(12), y)
         s.wire(D.pin("2"), rail_end)
-        T = vpart(s, "lcec:D_TVS_KA_V", ref_tvs, g(92), y, "SMBJ33A", TVS)
+        T = vpart(s, "lcec:D_TVS_KA_V", ref_tvs, g(92), y, "SMBJ30A", TVS)
         s.power(GND, ret_net, *T.pin("2"))
         C = vpart(s, "Device:C_Polarized", ref_c47, g(112), y, "47uF 50V", "C970679")
         s.power(GND, ret_net, *C.pin("2"))
@@ -167,7 +167,7 @@ def build_power(libs):
             "Loads: +3V3 about 0.4 A of the module's 1.35 A (30 %). 24V_LOGIC input about 0.3 A at full module load: 1 A fuse.",
             "24V_IO: 5 V module 7.3 W + 15 V module 7 W at full load = 0.75 A, plus relay coils 0.21 A and sensors through the PTCs 1 A: 3 A fuse.",
             "Input inrush I2t into the input capacitors stays below 1.1 A2s; the fuses are rated 4.26 A2s (1 A) and 12.5 A2s (3 A).",
-            "URB input 9-36 V (40 V continuous, 50 V for 1 s). SMBJ33A clamps 53.3 V at 11.3 A: see the PR for the proposed SMBJ30A (48.4 V).",
+            "URB input 9-36 V (40 V continuous, 50 V for 1 s). SMBJ30A: 30 V stand-off above the 28.8 V maximum input, clamps 48.4 V at 12.4 A.",
             "CTRL left open = module on. NC pins are not connected inside the module.")):
         note(s, t, g(10), ny + g(4 + 3 * i))
     return s

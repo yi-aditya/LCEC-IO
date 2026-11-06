@@ -235,7 +235,7 @@ def check_power(comps, pinnet):
         if (net(pinnet, t, 1), net(pinnet, t, 2)) != (k, a):
             fail(f"{t} TVS on {net(pinnet, t, 1)}/{net(pinnet, t, 2)}, expected cathode {k} anode {a}")
     if not any("D20" in f or "F20" in f for f in fails):
-        ok("protection: fuse > SS54 (series, anode toward the input) > SMBJ33A (cathode to the rail) on both inputs")
+        ok("protection: fuse > SS54 (series, anode toward the input) > SMBJ30A (cathode to the rail) on both inputs")
 
 
 def check_mcu(comps, pinnet):

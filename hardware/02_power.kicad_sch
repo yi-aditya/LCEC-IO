@@ -3012,7 +3012,7 @@
 		)
 		(uuid "ae438a84-bfdb-50be-9023-686b58d63827")
 	)
-	(text "Input 24 VDC +/-20 % = 19.2 ... 28.8 V.  Per input: fuse > SS54 reverse-polarity diode > SMBJ33A TVS > 47 uF + 1 uF, then a 100 uF/100 V input capacitor at each URB module (URB datasheet Cin)."
+	(text "Input 24 VDC +/-20 % = 19.2 ... 28.8 V.  Per input: fuse > SS54 reverse-polarity diode > SMBJ30A TVS > 47 uF + 1 uF, then a 100 uF/100 V input capacitor at each URB module (URB datasheet Cin)."
 		(exclude_from_sim no)
 		(at 12.7 16.51 0)
 		(effects
@@ -3057,7 +3057,7 @@
 		)
 		(uuid "e75990f7-9992-52c2-adce-4312dea0f05b")
 	)
-	(text "URB input 9-36 V (40 V continuous, 50 V for 1 s). SMBJ33A clamps 53.3 V at 11.3 A: see the PR for the proposed SMBJ30A (48.4 V)."
+	(text "URB input 9-36 V (40 V continuous, 50 V for 1 s). SMBJ30A: 30 V stand-off above the 28.8 V maximum input, clamps 48.4 V at 12.4 A."
 		(exclude_from_sim no)
 		(at 12.7 234.95 0)
 		(effects
@@ -6776,7 +6776,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "SMBJ33A"
+		(property "Value" "SMBJ30A"
 			(at 119.38 144.78 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -6787,7 +6787,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "lcsc:SMB_L4.6-W3.6-LS5.3-RD"
+		(property "Footprint" "lcsc:SMB_L4.4-W3.6-LS5.4-RD"
 			(at 116.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6798,7 +6798,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C320242.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C83851.pdf"
 			(at 116.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6819,7 +6819,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C320242"
+		(property "LCSC" "C83851"
 			(at 116.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6830,7 +6830,7 @@
 				)
 			)
 		)
-		(property "MPN" "SMBJ33A"
+		(property "MPN" "SMBJ30A"
 			(at 116.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -6841,7 +6841,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "LGE"
+		(property "Manufacturer" "Littelfuse"
 			(at 116.84 143.51 0)
 			(hide yes)
 			(show_name no)
@@ -7579,7 +7579,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "SMBJ33A"
+		(property "Value" "SMBJ30A"
 			(at 119.38 76.2 0)
 			(show_name no)
 			(do_not_autoplace no)
@@ -7590,7 +7590,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "lcsc:SMB_L4.6-W3.6-LS5.3-RD"
+		(property "Footprint" "lcsc:SMB_L4.4-W3.6-LS5.4-RD"
 			(at 116.84 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7601,7 +7601,7 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://www.lcsc.com/datasheet/C320242.pdf"
+		(property "Datasheet" "https://www.lcsc.com/datasheet/C83851.pdf"
 			(at 116.84 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7622,7 +7622,7 @@
 				)
 			)
 		)
-		(property "LCSC" "C320242"
+		(property "LCSC" "C83851"
 			(at 116.84 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7633,7 +7633,7 @@
 				)
 			)
 		)
-		(property "MPN" "SMBJ33A"
+		(property "MPN" "SMBJ30A"
 			(at 116.84 74.93 0)
 			(hide yes)
 			(show_name no)
@@ -7644,7 +7644,7 @@
 				)
 			)
 		)
-		(property "Manufacturer" "LGE"
+		(property "Manufacturer" "Littelfuse"
 			(at 116.84 74.93 0)
 			(hide yes)
 			(show_name no)

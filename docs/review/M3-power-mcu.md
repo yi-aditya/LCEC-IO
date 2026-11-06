@@ -34,7 +34,7 @@ The MCU sheet's 25 hierarchical pins (to EtherCAT, inputs, MPG, relays and analo
 
 ![Power](M3-sheet2-power.png)
 
-- **Chain per input (as in the plan):** fuse (F201 1 A, F202 3 A) > SS54 series diode > SMBJ33A TVS > 47 uF + 1 uF > 100 uF/100 V at each module. The TVS cathode is on the rail, the diode anode toward the input (both verified from the netlist).
+- **Chain per input (as in the plan):** fuse (F201 1 A, F202 3 A) > SS54 series diode > SMBJ30A TVS > 47 uF + 1 uF > 100 uF/100 V at each module. The TVS cathode is on the rail, the diode anode toward the input (both verified from the netlist).
 - **Modules:** U201 URB2403S (+3V3, GND_L), U202 URB2405S (+5V_IO, 0 V tied to 0V_IO at the module), U203 URB2415S (+15V_A, AGND). CTRL left open (= on, datasheet) and the two NC pins flagged. Output capacitor 22 uF/25 V each. The dashed isolation barrier runs through the modules; the 24V_LOGIC and +3V3/GND_L domains, and AGND and 0V_IO, share no net.
 - **Test points** on every rail and ground (TP201 to TP207).
 - **BOM accessories** (glass fuses, fuse covers, cable plug) are pin-less "not on the PCB" symbols so they appear in the BOM.
@@ -49,18 +49,9 @@ The MCU sheet's 25 hierarchical pins (to EtherCAT, inputs, MPG, relays and analo
 | 1 A fuse I2t (datasheet 5F series) | 4.26 A2s: about 7x margin over the 0.61 A2s worst inrush at 0.1 ohm, no nuisance blowing |
 | 3 A fuse melting I2t (LCSC data, 5G series) | 12.5 A2s: more than 12x margin |
 
-## Open question for you: TVS against the URB surge rating
+## Decision applied: SMBJ30A TVS
 
-You asked me to keep the SMBJ33A and design module-side limiting in M3. This is what I found in the URB datasheet, and what I propose. **The sheet is built with the approved SMBJ33A; nothing is changed until you decide.**
-
-| | URB2403/05/15S rating | SMBJ33A (C320242, as built) | SMBJ30A (proposal) |
-|---|---|---|---|
-| Continuous input maximum | 40 V | stand-off 33 V | stand-off **30 V** (above 28.8 V maximum input) |
-| Surge | **50 V for 1 s** (24 V series) | clamp **53.3 V** at 11.3 A (above the rating at its rated pulse) | clamp **48.4 V** at 12.4 A (below the rating) |
-
-Datasheet context: the URB's own EMC circuit uses a fuse and a 330 uF/50 V bulk capacitor and no TVS, and the surge test is line to line +/-2 kV with that circuit. Neither TVS keeps the rail under the 40 V continuous maximum during a surge pulse; the datasheet only gives a 50 V figure for 1 s.
-
-**Proposal:** replace D201 and D202 with the SMBJ30A **Littelfuse C83851** (17,085 in stock on lcsc.com, same SMB package, 1 uA leakage at stand-off, about $0.06 more per diode). No other parts change. If you prefer to keep the SMBJ33A, say so and I record that as the decision.
+Decision 2026-11-06 (recorded in the plan's Decisions log): D201 and D202 are the **SMBJ30A, Littelfuse C83851** (17,085 in stock on lcsc.com, same SMB package, pad 1 = cathode). Clamp 48.4 V at 12.4 A is below the URB's 50 V / 1 s surge rating, and the 30 V stand-off is above the 28.8 V maximum input. It replaces the plan's SMBJ33A (C320242, 53.3 V clamp). Library, BOM, both sheets, pin check (44 of 44 clean) and the plan are updated.
 
 ## Sheet 3 - MCU
 

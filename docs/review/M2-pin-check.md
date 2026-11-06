@@ -41,7 +41,7 @@ Every imported symbol is compared with the manufacturer datasheet pin table (`sc
 | C2937625 | PZ254V-11-03P_C2937625 | 3 | 3 | yes | OK |
 | C970679 | RVT1H470M060747UF50V | 2 | 2 | yes | OK |
 | C148216 | SMAJ15A-C148216 | 2 | 2 | yes | OK |
-| C320242 | SMBJ33A_C320242 | 2 | 2 | yes | OK |
+| C83851 | SMBJ30A_C83851 | 2 | 2 | yes | OK |
 | C22452 | SS54_C22452 | 2 | 2 | yes | OK |
 | C56621 | STM32F405VGT6 | 100 | 100 | yes | OK |
 | C39031 | TLP290-4 | 16 | 16 | yes | OK |
@@ -206,9 +206,9 @@ Source: ECS-3225MVQ datasheet pin table: 1 tri-state (OE, NC = active), 2 GND, 3
 | Pin | Symbol name | Datasheet | OK |
 |---|---|---|---|
 | 1 | OE | TRISTATE/OE/ST | yes |
-| 2 | Gnd | GND | yes |
-| 3 | Output | OUTPUT | yes |
-| 4 | Vdd | VDD | yes |
+| 2 | GND | GND | yes |
+| 3 | OUTPUT | OUTPUT | yes |
+| 4 | VDD | VDD | yes |
 
 ### C69427 HY911105AE RJ45 with magnetics and LEDs
 
@@ -503,9 +503,9 @@ Source: Footprint silkscreen band is at pad 1: pad 1 = cathode, pad 2 = anode
 | 1 | C | C | yes |
 | 2 | A | A | yes |
 
-### C320242 SMBJ33A (SMB)
+### C83851 SMBJ30A (SMB)
 
-Source: Footprint silkscreen band is at pad 1 (left, x<0): pad 1 = cathode, pad 2 = anode (unidirectional TVS)
+Source: Footprint silkscreen: cathode bar and band at pad 1 (left, x<0): pad 1 = cathode, pad 2 = anode (unidirectional TVS)
 
 | Pin | Symbol name | Datasheet | OK |
 |---|---|---|---|

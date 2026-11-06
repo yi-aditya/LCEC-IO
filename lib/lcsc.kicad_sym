@@ -10855,7 +10855,7 @@
 		)
 		(embedded_fonts no)
 	)
-	(symbol "SMBJ33A_C320242"
+	(symbol "SMBJ30A_C83851"
 		(exclude_from_sim no)
 		(in_bom yes)
 		(on_board yes)
@@ -10863,7 +10863,7 @@
 		(duplicate_pin_numbers_are_jumpers no)
 		(property "Reference" "D"
 			(at 0 5.08 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10871,9 +10871,9 @@
 				)
 			)
 		)
-		(property "Value" "SMBJ33A"
+		(property "Value" "SMBJ30A"
 			(at 0 -5.08 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10881,9 +10881,9 @@
 				)
 			)
 		)
-		(property "Footprint" "lcsc:SMB_L4.6-W3.6-LS5.3-RD"
+		(property "Footprint" "lcsc:SMB_L4.4-W3.6-LS5.4-RD"
 			(at 0 -7.62 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10891,9 +10891,9 @@
 				)
 			)
 		)
-		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/7291596a24f0c91c9159e60f95ee6362.pdf?productCode=C320242"
+		(property "Datasheet" "https://datasheet.lcsc.com/datasheet/pdf/4ab84a227fae39f9eac85241b8264ead.pdf?productCode=C83851"
 			(at 0 -10.16 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10903,17 +10903,18 @@
 		)
 		(property "Description" ""
 			(at 0 0 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
+			(hide yes)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
 			)
 		)
-		(property "Manufacturer" "LGE"
+		(property "Manufacturer" "Littelfuse"
 			(at 0 -12.7 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10921,9 +10922,9 @@
 				)
 			)
 		)
-		(property "MPN" "SMBJ33A"
+		(property "MPN" "SMBJ30A"
 			(at 0 -15.24 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10931,9 +10932,9 @@
 				)
 			)
 		)
-		(property "LCSC" "C320242"
+		(property "LCSC" "C83851"
 			(at 0 -17.78 0)
-			(show_name yes)
+			(show_name no)
 			(do_not_autoplace no)
 			(effects
 				(font
@@ -10952,7 +10953,7 @@
 				)
 			)
 		)
-		(symbol "SMBJ33A_C320242_0_1"
+		(symbol "SMBJ30A_C83851_0_1"
 			(polyline
 				(pts
 					(xy -2.29 2.29) (xy -1.27 1.27) (xy -1.27 -1.27) (xy -0.25 -2.29)
