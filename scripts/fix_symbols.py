@@ -113,6 +113,17 @@ def fix_footprints():
     for f in glob.glob(os.path.join(ROOT, "lib", "lcsc.pretty", "*.kicad_mod")):
         t = open(f, encoding="utf-8").read()
         u = t.replace("${KIPRJMOD}/lib/", "${KIPRJMOD}/../lib/")
+        # an unnamed through-hole pad whose copper is as large as its hole is a mounting hole, not a plated pad
+        u = re.sub(r'\(pad "" thru_hole circle (\(at [^)]*\)) \(size ([\d.]+) [\d.]+\) \(drill \2\) \(layers [^)]*\)\)',
+                   lambda m: f'(pad "" np_thru_hole circle {m.group(1)} (size {m.group(2)} {m.group(2)}) (drill {m.group(2)}) (layers *.Cu *.Mask))', u)
+        # a radial capacitor whose courtyard is a single line gets a real courtyard: its body diameter plus 1 mm
+        m = re.search(r"CAP-TH_BD([\d.]+)", os.path.basename(f))
+        if m and "(start -5.00 0.00) (end 5.00 0.00) (layer F.CrtYd)" in u:
+            r = float(m.group(1)) / 2 + 0.5
+            box = "".join(f"\t(fp_line (start {a:.2f} {b:.2f}) (end {c:.2f} {d:.2f}) (layer F.CrtYd) (width 0.05))\n"
+                          for a, b, c, d in ((-r, -r, r, -r), (r, -r, r, r), (r, r, -r, r), (-r, r, -r, -r)))
+            u = re.sub(r"\t\(fp_line \(start -5.00 0.00\) \(end 5.00 0.00\) \(layer F.CrtYd\) \(width 0.05\)\)\n"
+                       r"\t\(fp_line \(start 5.00 0.00\) \(end -5.00 0.00\) \(layer F.CrtYd\) \(width 0.05\)\)\n", box, u)
         if u != t:
             open(f, "w", encoding="utf-8").write(u)
             n += 1
