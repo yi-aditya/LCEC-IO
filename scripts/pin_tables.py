@@ -110,8 +110,9 @@ T["C56621"] = dict(
 )
 T["C80933"] = dict(
     part="LAN9252I/PT (64-TQFP-EP)",
-    source="DS00001909A Table 3-2 '64-TQFP-EP package pin assignments' (all five mode columns); pin 65 = exposed pad VSS",
-    match="set",
+    source="DS00001909A Table 3-2 '64-TQFP-EP package pin assignments' (all five mode columns); pin 65 = exposed pad VSS. "
+           "The M4 symbol shows only the SPI-mode function of each pin (a subset of the datasheet names)",
+    match="token",
     pins=LAN9252,
 )
 T["C2595919"] = dict(

@@ -1,0 +1,23 @@
+ERC report (2026-11-06T07:11:15, Encoding UTF8)
+Report includes: Errors, Warnings, Exclusions
+
+***** Sheet /
+
+***** Sheet /Power/
+[ground_pin_not_ground]: Pin GND not connected to ground net
+    ; warning
+    @(274.32 mm, 81.28 mm): Symbol U201 Pin 1 [GND, Power input, Line]
+[ground_pin_not_ground]: Pin GND not connected to ground net
+    ; warning
+    @(274.32 mm, 200.66 mm): Symbol U203 Pin 1 [GND, Power input, Line]
+
+***** Sheet /MCU/
+
+***** Sheet /EtherCAT/
+
+ ** ERC messages: 2  Errors 0  Warnings 2
+
+ ** Ignored checks:
+    - Global label only appears once in the schematic
+    - SPICE model issue
+    - Assigned footprint doesn't match footprint filters

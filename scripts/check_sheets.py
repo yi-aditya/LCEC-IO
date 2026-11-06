@@ -364,7 +364,7 @@ def check_style():
     """Drawing rules: every component at rotation 0 and unmirrored, all text horizontal, labels pointing left or right."""
     bad = 0
     n = 0
-    for name in ("lcec-io", "02_power", "03_mcu"):
+    for name in ("lcec-io", "02_power", "03_mcu", "04_ethercat"):
         txt = open(os.path.join(HW, name + ".kicad_sch"), encoding="utf-8").read()
         tree, _ = G.parse(G.tokenize(txt))
         for sym in G.find(tree, "symbol"):
@@ -393,12 +393,106 @@ def check_style():
         ok(f"style: all {n} component instances at rotation 0, none mirrored, all text and labels horizontal")
 
 
+def check_ethercat(comps, pinnet):
+    """Sheet 4 against the LAN9252 datasheet (DS00001909A) and the plan: SPI nets to the STM32, straps, supplies, magnetics."""
+    bad = [0]
+
+    def want(ref, pin, expect):
+        got = net(pinnet, ref, pin)
+        if got != expect:
+            fail(f"{ref} pin {pin}: net '{got}', expected '{expect}'")
+            bad[0] += 1
+
+    def parts_between(a, b, value, prefix="R"):
+        """References of parts with the given value that have one pin on net a and the other on net b."""
+        out = []
+        for ref, c in comps.items():
+            if ref.startswith(prefix) and c["value"] == value and (ref, "1") in pinnet and (ref, "2") in pinnet:
+                if {net(pinnet, ref, "1"), net(pinnet, ref, "2")} == {a, b}:
+                    out.append(ref)
+        return out
+
+    def need(a, b, value, count=1, prefix="R"):
+        n = len(parts_between(a, b, value, prefix))
+        if n != count:
+            fail(f"expected {count} x {value} between '{a}' and '{b}', found {n}")
+            bad[0] += 1
+
+    stm = {v[0]: str(k) for k, v in T["C56621"]["pins"].items()}
+    # 1. nets that cross from the STM32 to the LAN9252 (through the root sheet and the hierarchical labels)
+    for esc, lan, mcu_pin in (("ESC_CS", "50", "PA4"), ("ESC_SCK", "19", "PA5"), ("ESC_MISO", "13", "PA6"), ("ESC_MOSI", "17", "PA7"),
+                              ("ESC_IRQ", "44", "PC4"), ("ESC_SYNC0", "34", "PA0"), ("ESC_SYNC1", "18", "PC13"), ("ESC_RST", "11", "PC5")):
+        a, b = net(pinnet, "U301", stm[mcu_pin]), net(pinnet, "U401", lan)
+        if a != b:
+            fail(f"STM32 {mcu_pin} ({a}) is not on the same net as LAN9252 pin {lan} ({b}) for {esc}")
+            bad[0] += 1
+    # 2. supplies, grounds and straps
+    for pin in ("5", "14", "20", "32", "37", "47", "7"):
+        want("U401", pin, "+3V3")
+    for pin, supply in (("51", "+3V3_TXRX1"), ("64", "+3V3_TXRX2"), ("58", "+3V3_BIAS")):
+        want("U401", pin, supply)
+        need("+3V3", supply, "220R@100MHz", 1, "FB")
+        need(supply, "GND_L", "100nF", 1, "C")
+    for pin in ("4", "65", "41", "8", "9", "10"):
+        want("U401", pin, "GND_L")
+    vcr = {net(pinnet, "U401", p) for p in ("6", "24", "38")}
+    if vcr != {"VDDCR"}:
+        fail(f"VDDCR pins 6, 24 and 38 are not one net called VDDCR: {vcr}")
+        bad[0] += 1
+    if {net(pinnet, "U401", p) for p in ("56", "59")} != {"VDD12TX"}:
+        fail("VDD12TX1 and VDD12TX2 (pins 56, 59) are not one net called VDD12TX")
+        bad[0] += 1
+    need("VDDCR", "VDD12TX", "220R@100MHz", 1, "FB")
+    need("VDD12TX", "GND_L", "100nF", 2, "C")
+    need("VDDCR", "GND_L", "1uF", 1, "C")
+    need("VDDCR", "GND_L", "470pF", 1, "C")
+    need("+3V3", net(pinnet, "U401", "45"), "10k")           # E2PSIZE strap high
+    for pin in ("46", "48"):
+        need("GND_L", net(pinnet, "U401", pin), "10k")      # chip mode 00
+    need("GND_L", net(pinnet, "U401", "57"), "12.1k 1%")    # RBIAS
+    # 3. link LEDs and RUN LED
+    for chip_pin, jack, lnk in (("48", "J401", "LNK_ACT0"), ("46", "J402", "LNK_ACT1")):
+        need(lnk, net(pinnet, "U401", chip_pin), "1k")
+        want(jack, "9", lnk)
+        want(jack, "10", "GND_L")
+    want("LED401", "1", net(pinnet, "U401", "45"))
+    need("+3V3", net(pinnet, "LED401", "2"), "1k")
+    # 4. magnetics: each line to its jack pin, 49.9 ohm to +3V3_PHY, centre taps, shield
+    for jack, sup, lines in (("J401", "+3V3_TXRX1", (("53", "1"), ("52", "2"), ("55", "3"), ("54", "6"))),
+                             ("J402", "+3V3_TXRX2", (("62", "1"), ("63", "2"), ("60", "3"), ("61", "6")))):
+        for chip, jp in lines:
+            a, b = net(pinnet, "U401", chip), net(pinnet, jack, jp)
+            if a != b:
+                fail(f"LAN9252 pin {chip} ({a}) is not wired to {jack} pin {jp} ({b})")
+                bad[0] += 1
+            need(sup, a, "49.9R")
+        want(jack, "4", sup)
+        want(jack, "5", sup)
+        need(sup, "GND_L", "22nF 50V", 1, "C")
+        for sp in ("8", "SH1", "SH2"):
+            want(jack, sp, "SHIELD")
+    need("SHIELD", "PE", "1nF 2kV", 1, "C")
+    need("SHIELD", "PE", "1M", 1)
+    # 5. ESI EEPROM
+    for pin in ("1", "2", "3", "4", "7"):
+        want("U402", pin, "GND_L")
+    want("U402", "8", "+3V3")
+    for ee, lan in (("5", "42"), ("6", "43")):
+        if net(pinnet, "U402", ee) != net(pinnet, "U401", lan):
+            fail(f"EEPROM pin {ee} is not on the LAN9252 pin {lan} net")
+            bad[0] += 1
+        need("+3V3", net(pinnet, "U402", ee), "4.7k")
+    if not bad[0]:
+        ok("EtherCAT sheet: SPI/IRQ/SYNC/RST nets match the STM32; straps, supplies, VDDCR, RBIAS, terminations, magnetics, shield and EEPROM verified")
+
+
 def main():
     errs, warns = run_erc()
     comps, pinnet = netlist()
     check_pinmap(comps, pinnet)
     check_power(comps, pinnet)
     check_mcu(comps, pinnet)
+    check_ethercat(comps, pinnet)
     check_fields(comps)
     check_style()
     check_barrier()
