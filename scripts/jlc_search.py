@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Search the JLCPCB/LCSC parts catalogue by keyword (read-only).
+"""Look up candidate LCSC part numbers by keyword (read-only search aid).
+
+SEARCH AID ONLY. Components are bought from lcsc.com by PCBPower, so this tool must never be
+used as a source of stock or price: verify every number it finds with lcsc_lookup.py.
 
 Usage:
     jlc_search.py "SS54" [--basic] [--n 10] [--instock]

@@ -1,6 +1,6 @@
 # LCEC-IO — instructions for Claude Code
 
-This repo holds the KiCad 10 hardware design for an industrial EtherCAT slave I/O board (STM32F405RGT6 + LAN9252). The approved design is `docs/plan.md`. Treat it as the specification: do not change part choices, pin assignments or circuit values without asking first, and record any approved change in its "Decisions log".
+This repo holds the KiCad 10 hardware design for an industrial EtherCAT slave I/O board (STM32F405VGT6 + LAN9252). The approved design is `docs/plan.md`. Treat it as the specification: do not change part choices, pin assignments or circuit values without asking first, and record any approved change in its "Decisions log".
 
 ## How to work
 
@@ -14,7 +14,8 @@ This repo holds the KiCad 10 hardware design for an industrial EtherCAT slave I/
 1. LCSC first. Every fitted part gets an `LCSC` field.
 2. Mouser or element14 only when LCSC has no suitable part; put the distributor part number in an `MPN_ALT` field and say why in the BOM notes.
 3. Relays (Omron G2R-1-S DC24) and contact fuses (5×20 mm T5A ceramic) are bought locally in India. Their sockets/holders are fitted at PCB assembly and need LCSC numbers; the relays and fuses themselves are marked `DNP` in the assembly BOM.
-4. Passives: LCSC basic parts where possible (0603 logic, 1206 for 24 V input resistors, 0.1 % thin-film for analog gain).
+4. Passives: mainstream parts with large stock (0603 logic, 1206 for 24 V input resistors, 0.1 % thin-film for analog gain). "Basic/extended" is a JLCPCB assembly concept and no longer matters.
+5. PCBPower buys every component from lcsc.com, so **lcsc.com's own stock is the only stock that counts**. Do not use JLCPCB for sourcing or stock. `scripts/jlc_search.py` may be used only to look up candidate LCSC numbers, and every number must then be verified on lcsc.com (`scripts/lcsc_lookup.py`).
 
 ## Repository layout
 

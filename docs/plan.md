@@ -25,7 +25,7 @@ These rules keep the part count low without giving up the industrial requirement
 
 - **One package per function group.** Quad AC-input optocouplers (4 inputs each), one octal relay driver, quad digital isolators, a dual DAC and a dual op-amp. No per-channel discrete transistors.
 - **Isolated modules, not discrete converters.** Each isolated rail is one module plus its input and output capacitors. No flyback transformer, controller or feedback loop to design.
-- **Smaller, cheaper MCU.** STM32F405RGT6 in LQFP-64: the same F4 core, 168 MHz and 1 MB flash as the DISC1 chip, about $3.2 against $5.6 at LCSC. Firmware is new, so the pin map is new too (MCU sheet). Clock: one 25 MHz oscillator feeds both the STM32 and the LAN9252, so firmware sets PLL M = 25.
+- **MCU.** STM32F405VGT6 in LQFP-100 (changed from the LQFP-64 RGT6 on 2026-11-06, see the Decisions log): the same F4 core, 168 MHz and 1 MB flash as the DISC1 chip, 82 I/O, about $7.6 at lcsc.com. Firmware is new, so the pin map is new too (MCU sheet). Clock: one 25 MHz oscillator feeds both the STM32 and the LAN9252, so firmware sets PLL M = 25.
 - **Fail-safe in hardware.** Outputs drop if the MCU hangs or EtherCAT stops, without relying on firmware alone (see the relay output sheet).
 - **Temperature grade.** 0–80 °C inside the enclosure is a reference, not a hard limit. Prefer −40 to +85 °C parts where they cost about the same; 0–70 °C parts such as the MPG line receiver and the G2R-1-S relay are acceptable.
 - **Sourcing order.** LCSC first. Mouser or element14 only when LCSC has no part with the required rating, and the BOM row says why. Relays and contact fuses are bought locally in India for service.
@@ -49,7 +49,7 @@ The STM32 is the only part that talks to every domain, and only through the barr
 | --- | --- | --- |
 | 1 Root | Sheet symbols, block diagram, mounting holes, PE | — |
 | 2 Power | Two 24 V entries, protection, three isolated modules | All |
-| 3 MCU | STM32F405RGT6, shared clock, SWD, UART, heartbeat LED | Logic |
+| 3 MCU | STM32F405VGT6, shared clock, SWD, UART, heartbeat LED, EtherCAT ERR LED | Logic |
 | 4 EtherCAT | LAN9252, EEPROM, 2 × RJ45 | Logic |
 | 5 Digital inputs | 4-channel block, placed 5 times (DI1–8, SEL1–12) | Field ↔ logic |
 | 6 MPG | Terminal, line receiver, MPG isolator | Field ↔ logic |
@@ -76,14 +76,14 @@ Each block is one schematic sheet. The values are starting values with the arith
 
 ### MCU (sheet 3)
 
-- **STM32F405RGT6**, LQFP-64, 51 I/O; 50 are used and 1 stays spare.
+- **STM32F405VGT6**, LQFP-100, 82 I/O; 51 are used (the original 50 plus the EtherCAT ERR LED), PH1 stays a test pad and the other 30 are free for future use.
 - **Clock:** one 25 MHz CMOS oscillator → 22 Ω → PH0 (HSE bypass), and → 22 Ω → LAN9252 OSCI (OSCO open). Firmware: PLLM = 25, PLLN = 336, PLLP = 2 → 168 MHz. This removes one crystal and its two capacitors.
 - **Support parts:** 100 nF at each VDD pin, 4.7 µF bulk, VDDA through a ferrite with 1 µF + 100 nF, 2.2 µF on each VCAP pin, BOOT0 10 kΩ to GND, NRST 100 nF.
 - **Debug:** 2×5 1.27 mm SWD header (PA13, PA14, PB3 SWO, NRST); USART2 (PA2/PA3) on a 3-pin header.
 - **Fail-safe pull-downs:** 10 kΩ on PD2 (relay OE), 10 kΩ pull-up on PB14 (AO_CLAMP) and on PC5 (LAN9252 RST#). The independent watchdog (IWDG) is enabled in option bytes, so an MCU hang resets the chip and the pins float to their safe state.
 - **Pin map:** every signal is in the table below, including all LAN9252 control lines.
 
-| Function | STM32F405RGT6 pins | Peripheral and notes |
+| Function | STM32F405VGT6 pins | Peripheral and notes |
 | --- | --- | --- |
 | LAN9252 SPI | PA5 SCK, PA6 MISO, PA7 MOSI, PA4 CS | SPI1 |
 | LAN9252 IRQ | PC4 | EXTI4, interrupt-driven process data |
@@ -97,6 +97,7 @@ Each block is one schematic sheet. The values are starting values with the arith
 | DO1–8 | PA8–PA12, PC10–PC12 | GPIO out |
 | Relay OE | PD2 | GPIO out, 10 kΩ pull-down |
 | Heartbeat LED | PA1 | GPIO out |
+| EtherCAT ERR LED | PD3 | GPIO out (the LAN9252 has no ERR output) |
 | Debug | PA13 SWDIO, PA14 SWCLK, PB3 SWO, PA2/PA3 USART2 | |
 | Clock | PH0 | HSE bypass, shared 25 MHz |
 | Spare | PH1 | Brought to a test pad |
@@ -106,7 +107,7 @@ Each block is one schematic sheet. The values are starting values with the arith
 - **LAN9252I/PT** in SPI mode, copied from the EVB-LAN9252-SPI reference schematic: straps, RBIAS 12.1 kΩ 1 %, internal 1.2 V regulator capacitors and the TX/RX termination.
 - **EEPROM:** 24LC32AT-I/SN on EESCL/EESDA with 4.7 kΩ pull-ups (ESI configuration).
 - **Ports:** 2 × HY911105AE RJ45 jacks with integrated magnetics and LEDs, rated −40 to +85 °C. Their LEDs show LINK/ACT per port.
-- **Status:** the LAN9252 RUN and ERR LED pins drive the two EtherCAT status LEDs, as the standard requires. One MCU heartbeat LED replaces the four DISC1 LEDs.
+- **Status:** the LAN9252 RUNLED pin drives the EtherCAT RUN LED; the ERR LED is driven by STM32 pin PD3, because the LAN9252 has no ERR output. One MCU heartbeat LED replaces the four DISC1 LEDs.
 - **Shield:** both jack shields → 1 nF/2 kV ∥ 1 MΩ → PE terminal.
 - **MCU connections:** besides SPI, the LAN9252 IRQ, SYNC0, SYNC1 and RST# go to the STM32 (pin map above). IRQ lets firmware react to SyncManager events instead of polling, SYNC0/SYNC1 allow Distributed Clocks synchronous mode, and RST# lets firmware reset the ESC.
 
@@ -132,7 +133,7 @@ One 4-channel hierarchical sheet (one TLP290-4), placed 5 times: DI1–4, DI5–
 - **Isolation:** 2 × CA-IS3740LN carry DO1–8. Their outputs default low when the logic side loses power.
 - **Output enable:** OE (PD2, through the CA-IS3742LN) drives the side-B enable pin of both CA-IS3740LN. When OE is low their outputs go high-impedance and two 4 × 100 kΩ arrays pull the driver inputs low.
 - **Driver:** one ULN2803A drives all 8 coils, with its COM pin on +24V_IO for the built-in flyback diodes.
-- **Relays:** 8 × Omron G2R-1-S DC24 plug-in relays in Omron P2R-05P PCB sockets: SPDT, 10 A / 250 VAC, 24 V coil of about 1.1 kΩ (22 mA, 0.53 W), so 176 mA for all eight, well within the ULN2803A. The board is built in China with the sockets soldered; the relays are bought in India, where the G2R-1-S is a standard Omron stock item, so a burnt relay is pulled out and replaced by hand on site.
+- **Relays:** 8 × Omron G2R-1-S DC24 plug-in relays in Omron P2R-05P PCB sockets: SPDT, 10 A / 250 VAC, 24 V coil of about 1.1 kΩ (22 mA, 0.53 W), so 176 mA for all eight, well within the ULN2803A. The board is built by PCBPower with the sockets soldered; the relays are bought in India, where the G2R-1-S is a standard Omron stock item, so a burnt relay is pulled out and replaced by hand on site.
 - **ON LED:** a green LED and 22 kΩ across each coil shows the coil is actually energised (1.2 mA; 33 mW per array element against a 62.5 mW rating).
 - **Contacts:** COM → T5A 5×20 mm ceramic fuse in a covered PCB holder → terminal; NO → terminal. Two 8-pole 300 V 5.08 mm terminals. RC snubber footprints across each contact, unfitted.
 - **Fail-safe chain, no firmware needed after step 1:**
@@ -177,7 +178,7 @@ Stock counts move daily, so Claude Code re-checks each row when it builds the BO
 
 | Sheet | Part | Qty | LCSC # | Rating | Notes |
 | --- | --- | --- | --- | --- | --- |
-| MCU | [STM32F405RGT6](https://www.lcsc.com/product-detail/C15742.html) | 1 | C15742 | −40 to +85 °C | LQFP-64, same F4 core as the DISC1, about $3.2 |
+| MCU | [STM32F405VGT6](https://www.lcsc.com/product-detail/C56621.html) | 1 | C56621 | −40 to +85 °C | LQFP-100, same F4 core as the DISC1, about $7.6 |
 | MCU | [ECS-3225MVQ-250-CN-TR 25 MHz oscillator](https://www.lcsc.com/product-detail/C2595919.html) | 1 | C2595919 | −40 to +85 °C | Shared clock. Confirm stability ≤ ±50 ppm for the LAN9252 |
 | EtherCAT | [LAN9252I/PT](https://lcsc.com/product-detail/Ethernet-Transceivers_Microchip-Tech-LAN9252I-PT_C80933.html) | 1 | C80933 | −40 to +85 °C | |
 | EtherCAT | [24LC32AT-I/SN EEPROM](https://www.lcsc.com/product-detail/C615715.html) | 1 | C615715 | −40 to +85 °C | ESI EEPROM |
@@ -199,7 +200,7 @@ Stock counts move daily, so Claude Code re-checks each row when it builds the BO
 
 Commodity parts get their LCSC numbers in milestone M1: SS54, 2N7002DW, SMAJ15A, the 78L05-class LDO, PTCs, the MPG TVS arrays, the jumper headers, LEDs, resistor arrays and all passives. Passives come from LCSC basic parts where one exists, to avoid extended-part fees.
 
-Relay-contact fuses: 8 × 5×20 mm PCB fuse holders with covers (LCSC number assigned in M1; Littelfuse 649 series from Mouser as fallback) and 8 × T5A 250 VAC ceramic fuses, bought locally like the relays.
+Relay-contact fuses: 8 × Littelfuse 646 5×20 mm PCB fuse blocks (C206887) with 648 clear covers (C187509), and 8 × T5A 250 VAC ceramic fuses, bought locally like the relays. The two 24 V inputs use the same block and cover with 1 A and 3 A 5×20 glass fuses.
 
 ## Claude Code cloud workflow
 
@@ -245,3 +246,7 @@ Each milestone ends at a review gate; the next one starts only after approval.
 - M1 review, 2026-11-05: the two 24 V input fuses are replaceable 5×20 mm glass fuses (1 A C3116, 3 A C3118) in the same covered holder as the relay fuses (C58066, 80 °C rating accepted).
 - M1 review, 2026-11-05: one pluggable 5.08 mm connector per I/O, no large multi-pole terminals. Each of the 8 digital inputs and 12 selector inputs gets a 3-pole connector (+24 V via PTC, IN, 0 V); each of the 8 relays gets a 3-pole connector (COM via fuse, NO, NC); each of the 2 analog outputs gets a 2-pole connector (AO, AGND). MPG stays 6-pole and the power entry 4-pole. This supersedes the 10-pole, 14-pole, 8-pole and 3-pole AO terminals in the sheet descriptions and the connector row of the key-part BOM; the "9 sets" count no longer applies.
 - M1 review, 2026-11-05: the URB modules allow 40 V maximum input but the SMBJ33A clamps at 53.3 V. Parts are kept as planned; module-side limiting is designed on the power sheet in M3 and brought for approval.
+- M2 review, 2026-11-06: MCU changed from the STM32F405RGT6 (LQFP-64) to the **STM32F405VGT6 (LQFP-100, C56621, 82 I/O)** so the board does not run out of pins now or later. Every existing pin assignment is unchanged (same port pin names). The EtherCAT ERR LED goes on **PD3** because the LAN9252 has only a RUNLED output. PH1 stays a test pad; the remaining free pins are reserved for future use. The six VDD pins need six 100 nF capacitors (plus VDDA and VBAT). This supersedes the "STM32F405RGT6" and "LQFP-64" wording elsewhere in this plan and the RUN and ERR LED statement in the EtherCAT section.
+- M2 review, 2026-11-06: fabrication, assembly and component sourcing are done by **PCBPower**, who buy every component from **lcsc.com**. So lcsc.com's own stock is the only stock that counts and JLCPCB is not used for sourcing or stock (JLCPCB's catalogue may be used only to look up candidate LCSC numbers, which are then verified on lcsc.com). This supersedes "the board is built in China". Four capacitors that lcsc.com showed at 0 stock are replaced: 100 nF C1591, 10 nF C1589, 1 µF 0603 C559769 (X7R) and 1 µF 0805 C91185.
+- M2 review, 2026-11-06: the PE terminal stays the Keystone 7770, which ships without its screw, so an M3 × 6 screw (C357543) is added to the BOM.
+- M2 review, 2026-11-06: the 5×20 fuse holder C58066 (no dimensioned drawing, 80 °C rating) is replaced by the Littelfuse 646 fuse block (C206887) with the 648 clear cover (C187509): full drawing, footprint checked against it. The Littelfuse datasheet states no operating temperature. Parts whose datasheets have full dimensioned drawings (RJ45 HY911105AE, Keystone 7770, P2R-05P, URB modules, Littelfuse 646) have their footprints checked against the printed dimensions by `scripts/pincheck.py`.

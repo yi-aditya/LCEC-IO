@@ -9,3 +9,8 @@ _autosave-*
 __pycache__/
 *.pyc
 .venv/
+
+# STEP models are 80 MB; the .wrl models are committed and the STEP files can be regenerated with scripts/import_lcsc.py
+lib/lcsc.3dshapes/*.step
+lib/.easyeda_cache/
+.easyeda_cache/
