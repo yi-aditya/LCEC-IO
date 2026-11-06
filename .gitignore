@@ -14,3 +14,4 @@ __pycache__/
 lib/lcsc.3dshapes/*.step
 lib/.easyeda_cache/
 .easyeda_cache/
+hardware/.render-*

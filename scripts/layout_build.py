@@ -54,6 +54,67 @@ def load_fp(libid):
     return fp
 
 
+# ------------------------------------------------------------------ simple 3D bodies for footprints that have no model
+BOX_DIR = os.path.join(ROOT, "hardware", "3d-auto")
+# (name fragment, body height mm, colour); KiCad's standard 3D library is not installed, so these boxes stand in for it
+BODY = (("RELAY-TH_P2R", None, None), ("R_Array", 0.6, (0.12, 0.12, 0.12)), ("R_0603", 0.5, (0.12, 0.12, 0.12)), ("R_1206", 0.6, (0.12, 0.12, 0.12)),
+        ("R_2512", 0.7, (0.12, 0.12, 0.12)), ("C_0603", 0.8, (0.75, 0.6, 0.3)), ("C_0805", 1.0, (0.75, 0.6, 0.3)), ("C_1206", 1.2, (0.75, 0.6, 0.3)),
+        ("LED_0603", 0.6, (0.6, 0.85, 0.3)), ("L_0603", 0.8, (0.2, 0.2, 0.22)), ("C_Rect", 14.0, (0.75, 0.2, 0.2)),
+        ("Keystone", 9.0, (0.8, 0.7, 0.2)), ("SMA", 2.3, (0.1, 0.1, 0.1)), ("SMB", 2.3, (0.1, 0.1, 0.1)), ("SOT", 1.1, (0.1, 0.1, 0.1)),
+        ("SOIC", 1.7, (0.1, 0.1, 0.1)), ("SOP", 2.0, (0.1, 0.1, 0.1)), ("TQFP", 1.4, (0.1, 0.1, 0.1)), ("F1206", 0.8, (0.9, 0.9, 0.2)),
+        ("F1812", 1.0, (0.9, 0.9, 0.2)), ("HDR-TH", 8.5, (0.1, 0.1, 0.1)))
+
+
+def box_wrl(name, parts):
+    """VRML boxes: parts = [(cx, cy, w, h, z0, z1, (r, g, b), transparency)], mm; KiCad reads VRML in units of 0.1 inch."""
+    os.makedirs(BOX_DIR, exist_ok=True)
+    path = os.path.join(BOX_DIR, name + ".wrl")
+    if os.path.exists(path):
+        return path
+    u = 1 / 2.54
+    out = ["#VRML V2.0 utf8"]
+    for cx, cy, w, h, z0, z1, (r, g, b), tr in parts:
+        x1, x2, y1, y2 = (cx - w / 2) * u, (cx + w / 2) * u, (cy - h / 2) * u, (cy + h / 2) * u
+        z1_, z2_ = z0 * u, z1 * u
+        pts = [(x1, y1, z1_), (x2, y1, z1_), (x2, y2, z1_), (x1, y2, z1_), (x1, y1, z2_), (x2, y1, z2_), (x2, y2, z2_), (x1, y2, z2_)]
+        out.append("Shape { appearance Appearance { material Material { diffuseColor %.2f %.2f %.2f transparency %.2f } } geometry IndexedFaceSet { coord Coordinate { point [ %s ] } "
+                   "coordIndex [ 0,1,2,3,-1, 4,7,6,5,-1, 0,4,5,1,-1, 1,5,6,2,-1, 2,6,7,3,-1, 3,7,4,0,-1 ] } }"
+                   % (r, g, b, tr, ", ".join("%.4f %.4f %.4f" % p for p in pts)))
+    open(path, "w").write("\n".join(out) + "\n")
+    return path
+
+
+def add_body(fp, libid):
+    """Attach a simple box body when the footprint has no 3D model of its own."""
+    if libid.startswith("TestPoint") or libid.startswith("MountingHole"):
+        return
+    if len(fp.Models()):
+        paths = [str(m.m_Filename).replace("${KIPRJMOD}", os.path.join(ROOT, "hardware")) for m in fp.Models()]
+        if all(os.path.exists(p_) for p_ in paths):
+            return
+        fp.Models().clear()                                  # models of the standard 3D library are not installed here
+    name = libid.split(":")[-1]
+    fp.SetOrientationDegrees(0)
+    fp.SetPosition(VECTOR2I(0, 0))
+    x1, y1, x2, y2 = bbox_mm(fp)
+    w, h, cx, cy = x2 - x1, y2 - y1, (x1 + x2) / 2, (y1 + y2) / 2
+    for key, hgt, col in BODY:
+        if key not in name and key not in libid:
+            continue
+        if key == "RELAY-TH_P2R":                       # plug-in socket 11 mm high with the G2R-1-S relay (29 x 13 x 25.7 mm) on top
+            parts = [(0, 0, w, h, 0, 11.0, (0.15, 0.15, 0.17), 0.0), (0, 0, 13.0, 29.0, 11.0, 36.7, (0.55, 0.68, 0.88), 0.0)]
+            path = box_wrl(f"relay_{w:.1f}x{h:.1f}", parts)
+        else:
+            body_h = min(w, h) * 0.6 if key in ("HDR-TH",) else hgt
+            path = box_wrl(f"box_{w:.2f}x{h:.2f}x{body_h:.1f}_{int(col[0] * 100)}{int(col[1] * 100)}{int(col[2] * 100)}",
+                           [(0, 0, w, h, 0, body_h, col, 0.0)])
+        m = pcbnew.FP_3DMODEL()
+        m.m_Filename = "${KIPRJMOD}/3d-auto/" + os.path.basename(path)
+        m.m_Offset = pcbnew.VECTOR3D(cx, -cy, 0)
+        fp.Models().push_back(m)
+        return
+
+
 def build_board():
     comps, nets = read_netlist()
     board = pcbnew.BOARD()
@@ -72,6 +133,7 @@ def build_board():
         if not c["fp"] or ref.startswith("#"):
             continue
         fp = load_fp(c["fp"])
+        add_body(fp, c["fp"])
         fp.SetReference(ref)
         fp.SetValue(c["value"])
         for pad in fp.Pads():

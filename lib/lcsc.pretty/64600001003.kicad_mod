@@ -21,7 +21,7 @@
 	(fp_line (start -12.90 -4.50) (end 12.90 -4.50) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 12.90 -4.50) (end 12.90 4.50) (layer F.CrtYd) (width 0.05))
 	(fp_line (start 12.90 4.50) (end -12.90 4.50) (layer F.CrtYd) (width 0.05))
-	(model "${KIPRJMOD}/lcsc.3dshapes/FUSE-TH_L22.6-W9.0-H13.5.wrl"
+	(model "${KIPRJMOD}/../lib/lcsc.3dshapes/FUSE-TH_L22.6-W9.0-H13.5.wrl"
 		(offset (xyz 0.000 0.000 0.000))
 		(scale (xyz 1 1 1))
 		(rotate (xyz 0 0 0))

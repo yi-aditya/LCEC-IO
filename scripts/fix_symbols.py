@@ -112,7 +112,7 @@ def fix_footprints():
     n = 0
     for f in glob.glob(os.path.join(ROOT, "lib", "lcsc.pretty", "*.kicad_mod")):
         t = open(f, encoding="utf-8").read()
-        u = t.replace("${KIPRJMOD}/lib/", "${KIPRJMOD}/../lib/")
+        u = t.replace("${KIPRJMOD}/lib/", "${KIPRJMOD}/../lib/").replace("${KIPRJMOD}/lcsc.3dshapes", "${KIPRJMOD}/../lib/lcsc.3dshapes")
         # an unnamed through-hole pad whose copper is as large as its hole is a mounting hole, not a plated pad
         u = re.sub(r'\(pad "" thru_hole circle (\(at [^)]*\)) \(size ([\d.]+) [\d.]+\) \(drill \2\) \(layers [^)]*\)\)',
                    lambda m: f'(pad "" np_thru_hole circle {m.group(1)} (size {m.group(2)} {m.group(2)}) (drill {m.group(2)}) (layers *.Cu *.Mask))', u)
