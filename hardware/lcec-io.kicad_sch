@@ -1,0 +1,425 @@
+(kicad_sch
+	(version 20260306)
+	(generator "eeschema")
+	(generator_version "10.0")
+	(uuid "7341a8f8-b3ee-5340-9a22-3e17fb1db36c")
+	(paper "A3")
+	(title_block
+		(title "LCEC-IO - EtherCAT slave I/O board")
+		(date "2026-11-06")
+		(rev "A")
+		(company "Yantra Innovation - LCEC-IO")
+		(comment 1 "Root sheet: milestone M3 holds the Power and MCU sheets; sheets 4-8 follow in M4 and M5")
+	)
+	(lib_symbols)
+	(text "LCEC-IO  -  EtherCAT slave I/O board"
+		(exclude_from_sim no)
+		(at 15.24 15.24 0)
+		(effects
+			(font
+				(size 3 3)
+			)
+			(justify left bottom)
+		)
+		(uuid "81b2eb9e-b6e9-5d6b-a6bb-3a6368748f28")
+	)
+	(text "Root sheet, milestone M3: Power (2) and MCU (3). Sheets 4 to 8 (EtherCAT, digital inputs, MPG, relay outputs, analog outputs) are added in M4 and M5; the full root sheet follows in M6."
+		(exclude_from_sim no)
+		(at 15.24 22.86 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "827bcbb1-f13f-56d4-a515-f4c25f827b23")
+	)
+	(text "No-connect flags on the MCU sheet pins are placeholders: they are replaced by wires to sheets 4 to 8 in M4 and M5."
+		(exclude_from_sim no)
+		(at 127 99.06 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left bottom)
+		)
+		(uuid "b1f17b75-4819-58c3-8198-1e39ad87c0e6")
+	)
+	(no_connect
+		(at 177.8 55.88)
+		(uuid "1948c218-a304-5c79-8ac5-aac70fe6fe4b")
+	)
+	(no_connect
+		(at 177.8 63.5)
+		(uuid "408d7480-9290-5a91-8dbd-ac98e5ee1283")
+	)
+	(no_connect
+		(at 177.8 68.58)
+		(uuid "49e97bb7-3edf-5a2d-9db8-66f540703bd6")
+	)
+	(no_connect
+		(at 177.8 71.12)
+		(uuid "4f47016b-abd7-5ea7-b8ac-8150123b00dd")
+	)
+	(no_connect
+		(at 127 55.88)
+		(uuid "4fa931ff-d144-515c-bef7-73fde2455127")
+	)
+	(no_connect
+		(at 127 71.12)
+		(uuid "77db1588-9b50-57d9-8ee0-918ebb0edb9b")
+	)
+	(no_connect
+		(at 177.8 58.42)
+		(uuid "82c77984-7a03-5bd5-84e7-df30f8c66614")
+	)
+	(no_connect
+		(at 127 66.04)
+		(uuid "84acc2e8-95f6-58a9-b617-64d146b58070")
+	)
+	(no_connect
+		(at 177.8 66.04)
+		(uuid "8549f259-754a-5825-89a5-122616c7c524")
+	)
+	(no_connect
+		(at 177.8 60.96)
+		(uuid "aaadb7f9-da52-5067-9661-ed41f3921347")
+	)
+	(no_connect
+		(at 177.8 81.28)
+		(uuid "b2634811-9d0a-5d9c-a53a-5e24b0b61706")
+	)
+	(no_connect
+		(at 177.8 78.74)
+		(uuid "b3798be3-99a9-5ce0-9557-668f4d8009c5")
+	)
+	(no_connect
+		(at 177.8 83.82)
+		(uuid "b57292f1-1ed3-5c90-afd1-c597adc85993")
+	)
+	(no_connect
+		(at 127 63.5)
+		(uuid "b7c385a9-adca-5b2f-9f54-2b49a94e346a")
+	)
+	(no_connect
+		(at 177.8 73.66)
+		(uuid "bbf2d05b-f26b-51a9-9c5e-4381a995a830")
+	)
+	(no_connect
+		(at 127 58.42)
+		(uuid "c2be165f-3851-5a2c-b5a0-e46c2ba90243")
+	)
+	(no_connect
+		(at 127 60.96)
+		(uuid "cac91513-2559-53ed-a168-88892492a7aa")
+	)
+	(no_connect
+		(at 127 73.66)
+		(uuid "d0eed162-e510-5b9b-a79b-7c861fa4b0a2")
+	)
+	(no_connect
+		(at 177.8 76.2)
+		(uuid "ea1036a6-ffee-5bbb-82f1-89ccc1b373c8")
+	)
+	(no_connect
+		(at 127 68.58)
+		(uuid "f5724d35-b2af-5f9c-a705-c83f72820a87")
+	)
+	(sheet
+		(at 25.4 50.8)
+		(size 50.8 30.48)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "7700c9f4-0f38-59ff-b564-9d3300b164d7")
+		(property "Sheetname" "Power"
+			(at 25.4 49.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "02_power.kicad_sch"
+			(at 25.4 82.55 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 127 50.8)
+		(size 50.8 40.64)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "e64e3fdd-a962-5e6c-8579-0809fabc1b27")
+		(property "Sheetname" "MCU"
+			(at 127 49.53 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "03_mcu.kicad_sch"
+			(at 127 92.71 0)
+			(show_name no)
+			(do_not_autoplace no)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(pin "MPG_A" input
+			(at 127 55.88 180)
+			(uuid "00fef74d-7608-56be-a0c9-7721e4942414")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "MPG_B" input
+			(at 127 58.42 180)
+			(uuid "79f66d07-feec-53db-8b6b-8d85252c95e1")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "ESC_IRQ" input
+			(at 127 60.96 180)
+			(uuid "51948056-9eb5-5b8a-9163-763524195150")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "ESC_SYNC0" input
+			(at 127 63.5 180)
+			(uuid "66745c47-04b7-5949-bf68-b55c85467077")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "ESC_SYNC1" input
+			(at 127 66.04 180)
+			(uuid "09076996-0244-573c-83fb-95dd9bd2dc78")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "ESC_MISO" input
+			(at 127 68.58 180)
+			(uuid "c0eb2065-3337-55af-bbc7-ab719999c838")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "DI[1..8]" input
+			(at 127 71.12 180)
+			(uuid "a110612d-6d21-5864-b486-8d79e1925871")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "SEL[1..12]" input
+			(at 127 73.66 180)
+			(uuid "b04114b7-444b-5391-8401-6e111cad978e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+			)
+		)
+		(pin "RELAY_OE" output
+			(at 177.8 55.88 0)
+			(uuid "0a6f063e-0652-5afb-abb4-68836f5a9118")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ERR_LED" output
+			(at 177.8 58.42 0)
+			(uuid "587bb476-1d24-5c9e-b1a1-e9f0dc101e8c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_CS" output
+			(at 177.8 60.96 0)
+			(uuid "c29fc164-fbca-5d5a-8c28-725c0559e957")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_SCK" output
+			(at 177.8 63.5 0)
+			(uuid "409b7c04-c880-54e1-978a-c48d8921fa1e")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_MOSI" output
+			(at 177.8 66.04 0)
+			(uuid "5b488b87-3c18-5754-86a8-ce7ec299b810")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "ESC_RST" output
+			(at 177.8 68.58 0)
+			(uuid "6d366f1e-8bbb-518f-bbc3-5fa1cba565a8")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_CS" output
+			(at 177.8 71.12 0)
+			(uuid "e9f9b373-bf51-5931-8f03-d086ebfb29b3")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_SCK" output
+			(at 177.8 73.66 0)
+			(uuid "f2355f06-0f77-5841-b7f6-d7469e648f12")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DAC_MOSI" output
+			(at 177.8 76.2 0)
+			(uuid "5d28d431-7012-5929-a675-964d7989f27d")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "AO_CLAMP" output
+			(at 177.8 78.74 0)
+			(uuid "0bd3ac8b-10d7-5cf2-a82a-35e7795d841c")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "DO[1..8]" output
+			(at 177.8 81.28 0)
+			(uuid "2627a33d-6e68-5713-80b9-5d0f934eef2f")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(pin "CLK_ESC" output
+			(at 177.8 83.82 0)
+			(uuid "7512ec39-30d7-5086-9c80-1360b6bc96a0")
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(instances
+			(project "lcec-io"
+				(path "/7341a8f8-b3ee-5340-9a22-3e17fb1db36c"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)

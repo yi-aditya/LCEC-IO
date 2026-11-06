@@ -20,6 +20,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from kiutils.footprint import Footprint  # noqa: E402
 from kiutils.items.common import Position  # noqa: E402
 from kiutils.items.fpitems import FpRect  # noqa: E402
+import libio  # noqa: E402
 from kiutils.symbol import SymbolLib  # noqa: E402
 
 LIB = os.path.join(ROOT, "lib", "lcsc.kicad_sym")
@@ -131,7 +132,7 @@ def main():
         lib.symbols.append(s)
         added.append("C5272782")
     if added:
-        lib.to_file(LIB)
+        libio.save(lib, LIB)
     print("added:", added or "nothing (already present)")
 
 

@@ -1,0 +1,33 @@
+{
+  "meta": {
+    "filename": "lcec-io.kicad_pro",
+    "version": 3
+  },
+  "net_settings": {
+    "classes": [
+      {
+        "name": "Default",
+        "clearance": 0.2,
+        "track_width": 0.25,
+        "via_diameter": 0.8,
+        "via_drill": 0.4
+      }
+    ],
+    "meta": {
+      "version": 3
+    }
+  },
+  "sheets": [],
+  "text_variables": {},
+  "erc": {
+    "erc_exclusions": [],
+    "meta": {
+      "version": 0
+    },
+    "rule_severities": {
+      "four_way_junction": "error",
+      "global_label_dangling": "warning",
+      "same_local_global_label": "warning"
+    }
+  }
+}
