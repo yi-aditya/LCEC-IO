@@ -22,7 +22,7 @@ from schgen import g  # noqa: E402
 
 HW = os.path.join(G.ROOT, "hardware")
 ROOT_UUID = G.uid("root")
-SHEET_UUID = {"power": G.uid("sheet", "power"), "mcu": G.uid("sheet", "mcu")}
+SHEET_UUID = {"power": G.uid("sheet", "power"), "mcu": G.uid("sheet", "mcu"), "ethercat": G.uid("sheet", "ethercat")}
 TP_FP = "TestPoint:TestPoint_Pad_D2.0mm"
 GND = "power:GND"
 MCU_HLABELS = {}                    # hierarchical labels of the MCU sheet: name -> shape (drives the root sheet pins)
@@ -373,24 +373,256 @@ def build_mcu(libs):
     return s
 
 
+# =============================================================== sheet 4: EtherCAT
+# nets that cross between the MCU sheet (3) and the EtherCAT sheet (4): name -> shape seen from the EtherCAT sheet
+ETH_NETS = {"CLK_ESC": "input", "ESC_CS": "input", "ESC_SCK": "input", "ESC_MOSI": "input", "ESC_RST": "bidirectional",
+            "ESC_MISO": "output", "ESC_IRQ": "output", "ESC_SYNC0": "output", "ESC_SYNC1": "output", "ERR_LED": "input"}
+
+
+def build_ethercat(libs):
+    s = G.Sch(libs, "04_ethercat.kicad_sch", "LCEC-IO - 4 EtherCAT", "4", ROOT_UUID, SHEET_UUID["ethercat"],
+              comment="LAN9252 in SPI mode, 24LC32A ESI EEPROM, two RJ45 jacks, RUN and ERR LEDs")
+    cn, rn = [0], [0]
+
+    def cref():
+        cn[0] += 1
+        return f"C4{cn[0]:02d}"
+
+    def rref():
+        rn[0] += 1
+        return f"R4{rn[0]:02d}"
+
+    note(s, "4  ETHERCAT  -  LAN9252 (SPI), ESI EEPROM, two RJ45 jacks with magnetics, RUN and ERR LEDs", g(10), g(8), 2.54, True)
+    note(s, "Chip mode 00 = 2 ports (PHY A = port 0 = J401, PHY B = port 1 = J402). The PDI is chosen by the ESI EEPROM content (SPI slave). "
+            "Rows and values follow the LAN9252 datasheet DS00001909A (sections 3, 4, 7, 12.10 and 14).", g(10), g(13))
+
+    # ============================================================ U401 unit 1: signals (centre of the sheet)
+    UX, UY = g(185), g(100)
+    U = s.place("lcsc:C80933", "U401", UX, UY, value="LAN9252I/PT", lcsc="C80933", unit=1,
+                ref_at=(UX - g(8), UY - g(68)), val_at=(UX + g(8), UY - g(68)), justify="center")
+    P = U.pin
+    HX = g(116)                                            # x of the hierarchical labels, left of the chip
+
+    for num, net, shape in (("1", "CLK_ESC", "input"), ("11", "ESC_RST", "bidirectional"), ("50", "ESC_CS", "input"),
+                            ("19", "ESC_SCK", "input"), ("17", "ESC_MOSI", "input"), ("13", "ESC_MISO", "output"),
+                            ("44", "ESC_IRQ", "output"), ("34", "ESC_SYNC0", "output"), ("18", "ESC_SYNC1", "output")):
+        x, y = P(num)
+        s.wire((x, y), (HX, y))
+        s.hlabel(net, shape, HX, y, 180)
+    s.stub(P("42"), (-1, 0), g(8), net="EESDA")
+    s.stub(P("43"), (-1, 0), g(8), net="EESCL")
+
+    # RUN LED (open drain, active low because E2PSIZE is strapped high for the 32 Kbit EEPROM): +3V3 > 1k > LED > pin
+    x, y = P("45")
+    xn = x - g(4)
+    s.wire((x, y), (xn, y))
+    Lr = hpart(s, "lcec:LED_AK_H", "LED401", xn - g(6), y, "RUN", "C89809")
+    s.wire(Lr.pin("1"), (xn, y))
+    Rr = hpart(s, "lcec:R_H", rref(), Lr.pin("2")[0] - g(10), y, "1k", "C21190")
+    s.wire(Rr.pin("2"), Lr.pin("2"))
+    e = s.stub(Rr.pin("1"), (-1, 0), g(3)); s.power("power:+3V3", "+3V3", *e)
+    Rp = vpart(s, "Device:R", rref(), xn, y - g(6), "10k", "C25804")                # E2PSIZE strap high
+    s.power("power:+3V3", "+3V3", *Rp.pin("1"))
+
+    # port LEDs: the pins are also the chip-mode straps, held low by 10 k = chip mode 00 and active-high LED outputs
+    for num, net, port in (("46", "LNK_ACT1", 1), ("48", "LNK_ACT0", 0)):
+        x, y = P(num)
+        xn = x - g(4)
+        s.wire((x, y), (xn, y))
+        Rd = vpart(s, "Device:R", rref(), xn, y, "10k", "C25804")
+        s.power(GND, "GND_L", *Rd.pin("2"))
+        Rl = hpart(s, "lcec:R_H", rref(), xn - g(12), y, "1k", "C21190")
+        s.wire(Rl.pin("2"), (xn, y))
+        s.stub(Rl.pin("1"), (-1, 0), g(3), net=net)
+
+    # tied low: TESTMODE (must be VSS) and the FX (fibre) strap inputs = copper mode
+    ys = [P(n) for n in ("41", "8", "9", "10")]
+    for pt in ys:
+        s.wire(pt, (pt[0] - g(4), pt[1]))
+    s.wire((ys[0][0] - g(4), ys[0][1]), (ys[-1][0] - g(4), ys[-1][1]))
+    s.power(GND, "GND_L", ys[-1][0] - g(4), ys[-1][1])
+    for num in ("2", "12", "15", "16", "21", "22", "23", "25", "26", "27", "28", "29", "30", "31", "33", "35", "36", "39", "40", "49"):
+        s.no_connect(*P(num))                                  # OSCO (OSCI is driven by a single-ended oscillator) and unused host-bus / digital I/O pins
+
+    # ---- right side: PHY A (port 0) and PHY B (port 1) lines to the jacks, each with a 49.9 ohm termination to +3V3_PHY
+    jacks = {}
+    for ref, (p_tx, n_tx, p_rx, n_rx) in (("J401", ("53", "52", "55", "54")), ("J402", ("62", "63", "60", "61"))):
+        x0, y0 = P(p_tx)
+        JX = x0 + g(44)
+        J = s.place("lcsc:C69427", ref, JX, y0 + g(18), value="HY911105AE", lcsc="C69427",
+                    ref_at=(JX, y0 - g(8)), val_at=(JX, y0 + g(42)), justify="center")
+        jacks[ref] = J
+        for chip, jack in ((p_tx, "1"), (n_tx, "2"), (p_rx, "3"), (n_rx, "6")):
+            cx, cy = P(chip)
+            s.wire((cx, cy), J.pin(jack))
+            Rt = vpart(s, "Device:R", rref(), cx + g(10), cy - g(6), "49.9R", "C23185")
+            s.power("power:+3V3", "+3V3_PHY", *Rt.pin("1"))
+            s.wire(Rt.pin("2"), (cx + g(10), cy))
+    x, y = P("57")
+    s.wire((x, y), (x + g(6), y))
+    Rb = vpart(s, "Device:R", rref(), x + g(6), y, "12.1k 1%", "C22864")
+    s.power(GND, "GND_L", *Rb.pin("2"))
+
+    # ---- jack right sides: centre taps, link LEDs, shield
+    for ref, net in (("J401", "LNK_ACT0"), ("J402", "LNK_ACT1")):
+        J = jacks[ref]
+        t1, t2 = J.pin("4"), J.pin("5")
+        xb = t1[0] + g(6)
+        s.wire(t1, (xb, t1[1])); s.wire(t2, (xb, t2[1]))
+        s.wire((xb, t1[1]), (xb, t1[1] - g(3)))
+        s.wire((xb, t1[1]), (xb, t2[1]))
+        s.power("power:+3V3", "+3V3_PHY", xb, t1[1] - g(3))
+        s.wire((xb, t2[1]), (xb + g(8), t2[1]))
+        Cc = vpart(s, "Device:C", cref(), xb + g(8), t2[1], "100nF", "C1591")
+        s.power(GND, "GND_L", *Cc.pin("2"))
+        s.stub(J.pin("9"), (1, 0), g(4), net=net)                               # green LED anode
+        e = s.stub(J.pin("10"), (1, 0), g(4)); s.power(GND, "GND_L", *e)       # cathode
+        s.no_connect(*J.pin("12")); s.no_connect(*J.pin("11")); s.no_connect(*J.pin("7"))
+        sp = [J.pin("8"), J.pin("SH1"), J.pin("SH2")]
+        xs = sp[0][0] + g(4)
+        for pt in sp:
+            s.wire(pt, (xs, pt[1]))
+        s.wire((xs, sp[0][1]), (xs, sp[-1][1]))
+        s.stub((xs, sp[-1][1]), (1, 0), g(2), net="SHIELD")
+
+    # ---- shield to PE: 1 nF / 2 kV in parallel with 1 M
+    sx, sy = g(298), g(150)
+    s.wire((sx - g(8), sy), (sx, sy))
+    s.label("SHIELD", sx - g(8), sy, 180)
+    Cs = vpart(s, "Device:C", cref(), sx, sy, "1nF 2kV", "C9196")
+    Rs = vpart(s, "Device:R", rref(), sx + g(16), sy, "1M", "C22935")
+    s.wire(Cs.pin("1"), Rs.pin("1"))
+    s.wire(Cs.pin("2"), Rs.pin("2"))
+    s.power("power:Earth_Protective", "PE", *Cs.pin("2"))
+    s.pwr_flag(sx + g(11), Cs.pin("2")[1])
+
+    # ============================================================ U401 unit 2: power pins (left) with their decoupling
+    PX, PY = g(66), g(100)
+    UP = s.place("lcsc:C80933", "U401", PX, PY, value="LAN9252I/PT", lcsc="C80933", unit=2,
+                 ref_at=(PX - g(6), PY - g(58)), val_at=(PX + g(6), PY - g(58)), justify="center")
+    Q = UP.pin
+    x5 = Q("5")[0]
+    rail_a = x5 - g(24)
+    rows_a = ["5", "14", "20", "32", "37", "47", "7"]
+    s.power("power:+3V3", "+3V3", rail_a, Q("5")[1] - g(3))
+    s.wire((rail_a, Q("5")[1] - g(3)), (rail_a, Q("7")[1]))
+    for num in rows_a:
+        px, py = Q(num)
+        s.wire((px, py), (rail_a, py))
+        if num != "7":
+            Cd = vpart(s, "Device:C", cref(), px - g(6), py, "100nF", "C1591")
+            s.power(GND, "GND_L", *Cd.pin("2"))
+    # PHY supplies through a ferrite bead (also the supply of the magnetics centre taps)
+    rail_b = rail_a
+    y_fb = Q("51")[1] - g(6)
+    s.wire((rail_b, y_fb - g(3)), (rail_b, Q("58")[1]))
+    s.power("power:+3V3", "+3V3_PHY", rail_b, y_fb - g(3))
+    FB = hpart(s, "lcec:FerriteBead_H", "FB401", rail_b - g(10), y_fb, "600R@100MHz", "C19330")
+    s.wire(FB.pin("2"), (rail_b, y_fb))
+    e = s.stub(FB.pin("1"), (-1, 0), g(3)); s.power("power:+3V3", "+3V3", *e)
+    s.pwr_flag(rail_b, y_fb + g(2))
+    for num in ("51", "64", "58"):
+        px, py = Q(num)
+        s.wire((px, py), (rail_b, py))
+        Cd = vpart(s, "Device:C", cref(), px - g(6), py, "100nF", "C1591")
+        s.power(GND, "GND_L", *Cd.pin("2"))
+    Cb = vpart(s, "Device:C", cref(), Q("51")[0] - g(18), Q("51")[1], "4.7uF", "C19666")
+    s.power(GND, "GND_L", *Cb.pin("2"))
+    # core: VDDCR (internal regulator output) and the PHY 1.2 V supplies tied to it
+    rail_r = Q("6")[0] + g(26)
+    s.wire((rail_r, Q("6")[1]), (rail_r, Q("59")[1] + g(3)))
+    s.label("VDDCR", rail_r, Q("59")[1] + g(3), 0)
+    for num in ("6", "24", "38", "56", "59"):
+        px, py = Q(num)
+        s.wire((px, py), (rail_r, py))
+    for num, caps in (("6", (("1uF", "C559769"), ("470pF", "C1620"))), ("24", (("100nF", "C1591"),)),
+                      ("38", (("100nF", "C1591"),)), ("56", (("100nF", "C1591"),))):
+        px, py = Q(num)
+        for k, (val, code) in enumerate(caps):
+            Cd = vpart(s, "Device:C", cref(), px + g(6) + g(10) * k, py, val, code)
+            s.power(GND, "GND_L", *Cd.pin("2"))
+    s.no_connect(*Q("3"))                                           # OSCVDD12: internal regulator output, no external capacitor required
+    g1, g2 = Q("4"), Q("65")
+    s.wire(g1, (g1[0] + g(4), g1[1])); s.wire(g2, (g2[0] + g(4), g2[1]))
+    s.wire((g1[0] + g(4), g1[1]), (g2[0] + g(4), g2[1]))
+    s.power(GND, "GND_L", g2[0] + g(4), g2[1])
+
+    # ============================================================ U402 ESI EEPROM
+    ex, ey = g(124), g(128)
+    E = s.place("lcsc:C615715", "U402", ex, ey, value="24LC32AT-I/SN", lcsc="C615715",
+                ref_at=(ex, ey - g(11)), val_at=(ex, ey + g(11)), justify="center")
+    gp = [E.pin(n) for n in ("1", "2", "3", "7", "4")]            # A0, A1, A2, WP, VSS all to ground
+    xg = gp[0][0] - g(4)
+    for pt in gp:
+        s.wire(pt, (xg, pt[1]))
+    s.wire((xg, gp[0][1]), (xg, gp[-1][1]))
+    s.power(GND, "GND_L", xg, gp[-1][1])
+    vc = E.pin("8")
+    xv = vc[0] - g(12)
+    s.wire(vc, (xv, vc[1]))
+    s.wire((xv, vc[1]), (xv, vc[1] - g(3)))
+    s.power("power:+3V3", "+3V3", xv, vc[1] - g(3))
+    Ce = vpart(s, "Device:C", cref(), xv, vc[1], "100nF", "C1591")
+    s.power(GND, "GND_L", *Ce.pin("2"))
+    for num, net in (("6", "EESCL"), ("5", "EESDA")):
+        pt = E.pin(num)
+        xp = pt[0] + g(8)
+        s.wire(pt, (xp, pt[1]))
+        Rp = vpart(s, "Device:R", rref(), xp, pt[1] - g(6), "4.7k", "C23162")
+        s.power("power:+3V3", "+3V3", *Rp.pin("1"))
+        s.stub((xp, pt[1]), (1, 0), g(4), net=net)
+
+    # ============================================================ ERR LED (driven by the STM32, PD3)
+    ex2, ey2 = g(20), g(30)
+    s.wire((ex2, ey2), (ex2 + g(8), ey2))
+    s.hlabel("ERR_LED", "input", ex2, ey2, 180)
+    Re = hpart(s, "lcec:R_H", rref(), ex2 + g(8), ey2, "1k", "C21190")
+    Le = hpart(s, "lcec:LED_AK_H", "LED402", Re.pin("2")[0] + g(4), ey2, "ERR", "C2286")
+    s.wire(Re.pin("2"), Le.pin("2"))
+    e = s.stub(Le.pin("1"), (1, 0), g(3)); s.power(GND, "GND_L", *e)
+    note(s, "EtherCAT ERR LED, red: driven by STM32 pin PD3 (the LAN9252 has no ERR output)", ex2, ey2 - g(5))
+
+    ny = g(176)
+    note(s, "Design notes", g(10), ny, 1.27, True)
+    for i, txt in enumerate((
+            "RUNLED / E2PSIZE: 10 k pull-up = EEPROM size strap high (32 Kbit and up, 2-byte addressing). The pin is open drain, so the RUN LED is +3V3 > 1 k > LED > pin.",
+            "LINKACTLED0 / CHIP_MODE0 and LINKACTLED1 / CHIP_MODE1: 10 k pull-downs = chip mode 00 (2 ports) and active-high LED outputs; 1 k to the green LED in each jack.",
+            "TESTMODE to ground (required). FXLOSEN, FXSDENA and FXSDENB to ground = copper twisted pair. REG_EN to 3.3 V = internal 1.2 V regulators. OSCO open (single-ended oscillator on OSCI).",
+            "Pins 12, 15 to 16, 21 to 23, 25 to 31, 33, 35, 36, 39, 40 and 49 (host bus, MII, digital I/O) are unused in SPI mode and left open.",
+            "Each twisted-pair line has 49.9 R to +3V3_PHY (ferrite-filtered 3.3 V); the magnetics centre taps are on the same net. RBIAS 12.1 k 1 % to ground.",
+            "VDDCR is the regulator output: 1 uF + 470 pF at pin 6. VDD12TX1 and VDD12TX2 are tied to it. The ESI EEPROM must hold PDI = SPI before the first run.")):
+        note(s, txt, g(10), ny + g(4 + 3 * i))
+    return s
+
+
 # =============================================================== root sheet
 def build_root(libs):
     s = G.Sch(libs, "lcec-io.kicad_sch", "LCEC-IO - EtherCAT slave I/O board", "1", ROOT_UUID, ROOT_UUID,
-              comment="Root sheet: milestone M3 holds the Power and MCU sheets; sheets 4-8 follow in M4 and M5")
+              comment="Root sheet: Power, MCU and EtherCAT sheets")
     s.text("LCEC-IO  -  EtherCAT slave I/O board", g(12), g(12), 3.0, justify="left bottom")
-    s.text("Root sheet, milestone M3: Power (2) and MCU (3). Sheets 4 to 8 (EtherCAT, digital inputs, MPG, relay outputs, analog outputs) "
-           "are added in M4 and M5; the full root sheet follows in M6.", g(12), g(18))
+    s.text("Root sheet, milestone M4: Power (2), MCU (3) and EtherCAT (4). Sheets 5 to 8 (digital inputs, MPG, relay outputs, analog outputs) "
+           "are added in M5; the full root sheet follows in M6.", g(12), g(18))
     s.sheet("Power", "02_power.kicad_sch", g(20), g(40), g(40), g(24), [], 2, SHEET_UUID["power"])
-    ins = [n for n, sh in MCU_HLABELS.items() if sh == "input"]
-    outs = [n for n, sh in MCU_HLABELS.items() if sh == "output"]
-    h = max(len(ins), len(outs)) * g(2) + g(8)
-    pins = [(n, "input", "left", g(4) + i * g(2)) for i, n in enumerate(ins)] + \
-           [(n, "output", "right", g(4) + i * g(2)) for i, n in enumerate(outs)]
-    pos = s.sheet("MCU", "03_mcu.kicad_sch", g(100), g(40), g(40), h, pins, 3, SHEET_UUID["mcu"])
-    for n, (x, y) in pos.items():
-        s.no_connect(x, y)
-    s.text("No-connect flags on the MCU sheet pins are placeholders: they are replaced by wires to sheets 4 to 8 in M4 and M5.",
-           g(100), g(40) + h + g(6))
+    # MCU sheet: the EtherCAT nets leave on the right, in the order of the EtherCAT sheet, so each wire to sheet 4 is straight
+    eth = list(ETH_NETS)
+    rest_in = [n for n, sh in MCU_HLABELS.items() if sh == "input" and n not in ETH_NETS]
+    rest_out = [n for n, sh in MCU_HLABELS.items() if sh == "output" and n not in ETH_NETS]
+    h = max(len(rest_in), len(eth) + len(rest_out)) * g(2) + g(8)
+    pins = [(n, MCU_HLABELS[n], "right", g(4) + i * g(2)) for i, n in enumerate(eth)]
+    pins += [(n, "output", "right", g(4) + (len(eth) + i) * g(2)) for i, n in enumerate(rest_out)]
+    pins += [(n, "input", "left", g(4) + i * g(2)) for i, n in enumerate(rest_in)]
+    mx, my, mw = g(100), g(40), g(40)
+    pos = s.sheet("MCU", "03_mcu.kicad_sch", mx, my, mw, h, pins, 3, SHEET_UUID["mcu"])
+    ex = g(180)
+    epins = [(n, ETH_NETS[n], "left", g(4) + i * g(2)) for i, n in enumerate(eth)]
+    epos = s.sheet("EtherCAT", "04_ethercat.kicad_sch", ex, my, g(40), g(4) + len(eth) * g(2) + g(4), epins, 4, SHEET_UUID["ethercat"])
+    for n in eth:
+        s.wire(pos[n], epos[n])
+    for n, pt in pos.items():
+        if n not in ETH_NETS:
+            s.no_connect(*pt)
+    s.text("No-connect flags on the MCU sheet pins are placeholders: they are replaced by wires to sheets 5 to 8 in M5.",
+           g(100), my + h + g(6))
     return s
 
 
@@ -399,6 +631,7 @@ def main():
     os.makedirs(HW, exist_ok=True)
     out = [build_power(libs).write(HW)]
     out.append(build_mcu(libs).write(HW))
+    out.append(build_ethercat(libs).write(HW))
     out.append(build_root(libs).write(HW))
     print("wrote", *[os.path.basename(p) for p in out])
 
