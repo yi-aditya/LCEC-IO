@@ -231,6 +231,13 @@ T["C320242"] = dict(
     pins={1: ["K"], 2: ["A"]},
     renamed=True,
 )
+T["C83851"] = dict(
+    part="SMBJ30A (SMB)",
+    source="Footprint silkscreen: cathode bar and band at pad 1 (left, x<0): pad 1 = cathode, pad 2 = anode (unidirectional TVS)",
+    match="token",
+    pins={1: ["K"], 2: ["A"]},
+    renamed=True,
+)
 T["C148216"] = dict(
     part="SMAJ15A (SMA)",
     source="Footprint silkscreen band is at pad 1: pad 1 = cathode, pad 2 = anode",

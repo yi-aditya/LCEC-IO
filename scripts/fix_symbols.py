@@ -19,6 +19,7 @@ import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import libio  # noqa: E402
 from kiutils.symbol import SymbolLib  # noqa: E402
 from lcsc_lookup import fetch  # noqa: E402
 
@@ -32,6 +33,7 @@ PIN_RENAMES = {
     "C80933": {"5": "VDD33"},
     "C69427": {"4": "TD_CT", "5": "RD_CT", "9": "LEDG_A", "10": "LEDG_K", "11": "LEDY_K", "12": "LEDY_A"},
     "C320242": {"1": "K", "2": "A"},
+    "C83851": {"1": "K", "2": "A"},
     "C970679": {"1": "+", "2": "-"},
     "C2960285": {"1": "+", "2": "-"},
     "C39031": {**{str(2 * k - 1): f"IN{k}A" for k in range(1, 5)}, **{str(2 * k): f"IN{k}B" for k in range(1, 5)},
@@ -49,14 +51,14 @@ REFERENCE = {
     "C5369844": "U", "C39031": "U", "C2595919": "X", "C3975188": "J", "C2937625": "J", "C69427": "J",
     "C441204": "J", "C441205": "J", "C441206": "J", "C441208": "J", "C5272782": "J",
     "C440880": "P", "C440881": "P", "C440882": "P", "C440884": "P", "C5305": "JP",
-    "C320242": "D", "C22452": "D", "C148216": "D", "C32677": "D", "C83571": "Q",
+    "C320242": "D", "C83851": "D", "C22452": "D", "C148216": "D", "C32677": "D", "C83571": "Q",
     "C206887": "F", "C187509": "F", "C357543": "H", "C3116": "F", "C3118": "F", "C151168": "RT", "C70068": "RT",
     "C970679": "C", "C2960285": "C", "C1524860": "K",
 }
 
 IC_PARTS = {"C56621", "C80933", "C2595919", "C615715", "C16040", "C7934", "C42738", "C6180", "C428888",
             "C528653", "C5347249", "C845537", "C5369843", "C3031185", "C5369844"}
-POWER_IN = re.compile(r"^(VDD|VCC|VBAT|VDDA|VDDB|VDDIO|VDDCR|VDD33|VDD12TX\d|VDD33TXRX\d|VDD33BIAS|OSCVDD12|VIN|VCAP_\d|"
+POWER_IN = re.compile(r"^(VDD|VCC|VBAT|VDDA|VDDB|VDDIO|VDDCR|VDD33|VDD12TX\d|VDD33TXRX\d|VDD33BIAS|OSCVDD12|VIN|"
                       r"GND|GNDA|GNDB|VSS|VSSA|OSCVSS)$")
 OUTPUT = re.compile(r"^(\dY|VO\d|\dOUT|VOUT[AB]|OUTPUT)$")
 INPUT = re.compile(r"^(\d[AB]|~?G|VI\d|EN[AB]|A[0-2]|WP|SCL|~?CS|SCK|SDI|~?LDAC|INPUT|OE|CTRL|BOOT0|OSCI|REG_EN|TESTMODE)$")
@@ -75,6 +77,8 @@ def pin_type(lcsc, name):
         return "open_collector"
     if NC.match(nn):
         return "no_connect"
+    if nn.startswith("VCAP"):          # internal regulator output: only a capacitor connects here
+        return "passive"
     if POWER_IN.match(nn):
         return "power_in"
     if lcsc == "C80933" and nn == "RST":
@@ -215,7 +219,7 @@ def main():
                 t = pin_type(lcsc, p.name)
                 if p.electricalType != t:
                     p.electricalType = t
-    lib.to_file(LIB)
+    libio.save(lib, LIB)
     if os.path.abspath(LIB) == os.path.join(ROOT, "lib", "lcsc.kicad_sym"):
         gone = remove_orphans(lib)
         print(f"removed {len(gone)} unused footprint/3D files: {gone[:6]}...")

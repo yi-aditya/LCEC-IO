@@ -67,7 +67,7 @@ Each block is one schematic sheet. The values are starting values with the arith
 ### Power (sheet 2)
 
 - **Entry:** one 4-pole 5.08 mm pluggable terminal: +24V_LOGIC, 0V_LOGIC, +24V_IO, 0V_IO. A separate PE screw terminal.
-- **Protection, per input:** fuse (1 A logic, 3 A I/O) → SS54 series diode for reverse polarity → SMBJ33A TVS → 47 µF/50 V + 1 µF. The 33 V stand-off clears 28.8 V (24 V +20 %).
+- **Protection, per input:** fuse (1 A logic, 3 A I/O) → SS54 series diode for reverse polarity → SMBJ30A TVS → 47 µF/50 V + 1 µF. The 30 V stand-off clears 28.8 V (24 V +20 %) and the 48.4 V clamp stays below the URB modules' 50 V / 1 s surge rating.
 - **Logic rail:** URB2403S-6WR3 isolated module, 24V_LOGIC → +3V3 on GND_L, 1.35 A max. Expected load is about 0.4 A (STM32 about 0.1 A, LAN9252 about 0.25 A, LEDs and isolators the rest), so 30 % of rating. No LDO.
 - **Field 5 V:** URB2405S-6WR3, 24V_IO → +5V_IO with its 0 V tied to 0V_IO at the module. It feeds the MPG pendant, the line receiver and the field side of three isolators.
 - **Analog rail:** URB2415S-6WR3, 24V_IO → +15V_A on its own isolated AGND.
@@ -186,7 +186,7 @@ Stock counts move daily, so Claude Code re-checks each row when it builds the BO
 | Power | [URB2403S-6WR3 (3.3 V)](https://www.lcsc.com/product-detail/C5369843.html) | 1 | C5369843 | −40 to +105 °C | 9–36 V in, 1.35 A |
 | Power | [URB2405S-6WR3 (5 V)](https://www.lcsc.com/product-detail/C3031185.html) | 1 | C3031185 | −40 to +105 °C | 9–36 V in, 1.2 A |
 | Power | [URB2415S-6WR3 (15 V)](https://www.lcsc.com/product-detail/C5369844.html) | 1 | C5369844 | Check datasheet | 9–36 V in, 0.4 A |
-| Power | [SMBJ33A TVS](https://www.lcsc.com/product-detail/C320242.html) | 2 | C320242 | | One per 24 V input |
+| Power | [SMBJ30A TVS](https://www.lcsc.com/product-detail/C83851.html) | 2 | C83851 | | One per 24 V input (replaces the SMBJ33A C320242, see Decisions log) |
 | Inputs | [TLP290-4(GB) AC-input quad optocoupler](https://www.lcsc.com/product-detail/Transistor-Photovoltaic-Output-Optoisolators_TOSHIBA-TLP290-4-GB-TP-E-T_C39031.html) | 5 | C39031 | −55 to +110 °C | 20 inputs |
 | MPG | [AM26LS32ACDRG4 line receiver](https://www.lcsc.com/product-detail/C2671811.html) | 1 | C2671811 | 0 to +70 °C | 0–70 °C grade by choice. AM26LS32AIDR (−40 to +85 °C, Mouser) has the same pinout |
 | MPG / relays | [CA-IS3742LN isolator (2 fwd, 2 rev)](https://www.lcsc.com/product-detail/C5347249.html) | 1 | C5347249 | −40 to +125 °C | OE + MPG A/B |
@@ -250,3 +250,5 @@ Each milestone ends at a review gate; the next one starts only after approval.
 - M2 review, 2026-11-06: fabrication, assembly and component sourcing are done by **PCBPower**, who buy every component from **lcsc.com**. So lcsc.com's own stock is the only stock that counts and JLCPCB is not used for sourcing or stock (JLCPCB's catalogue may be used only to look up candidate LCSC numbers, which are then verified on lcsc.com). This supersedes "the board is built in China". Four capacitors that lcsc.com showed at 0 stock are replaced: 100 nF C1591, 10 nF C1589, 1 µF 0603 C559769 (X7R) and 1 µF 0805 C91185.
 - M2 review, 2026-11-06: the PE terminal stays the Keystone 7770, which ships without its screw, so an M3 × 6 screw (C357543) is added to the BOM.
 - M2 review, 2026-11-06: the 5×20 fuse holder C58066 (no dimensioned drawing, 80 °C rating) is replaced by the Littelfuse 646 fuse block (C206887) with the 648 clear cover (C187509): full drawing, footprint checked against it. The Littelfuse datasheet states no operating temperature. Parts whose datasheets have full dimensioned drawings (RJ45 HY911105AE, Keystone 7770, P2R-05P, URB modules, Littelfuse 646) have their footprints checked against the printed dimensions by `scripts/pincheck.py`.
+- M3 review, 2026-11-06: the TVS on both 24 V inputs is changed from the SMBJ33A (C320242, clamps 53.3 V at 11.3 A) to the **SMBJ30A, Littelfuse C83851** (clamps 48.4 V at 12.4 A, 30 V stand-off above the 28.8 V maximum input, same SMB package). This brings the clamp below the URB modules' 50 V / 1 s surge rating. Supersedes the M1 decision to keep the SMBJ33A.
+- M3 review, 2026-11-06: drawing rules for all sheets: every component instance at rotation 0 and unmirrored, all text horizontal, no symbol pins on the top or bottom edge. Parts that must be drawn the other way use pre-rotated standard KiCad graphics from `lib/lcec.kicad_sym`.
